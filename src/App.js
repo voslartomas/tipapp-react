@@ -29,8 +29,8 @@ class App extends Component {
   }
 
   render() {
-    const isLoggedIn = localStorage.getItem('token').length > 0
-    console.log(localStorage.getItem('token'), localStorage.getItem('token').length)
+    const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('token').length > 0
+
     return (
       <div>
         {!isLoggedIn && <LoginFormComponent login={() => this.login()} />}
