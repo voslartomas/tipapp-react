@@ -7,12 +7,11 @@ import MatchesComponent from './matches.component'
 
 export default class SecuredComponent extends Component {
 
-  state = {}
-
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  componentDidMount() {
+    document.title = "Neymar";
+  }
 
   render() {
-    const { activeItem } = this.state
     return (
       <div>
         {/*<Menu pointing secondary>
@@ -24,8 +23,9 @@ export default class SecuredComponent extends Component {
           </Menu.Menu>
         </Menu>*/}
         <Menu>
-          <Menu.Item name='sports' active={activeItem === 'sports'} onClick={this.handleItemClick}><Link to="/">Sporty</Link></Menu.Item>
-          <Menu.Item position="right" name='logout' onClick={() => this.props.logout()}> Odhlásit </Menu.Item>
+          <Menu.Item><h3>NEYMAR</h3></Menu.Item>
+          <Menu.Item name='sports' onClick={this.handleItemClick}><Link to="/">Sporty</Link></Menu.Item>
+          <Menu.Item position="right" name='logout' onClick={() => this.props.logout()}> Odhlásit <i style={{marginLeft: '5px'}} class="sign out icon"></i></Menu.Item>
         </Menu>
 
         <Segment>

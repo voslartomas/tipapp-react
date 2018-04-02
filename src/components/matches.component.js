@@ -35,9 +35,11 @@ export default class MatchesComponent extends Component {
             <Card>
               <Card.Content>
                 <Card.Header>
-                  {match.homeTeam.czName} {match.homeScore || 0}:{match.awayScore || 0} {match.awayTeam.czName}
+                  {match.homeScore || 0}:{match.awayScore || 0}
                 </Card.Header>
-                <Card.Description />
+                <Card.Description>
+                  {match.homeTeam.czName} <b>X</b> {match.awayTeam.czName}
+                </Card.Description>
               </Card.Content>
             </Card>
             ))}
@@ -60,7 +62,7 @@ export default class MatchesComponent extends Component {
             <Card>
               <Card.Content>
                 <Card.Header>
-                  {player.firstName} {player.lastName}
+                  {player.firstName} {player.lastName} ({player.team.shortcut})
                 </Card.Header>
               </Card.Content>
             </Card>
