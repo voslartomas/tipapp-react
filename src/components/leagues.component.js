@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import LeagueService from '../services/league.service'
-import { Card } from 'semantic-ui-react'
+import { Card, Header } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 export default class LeaguesComponent extends Component {
   constructor(props) {
@@ -19,17 +20,20 @@ export default class LeaguesComponent extends Component {
 
   render() {
     return (
+      <div>
+      <Header as="h1">Ligy</Header>
       <Card.Group>
         {this.state.leagues && this.state.leagues.map(league => (
           <Card>
             <Card.Content>
               <Card.Header>
-                {league.name}
+                <Link to={`/matches/${league.id}`}>{league.name}</Link>
               </Card.Header>
             </Card.Content>
           </Card>
         ))}
       </Card.Group>
+      </div>
     )
   }
 }
