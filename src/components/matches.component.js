@@ -21,9 +21,7 @@ export default class MatchesComponent extends Component {
     const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
     const teams = await TeamService.getTeams(this.props.match.params.leagueId)
 
-    this.setState({ matches })
-    this.setState({ players })
-    this.setState({ teams })
+    this.setState({ matches, players, teams })
   }
 
   render() {
