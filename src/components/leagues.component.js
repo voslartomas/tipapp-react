@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import LeagueService from '../services/league.service'
-import { Card } from 'semantic-ui-react'
+import { Card, Header } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 export default class LeaguesComponent extends Component {
@@ -20,6 +20,8 @@ export default class LeaguesComponent extends Component {
 
   render() {
     return (
+      <div>
+      <Header as="h1">Ligy</Header>
       <Card.Group>
         {this.state.leagues && this.state.leagues.map(league => (
           <Card>
@@ -31,6 +33,7 @@ export default class LeaguesComponent extends Component {
           </Card>
         ))}
       </Card.Group>
+      </div>
     )
   }
 }

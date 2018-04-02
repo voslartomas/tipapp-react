@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import SportService from '../services/sport.service'
-import { Card } from 'semantic-ui-react'
+import { Card, Header } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 export default class SportsComponent extends Component {
@@ -22,6 +22,8 @@ export default class SportsComponent extends Component {
 
   render() {
     return (
+      <div>
+      <Header as="h1">Sporty</Header>
       <Card.Group>
         {this.state.sports && this.state.sports.map(sport => (
           <Card key={sport.id}>
@@ -33,6 +35,7 @@ export default class SportsComponent extends Component {
           </Card>
         ))}
       </Card.Group>
+      </div>
     )
   }
 }
