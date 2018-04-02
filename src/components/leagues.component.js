@@ -25,7 +25,7 @@ export default class LeaguesComponent extends Component {
           <Card>
             <Card.Content>
               <Card.Header>
-                <Link to={`/matches/${league.leagueId}`}>{league.name}</Link>
+                <Link to={`/matches/${league.id}`}>{league.name}</Link>
               </Card.Header>
             </Card.Content>
           </Card>
