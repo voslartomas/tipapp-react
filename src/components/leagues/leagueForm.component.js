@@ -57,10 +57,11 @@ export default class LeagueFormComponent extends Component {
     return (
       <div>
         <Header as="h1">Přidat/Upravit ligu</Header>
-        <Form>
+        <Form onSubmit={this.saveForm}>
           <Form.Field>
             <label>Název</label>
             <input
+              required
               placeholder="Název ligy"
               value={this.state.league.name}
               onChange={event => this.setState({ league: { ...this.state.league, name: event.target.value } })}
@@ -115,7 +116,7 @@ export default class LeagueFormComponent extends Component {
               onChange={() => this.setState({ league: { ...this.state.league, isMostActive: !this.state.league.isMostActive } })}
             />
           </Form.Field>
-          <Button type="submit" onClick={() => this.saveForm()}>Potvrdit změny</Button>
+          <Button type="submit">Potvrdit změny</Button>
         </Form>
       </div>
     )
