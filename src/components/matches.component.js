@@ -12,7 +12,7 @@ export default class MatchesComponent extends Component {
       matches: [],
       players: [],
       teams: [],
-      team: undefined
+      team: undefined,
     }
   }
 
@@ -21,53 +21,51 @@ export default class MatchesComponent extends Component {
     const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
     const teams = await TeamService.getTeams(this.props.match.params.leagueId)
 
-    this.setState({ matches: matches })
-    this.setState({ players: players })
-    this.setState({ teams: teams })
+    this.setState({ matches })
+    this.setState({ players })
+    this.setState({ teams })
   }
 
   render() {
     return (
       <div>
-      <Header as="h1">Zápasy</Header>
-      <Card.Group>
-        {this.state.matches && this.state.matches.map(match => (
-          <Card>
-            <Card.Content>
-              <Card.Header>
-                {match.title} {match.homeScore || 0}:{match.awayScore || 0}
-              </Card.Header>
-              <Card.Description>
-                {await TeamService.getTeamById(1).czName} vs {await TeamService.getTeamById(2).czName}
-              </Card.Description>
-            </Card.Content>
-          </Card>
+        <Header as="h1">Zápasy</Header>
+        <Card.Group>
+          {this.state.matches && this.state.matches.map(match => (
+            <Card>
+              <Card.Content>
+                <Card.Header>
+                  {match.homeTeam.czName} {match.homeScore || 0}:{match.awayScore || 0} {match.awayTeam.czName}
+                </Card.Header>
+                <Card.Description />
+              </Card.Content>
+            </Card>
+            ))}
+        </Card.Group>
+        <Header as="h1">Týmy</Header>
+        <Card.Group>
+          {this.state.teams && this.state.teams.map(team => (
+            <Card>
+              <Card.Content>
+                <Card.Header>
+                  {team.czName} ({team.shortcut})
+                </Card.Header>
+              </Card.Content>
+            </Card>
                 ))}
-      </Card.Group>
-      <Header as="h1">Týmy</Header>
-      <Card.Group>
-        {this.state.teams && this.state.teams.map(team => (
-          <Card>
-            <Card.Content>
-              <Card.Header>
-                {team.czName} ({team.shortcut})
-              </Card.Header>
-            </Card.Content>
-          </Card>
+        </Card.Group>
+        <Header as="h1">Hráči</Header>
+        <Card.Group>
+          {this.state.players && this.state.players.map(player => (
+            <Card>
+              <Card.Content>
+                <Card.Header>
+                  {player.firstName} {player.lastName}
+                </Card.Header>
+              </Card.Content>
+            </Card>
                 ))}
-      </Card.Group>
-      <Header as="h1">Hráči</Header>
-      <Card.Group>
-        {this.state.players && this.state.players.map(player => (
-          <Card>
-            <Card.Content>
-              <Card.Header>
-                {player.firstName} {player.lastName}
-              </Card.Header>
-            </Card.Content>
-          </Card>
-                ))}
-      </Card.Group>
+        </Card.Group>
       </div>
     )
   }
