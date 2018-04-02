@@ -21,7 +21,7 @@ export default class SecuredComponent extends Component {
         <Segment>
           <Route exact path="/" component={SportsComponent} />
           <Route exact path="/leagues/:sportId" component={LeaguesComponent} />
-          <Route exaxt path="/matches/:id" component={MatchesComponent} />
+          <Route exaxt path="/matches/:leagueId" component={MatchesComponent} />
         </Segment>
       </div>
     )
