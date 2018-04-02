@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import LeagueService from '../services/league.service'
 import { Card } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 export default class LeaguesComponent extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export default class LeaguesComponent extends Component {
           <Card>
             <Card.Content>
               <Card.Header>
-                {league.name}
+                <Link to={`/matches/${league.leagueId}`}>{league.name}</Link>
               </Card.Header>
             </Card.Content>
           </Card>

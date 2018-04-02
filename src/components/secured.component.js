@@ -3,6 +3,7 @@ import { Menu, Segment } from 'semantic-ui-react'
 import SportsComponent from './sports.component'
 import LeaguesComponent from './leagues.component'
 import { Route, Link } from 'react-router-dom'
+import MatchesComponent from './matches.component'
 
 export default class SecuredComponent extends Component {
   render() {
@@ -20,6 +21,7 @@ export default class SecuredComponent extends Component {
         <Segment>
           <Route exact path="/" component={SportsComponent} />
           <Route exact path="/leagues/:sportId" component={LeaguesComponent} />
+          <Route exaxt path="/matches/:id" component={MatchesComponent} />
         </Segment>
       </div>
     )
