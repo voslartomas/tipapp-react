@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LeagueService from '../../services/league.service'
 import SportService from '../../services/sport.service'
-import { Card, Header, Form, Checkbox, Button } from 'semantic-ui-react'
+import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
 import { Link, Redirect } from 'react-router-dom'
 
 export default class LeagueFormComponent extends Component {
@@ -57,10 +57,10 @@ export default class LeagueFormComponent extends Component {
     return (
       <div>
         <Header as="h1">Přidat/Upravit ligu</Header>
-        <Form onSubmit={this.saveForm}>
+        <Form onSubmit={() => this.saveForm()}>
           <Form.Field>
             <label>Název</label>
-            <input
+            <Input
               required
               placeholder="Název ligy"
               value={this.state.league.name}
@@ -69,7 +69,7 @@ export default class LeagueFormComponent extends Component {
           </Form.Field>
           <Form.Field>
             <label>Sezóna od</label>
-            <input
+            <Input
               placeholder="Sezóna od"
               value={this.state.league.seasonFrom}
               onChange={event => this.setState({ league: { ...this.state.league, seasonFrom: event.target.value } })}
@@ -77,7 +77,7 @@ export default class LeagueFormComponent extends Component {
           </Form.Field>
           <Form.Field>
             <label>Sezóna do</label>
-            <input
+            <Input
               placeholder="Sezóna do"
               value={this.state.league.seasonTo}
               onChange={event => this.setState({ league: { ...this.state.league, seasonTo: event.target.value } })}
@@ -86,6 +86,7 @@ export default class LeagueFormComponent extends Component {
           <Form.Field>
             <Form.Select
               fluid
+              required
               label="Sport"
               options={this.state.sportsOptions}
               value={this.state.league.sportId}
