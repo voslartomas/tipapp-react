@@ -14,7 +14,7 @@ export default class SportFormComponent extends Component {
     }
 
     async componentDidMount() {
-        const sportId = this.props.match.params.sportId
+        const sportId = this.props.sport.params.sportId
         let sport = {}
         if (sportId !== 'new') {
             sport = await SportService.getSportById(sportId)
@@ -27,9 +27,9 @@ export default class SportFormComponent extends Component {
 
     async saveForm() {
         if (this.state.sport.id) {
-          await SportService.update(this.state.match, this.state.match.id)
+          await SportService.update(this.state.sport, this.state.sport.id)
         } else {
-          await SportService.create(this.state.match)
+          await SportService.create(this.state.sport)
         }
     
         this.setState({
