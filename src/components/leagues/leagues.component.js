@@ -46,7 +46,7 @@ export default class LeaguesComponent extends Component {
                 <Card.Header>
                   <Link to={`/matches/${league.id}`}>{league.name}</Link>
                 </Card.Header>
-                <Link to={`/leagues/form/${league.id}`}>Upravit</Link>
+                <Link to={`/leagues/form/${league.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show}>Smazat</a>
                 <Confirm
                   open={this.state.open}
