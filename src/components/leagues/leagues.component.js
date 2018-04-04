@@ -18,14 +18,13 @@ export default class LeaguesComponent extends Component {
 
   async loadLeagues() {
     const leagues = await LeagueService.getLeagues(this.props.match.params.sportId)
-    this.setState({ leagues })
+    this.setState({ leagues, open: false })
   }
 
   show = () => this.setState({ open: true })
   handleDeleteConfirm = async (leagueId) => {
     await LeagueService.delete(leagueId)
     this.loadLeagues()
-    this.setState({ open: false })
   }
   handleDeleteCancel = () => this.setState({ open: false })
 

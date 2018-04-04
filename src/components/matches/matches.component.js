@@ -23,14 +23,13 @@ export default class MatchesComponent extends Component {
 
   async loadMatches() {
     const matches = await MatchService.getMatches(this.props.match.params.sportId)
-    this.setState({ matches })
+    this.setState({ matches, open: false })
   }
 
   show = () => this.setState({ open: true })
   handleDeleteConfirm = async (matchId) => {
     await MatchService.delete(matchId)
     this.loadMatches()
-    this.setState({ open: false })
   }
   handleDeleteCancel = () => this.setState({ open: false })
 
@@ -56,11 +55,10 @@ export default class MatchesComponent extends Component {
           {this.state.matches && this.state.matches.map(match => (
             <Card>
               <Card.Content>
-                <Card.Header>
-                  {match.homeScore || 0}:{match.awayScore || 0}
-                </Card.Header>
                 <Card.Description>
-                  {match.homeTeam.czName} <b>X</b> {match.awayTeam.czName}
+                  {match.homeTeam.czName} {match.homeScore || 0}
+                  <br />
+                  {match.awayTeam.czName} {match.awayScore || 0}
                 </Card.Description>
                 <Link to={`/matches/form/${match.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show}>Smazat</a>
