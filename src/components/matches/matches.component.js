@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import MatchService from '../services/match.service'
-import PlayerService from '../services/player.service'
-import TeamService from '../services/team.service'
-import { Card, Header } from 'semantic-ui-react'
+import MatchService from '../../services/match.service'
+import PlayerService from '../../services/player.service'
+import TeamService from '../../services/team.service'
+import { Card, Header, Button, Divider } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 export default class MatchesComponent extends Component {
   constructor(props) {
@@ -17,6 +18,23 @@ export default class MatchesComponent extends Component {
   }
 
   async componentDidMount() {
+    this.loadMatches()
+  }
+
+  async loadMatches() {
+    const matches = await MatchService.getMatches(this.props.match.params.sportId)
+    this.setState({ matches })
+  }
+
+  show = () => this.setState({ open: true })
+  handleDeleteConfirm = async (matchId) => {
+    await MatchService.delete(matchId)
+    this.loadMatches()
+    this.setState({ open: false })
+  }
+  handleDeleteCancel = () => this.setState({ open: false })
+
+  async componentDidMount() {
     const matches = await MatchService.getMatches(this.props.match.params.leagueId)
     const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
     const teams = await TeamService.getTeams(this.props.match.params.leagueId)
@@ -28,6 +46,12 @@ export default class MatchesComponent extends Component {
     return (
       <div>
         <Header as="h1">Zápasy</Header>
+        <Link to="/matches/form/new">
+          <Button primary>
+            Přidat zápas
+          </Button>
+        </Link>
+        <Divider />
         <Card.Group>
           {this.state.matches && this.state.matches.map(match => (
             <Card>
@@ -38,6 +62,8 @@ export default class MatchesComponent extends Component {
                 <Card.Description>
                   {match.homeTeam.czName} <b>X</b> {match.awayTeam.czName}
                 </Card.Description>
+                <Link to={`/matches/form/${match.id}`} style={{marginRight: '5px'}}>Upravit</Link>
+                <a href="#" onClick={this.show}>Smazat</a>
               </Card.Content>
             </Card>
             ))}

@@ -7,6 +7,11 @@ export default class TeamService {
 
         return response.body
     }
+    static async getAllTeams() {
+        const response = await api.get(`api/teams/`)
+
+        return response.body
+    }
     static async getTeamById(teamId) {
         const response = await api.get(`api/teams/${teamId}`)
 

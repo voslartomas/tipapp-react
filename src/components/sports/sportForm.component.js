@@ -14,7 +14,7 @@ export default class SportFormComponent extends Component {
   }
 
   async componentDidMount() {
-    const sportId = this.props.match.params.sportId
+    const sportId = this.props.league.params.sportId
     let sport = {}
     if (sportId !== 'new') {
       sport = await SportService.getSportById(sportId)

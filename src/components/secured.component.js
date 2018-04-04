@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { Menu, Segment, Breadcrumb } from 'semantic-ui-react'
 import SportsComponent from './sports/sports.component'
 import { Route, Link } from 'react-router-dom'
-import MatchesComponent from './matches.component'
+import MatchesComponent from './matches/matches.component'
 import LeaguesComponent from './leagues/leagues.component'
 import LeagueFormComponent from './leagues/leagueForm.component'
 import SportFormComponent from './sports/sportForm.component'
+import MatchFormComponent from './matches/matchForm.component'
 
 export default class SecuredComponent extends Component {
   componentDidMount() {
@@ -27,6 +28,7 @@ export default class SecuredComponent extends Component {
           <Route exaxt path="/matches/:leagueId" component={MatchesComponent} />
           <Route exaxt path="/leagues/form/:leagueId" component={LeagueFormComponent} />
           <Route exaxt path="/sports/form/:sportId" component={SportFormComponent} />
+          <Route exaxt path="/matches/form/:matchId" component={MatchFormComponent} />
         </Segment>
       </div>
     )
