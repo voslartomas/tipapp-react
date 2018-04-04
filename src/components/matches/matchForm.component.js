@@ -21,21 +21,25 @@ export default class MatchFormComponent extends Component {
     const matchId = this.props.match.params.id
     let match = {}
     if (matchId !== 'new') {
-      match = await MatchService.getMatchById(matchId)
+      try {
+        match = await MatchService.getMatchById(matchId)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     const teams = await TeamService.getAllTeams()
     const teamsOptions = teams.map(team => ({
       key: team.id,
       text: team.czName,
-      value: team.id
+      value: team.id,
     }))
 
     const leagues = await LeagueService.getAllLeagues()
     const leaguesOptions = leagues.map(league => ({
       key: league.id,
       text: league.name,
-      value: league.id
+      value: league.id,
     }))
 
     this.setState({
@@ -43,7 +47,6 @@ export default class MatchFormComponent extends Component {
       leaguesOptions,
       match,
     })
-
   }
 
   async saveForm() {
@@ -82,7 +85,7 @@ export default class MatchFormComponent extends Component {
               }}
             />
           </Form.Field>
-          {/*<Form.Field>
+          {/* <Form.Field>
             <label>Sezóna od</label>
             <Input
               placeholder="Sezóna od"
@@ -131,11 +134,10 @@ export default class MatchFormComponent extends Component {
               checked={this.state.league.isMostActive}
               onChange={() => this.setState({ league: { ...this.state.league, isMostActive: !this.state.league.isMostActive } })}
             />
-          </Form.Field>*/}
+          </Form.Field> */}
           <Button type="submit">Potvrdit změny</Button>
         </Form>
       </div>
     )
   }
-
 }

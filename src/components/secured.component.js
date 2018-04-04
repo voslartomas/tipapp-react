@@ -25,10 +25,10 @@ export default class SecuredComponent extends Component {
         <Segment>
           <Route exact path="/" component={SportsComponent} />
           <Route exact path="/leagues/:sportId" component={LeaguesComponent} />
-          <Route exaxt path="/matches/:leagueId" component={MatchesComponent} />
-          <Route exaxt path="/leagues/form/:leagueId" component={LeagueFormComponent} />
-          <Route exaxt path="/sports/form/:sportId" component={SportFormComponent} />
-          <Route exaxt path="/matches/form/:matchId" component={MatchFormComponent} />
+          <Route exact path="/matches/:leagueId" component={MatchesComponent} />
+          <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
+          <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
+          <Route exact path="/matches/form/:matchId" component={MatchFormComponent} />
         </Segment>
       </div>
     )
