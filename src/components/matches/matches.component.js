@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MatchService from '../../services/match.service'
 import PlayerService from '../../services/player.service'
 import TeamService from '../../services/team.service'
-import { Card, Header, Button, Divider } from 'semantic-ui-react'
+import { Card, Header, Button, Divider, Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 export default class MatchesComponent extends Component {
@@ -64,6 +64,20 @@ export default class MatchesComponent extends Component {
                 </Card.Description>
                 <Link to={`/matches/form/${match.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show}>Smazat</a>
+                <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
+                  <Modal.Header>
+                    Smazat ?
+                  </Modal.Header>
+                  <Modal.Content>
+                    <p>Chcete opravdu smazat tento zápas ?</p>
+                  </Modal.Content>
+                  <Modal.Actions>
+                    <Button negative onClick={this.handleDeleteCancel}>
+                      Ne
+                    </Button>
+                    <Button positive onClick={() => this.handleDeleteConfirm(match.id)} icon='checkmark' labelPosition='right' content='Ano'/>
+                  </Modal.Actions>
+                </Modal>
               </Card.Content>
             </Card>
             ))}

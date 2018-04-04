@@ -85,56 +85,76 @@ export default class MatchFormComponent extends Component {
               }}
             />
           </Form.Field>
-          {/* <Form.Field>
-            <label>Sezóna od</label>
-            <Input
-              placeholder="Sezóna od"
-              value={this.state.league.seasonFrom}
-              onChange={event => this.setState({ league: { ...this.state.league, seasonFrom: event.target.value } })}
-            />
-          </Form.Field>
           <Form.Field>
-            <label>Sezóna do</label>
-            <Input
-              placeholder="Sezóna do"
-              value={this.state.league.seasonTo}
-              onChange={event => this.setState({ league: { ...this.state.league, seasonTo: event.target.value } })}
+            <Form.Select
+              fluid
+              required
+              label="Domácí tým"
+              options={this.state.teamsOptions}
+              value={this.state.match.homeTeamId}
+              placeholder="Vyberte domácí tým"
+              onChange={(event, { name, value }) => {
+                this.setState({ match: { ...this.state.match, homeTeamId: value } })
+              }}
             />
           </Form.Field>
           <Form.Field>
             <Form.Select
               fluid
               required
-              label="Sport"
-              options={this.state.sportsOptions}
-              value={this.state.league.sportId}
-              placeholder="Vyberte sport"
+              label="Tým hosté"
+              options={this.state.teamsOptions}
+              value={this.state.match.awayTeamId}
+              placeholder="Vyberte tým hostů"
               onChange={(event, { name, value }) => {
-                this.setState({ league: { ...this.state.league, sportId: value } })
+                this.setState({ match: { ...this.state.match, awayTeamId: value } })
               }}
             />
           </Form.Field>
           <Form.Field>
-            <Checkbox
-              label="Aktivní"
-              checked={this.state.league.isActive}
-              onChange={() => this.setState({ league: { ...this.state.league, isActive: !this.state.league.isActive } })}
+            <label>Skóre domácí</label>
+            <Input
+              placeholder="Skóre domácí"
+              value={this.state.match.homeScore}
+              onChange={event => this.setState({ match: { ...this.state.match.homeScore, homeScore: event.target.value } })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Skóre hosté</label>
+            <Input
+              placeholder="Skóre hosté"
+              value={this.state.match.awayScore}
+              onChange={event => this.setState({ match: { ...this.state.match.awayScore, awayScore: event.target.value } })}
             />
           </Form.Field>
           <Form.Field>
             <Checkbox
-              label="Dokončená"
-              checked={this.state.league.isFinished}
-              onChange={() => this.setState({ league: { ...this.state.league, isFinished: !this.state.league.isFinished } })}
+              label="Přesčas"
+              checked={this.state.match.overtime}
+              onChange={event => this.setState({ match: { ...this.state.match.overtime, overtime: event.target.value } })}
             />
           </Form.Field>
           <Form.Field>
             <Checkbox
-              label="Nejvíce aktivní"
-              checked={this.state.league.isMostActive}
-              onChange={() => this.setState({ league: { ...this.state.league, isMostActive: !this.state.league.isMostActive } })}
+              label="Přesčas"
+              checked={this.state.match.shotout}
+              onChange={event => this.setState({ match: { ...this.state.match.shotout, shotout: event.target.value } })}
             />
-          </Form.Field> */}
+          </Form.Field>
+          <Form.Field>
+            <Checkbox
+              label="Přesčas"
+              checked={this.state.match.winner}
+              onChange={event => this.setState({ match: { ...this.state.match.winner, winner: event.target.value } })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Checkbox
+              label="Přesčas"
+              checked={this.state.match.isEvaluated}
+              onChange={event => this.setState({ match: { ...this.state.match.isEvaluated, isEvaluated: event.target.value } })}
+            />
+          </Form.Field>
           <Button type="submit">Potvrdit změny</Button>
         </Form>
       </div>
