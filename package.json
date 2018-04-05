@@ -19,7 +19,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "test-coveralls": "npm run test;cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "test-coveralls": "npm run test -- --coverage;cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
