@@ -17,4 +17,16 @@ export default class TeamService {
 
         return response.body
     }
+
+    static async delete(teamId) {
+        return await api.delete(`api/teams/${teamId}`)
+      }
+    
+      static async create(data) {
+        return await api.post('api/teams', data)
+      }
+    
+      static async update(data, id) {
+        return await api.put(`api/teams/${id}`, data)
+      }
 }
