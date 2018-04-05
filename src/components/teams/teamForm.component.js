@@ -18,7 +18,7 @@ export default class TeamFormComponent extends Component {
   }
 
   async componentDidMount() {
-    const teamId = this.props.match.params.leagueId
+    const teamId = this.props.match.params.teamId
     let team = {}
     if (teamId !== 'new') {
       try {
@@ -35,7 +35,7 @@ export default class TeamFormComponent extends Component {
       value: sport.id,
     }))
 
-    //console.log(sportsOptions)
+    // console.log(sportsOptions)
 
     const leagues = await LeagueService.getAllLeagues()
     const leaguesOptions = leagues.map(league => ({
