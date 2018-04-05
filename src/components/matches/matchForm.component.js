@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MatchService from '../../services/match.service';
 import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
+import DatePicker from 'react-datepicker'
 import { Link, Redirect } from 'react-router-dom'
 import TeamService from '../../services/team.service';
 import LeagueService from '../../services/league.service';
@@ -126,6 +127,18 @@ export default class MatchFormComponent extends Component {
               value={this.state.match.awayScore}
               onChange={event => this.setState({ match: { ...this.state.match, awayScore: event.target.value } })}
             />
+          </Form.Field>
+          <Form.Field>
+						<label>Vyberte datum a čas</label>
+						<DatePicker
+								selected={this.state.match.dateTime}
+								onChange={event => this.setState({ match: { ...this.state.match, dateTime: event } })}
+								showTimeSelect
+								timeFormat="HH:mm"
+								timeIntervals={15}
+								dateFormat="LLL"
+								timeCaption="time"
+						/>
           </Form.Field>
           <Form.Field>
             <Checkbox
