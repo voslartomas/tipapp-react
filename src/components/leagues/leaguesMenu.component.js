@@ -5,6 +5,7 @@ import MatchesComponent from '../matches/matches.component'
 import TeamsComponent from '../teams/teams.component'
 import PlayersComponent from '../players/players.component'
 import MatchFormComponent from '../matches/matchForm.component'
+import TeamFormComponent from '../teams/teamForm.component'
 
 export default class LeaguesMenuComponent extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ export default class LeaguesMenuComponent extends Component {
               <Route exact path="/leagues/:leagueId/players" component={PlayersComponent} />
 
               <Route exact path="/leagues/:leagueId/matches/form/:matchId" component={MatchFormComponent} />
+              <Route exact path="/leagues/:leagueId/teams/form/:teamId" component={TeamFormComponent} />
             </Segment>
           </Sidebar.Pusher>
         </Sidebar.Pushable>
