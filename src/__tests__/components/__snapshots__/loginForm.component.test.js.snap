@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login form component renders without crashing 1`] = `
+<div
+  className="login-form"
+>
+  <style>
+    
+              body &gt; div,
+              body &gt; div &gt; div,
+              body &gt; div &gt; div &gt; div.login-form {
+                height: 100%;
+              }
+            
+  </style>
+  <div
+    className="ui center aligned middle aligned grid"
+    style={
+      Object {
+        "height": "100%",
+      }
+    }
+  >
+    <div
+      className="column"
+      style={
+        Object {
+          "maxWidth": 450,
+        }
+      }
+    >
+      <h2
+        className="ui teal center aligned header"
+      >
+        Log-in
+      </h2>
+      <form
+        action={undefined}
+        className="ui large form"
+        onSubmit={[Function]}
+      >
+        <div
+          className="ui stacked segment"
+        >
+          <div
+            className="field"
+          >
+            <div
+              className="ui fluid left icon input"
+              content={undefined}
+            >
+              <input
+                disabled={undefined}
+                onChange={[Function]}
+                placeholder="Uživatelské jméno"
+                required={undefined}
+                tabIndex={undefined}
+                type="text"
+                value=""
+              />
+              <i
+                aria-hidden="true"
+                className="user icon"
+              />
+            </div>
+          </div>
+          <div
+            className="field"
+          >
+            <div
+              className="ui fluid left icon input"
+              content={undefined}
+            >
+              <input
+                disabled={undefined}
+                onChange={[Function]}
+                placeholder="Heslo"
+                required={undefined}
+                tabIndex={undefined}
+                type="password"
+                value=""
+              />
+              <i
+                aria-hidden="true"
+                className="lock icon"
+              />
+            </div>
+          </div>
+          <button
+            className="ui teal large fluid button"
+            disabled={undefined}
+            onClick={[Function]}
+            role="button"
+            tabIndex={undefined}
+          >
+            Přihlásit se
+            <i
+              className="sign in icon"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;
