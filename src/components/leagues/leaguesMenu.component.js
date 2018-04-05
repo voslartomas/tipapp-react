@@ -6,7 +6,7 @@ import TeamsComponent from '../teams/teams.component'
 import PlayersComponent from '../players/players.component'
 import MatchFormComponent from '../matches/matchForm.component'
 
-export default class TestComponent extends Component {
+export default class LeaguesMenuComponent extends Component {
   constructor(props) {
     super(props)
   }
