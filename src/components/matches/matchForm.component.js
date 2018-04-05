@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import MatchService from '../../services/match.service';
 import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
+import moment from 'moment'
 import { Link, Redirect } from 'react-router-dom'
 import TeamService from '../../services/team.service';
 import LeagueService from '../../services/league.service';
@@ -24,6 +25,7 @@ export default class MatchFormComponent extends Component {
     if (matchId !== 'new') {
       try {
         match = await MatchService.getMatchById(matchId)
+        match.dateTime = moment(match.dateTime)
       } catch (e) {
         console.error(e)
       }
@@ -68,7 +70,7 @@ export default class MatchFormComponent extends Component {
     if (redirect) {
       return <Redirect to={redirect} />;
     }
-
+    console.log(this.state.match)
     return (
       <div>
         <Header as="h1">Přidat/Upravit zápas</Header>
@@ -129,16 +131,16 @@ export default class MatchFormComponent extends Component {
             />
           </Form.Field>
           <Form.Field>
-						<label>Vyberte datum a čas</label>
-						<DatePicker
-								selected={this.state.match.dateTime}
-								onChange={event => this.setState({ match: { ...this.state.match, dateTime: event } })}
-								showTimeSelect
-								timeFormat="HH:mm"
-								timeIntervals={15}
-								dateFormat="LLL"
-								timeCaption="time"
-						/>
+            <label>Vyberte datum a čas</label>
+            <DatePicker
+              selected={this.state.match.dateTime}
+              onChange={event => this.setState({ match: { ...this.state.match, dateTime: event } })}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="LLL"
+              timeCaption="time"
+            />
           </Form.Field>
           <Form.Field>
             <Checkbox
