@@ -22,7 +22,7 @@ export default class MatchesComponent extends Component {
   }
 
   async loadMatches() {
-    const matches = await MatchService.getMatches(this.props.match.params.sportId)
+    const matches = await MatchService.getMatches(this.props.match.params.leagueId)
     this.setState({ matches, open: false })
   }
 
@@ -33,19 +33,11 @@ export default class MatchesComponent extends Component {
   }
   handleDeleteCancel = () => this.setState({ open: false })
 
-  async componentDidMount() {
-    const matches = await MatchService.getMatches(this.props.match.params.leagueId)
-    const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
-    const teams = await TeamService.getTeams(this.props.match.params.leagueId)
-
-    this.setState({ matches, players, teams })
-  }
-
   render() {
     return (
       <div>
         <Header as="h1">Zápasy</Header>
-        <Link to="/matches/form/new">
+        <Link to={`/leagues/${this.props.match.params.leagueId}/matches/form/new`}>
           <Button primary>
             Přidat zápas
           </Button>
@@ -60,7 +52,7 @@ export default class MatchesComponent extends Component {
                   <br />
                   {match.awayTeam.czName} {match.awayScore || 0}
                 </Card.Description>
-                <Link to={`/matches/form/${match.id}`} style={{marginRight: '5px'}}>Upravit</Link>
+                <Link to={`/leagues/${this.props.match.params.leagueId}/matches/form/${match.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show}>Smazat</a>
                 <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
                   <Modal.Header>
@@ -79,30 +71,6 @@ export default class MatchesComponent extends Component {
               </Card.Content>
             </Card>
             ))}
-        </Card.Group>
-        <Header as="h1">Týmy</Header>
-        <Card.Group>
-          {this.state.teams && this.state.teams.map(team => (
-            <Card>
-              <Card.Content>
-                <Card.Header>
-                  {team.czName} ({team.shortcut})
-                </Card.Header>
-              </Card.Content>
-            </Card>
-                ))}
-        </Card.Group>
-        <Header as="h1">Hráči</Header>
-        <Card.Group>
-          {this.state.players && this.state.players.map(player => (
-            <Card>
-              <Card.Content>
-                <Card.Header>
-                  {player.firstName} {player.lastName} ({player.team.shortcut})
-                </Card.Header>
-              </Card.Content>
-            </Card>
-                ))}
         </Card.Group>
       </div>
     )

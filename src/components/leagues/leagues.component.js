@@ -18,14 +18,13 @@ export default class LeaguesComponent extends Component {
 
   async loadLeagues() {
     const leagues = await LeagueService.getLeagues(this.props.match.params.sportId)
-    this.setState({ leagues })
+    this.setState({ leagues, open: false })
   }
 
   show = () => this.setState({ open: true })
   handleDeleteConfirm = async (leagueId) => {
     await LeagueService.delete(leagueId)
     this.loadLeagues()
-    this.setState({ open: false })
   }
   handleDeleteCancel = () => this.setState({ open: false })
 
@@ -44,7 +43,7 @@ export default class LeaguesComponent extends Component {
             <Card>
               <Card.Content>
                 <Card.Header>
-                  <Link to={`/leagues/matches/${league.id}`}>{league.name}</Link>
+                  <Link to={`/leagues/${league.id}/matches`}>{league.name}</Link>
                 </Card.Header>
                 <Link to={`/leagues/form/${league.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show}>Smazat</a>
