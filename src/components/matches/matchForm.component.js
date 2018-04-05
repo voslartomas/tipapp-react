@@ -129,7 +129,7 @@ export default class MatchFormComponent extends Component {
           </Form.Field>
           <Form.Field>
             <Checkbox
-              label="Přesčas"
+              label="Prodloužení"
               checked={this.state.match.overtime}
               onChange={event => this.setState({ match: { ...this.state.match, overtime: !this.state.match.overtime } })}
             />
