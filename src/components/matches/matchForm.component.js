@@ -60,7 +60,7 @@ export default class MatchFormComponent extends Component {
     }
 
     this.setState({
-      redirect: `/matches/${this.state.match.leagueId}`,
+      redirect: `/leagues/${this.state.match.leagueId}/matches`,
     })
   }
 

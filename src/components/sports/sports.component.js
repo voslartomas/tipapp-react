@@ -47,7 +47,7 @@ export default class SportsComponent extends Component {
           <Card key={sport.id}>
             <Card.Content>
               <Card.Header>
-                <Link to={`/leagues/${sport.id}`}>{sport.czName}</Link>
+                <Link to={`/sports/${sport.id}`}>{sport.czName}</Link>
               </Card.Header>
               <Link to={`/sports/form/${sport.id}`} style={{marginRight: '5px'}}>Upravit</Link>
               <a href="#" onClick={this.show}>Smazat</a>
