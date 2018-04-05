@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Menu, Segment, Breadcrumb } from 'semantic-ui-react'
+import { Menu, Segment, Icon, Header } from 'semantic-ui-react'
 import SportsComponent from './sports/sports.component'
 import { Route, Link } from 'react-router-dom'
-import MatchesComponent from './matches.component'
+import SportFormComponent from './sports/sportForm.component'
+import TestComponent from './leagues/test.component'
 import LeaguesComponent from './leagues/leagues.component'
 import LeagueFormComponent from './leagues/leagueForm.component'
-import SportFormComponent from './sports/sportForm.component'
 
 export default class SecuredComponent extends Component {
   componentDidMount() {
@@ -23,10 +23,11 @@ export default class SecuredComponent extends Component {
 
         <Segment>
           <Route exact path="/" component={SportsComponent} />
-          <Route exact path="/leagues/:sportId" component={LeaguesComponent} />
-          <Route exact path="/matches/:leagueId" component={MatchesComponent} />
-          <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
           <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
+          <Route path="/leagues/(matches|teams|players)/:leagueId" component={TestComponent} />
+          <Route exact path="/leagues/:sportId" component={LeaguesComponent} />
+          <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
+
         </Segment>
       </div>
     )

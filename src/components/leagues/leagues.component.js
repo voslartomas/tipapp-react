@@ -44,7 +44,7 @@ export default class LeaguesComponent extends Component {
             <Card>
               <Card.Content>
                 <Card.Header>
-                  <Link to={`/matches/${league.id}`}>{league.name}</Link>
+                  <Link to={`/leagues/matches/${league.id}`}>{league.name}</Link>
                 </Card.Header>
                 <Link to={`/leagues/form/${league.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show}>Smazat</a>

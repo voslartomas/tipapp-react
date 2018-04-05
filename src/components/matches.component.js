@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MatchService from '../services/match.service'
 import PlayerService from '../services/player.service'
 import TeamService from '../services/team.service'
-import { Card, Header } from 'semantic-ui-react'
+import { Card, Menu, Segment, Breadcrumb, Sidebar, Button, Image, Icon, Header } from 'semantic-ui-react'
 
 export default class MatchesComponent extends Component {
   constructor(props) {
@@ -11,17 +11,14 @@ export default class MatchesComponent extends Component {
     this.state = {
       matches: [],
       players: [],
-      teams: [],
-      team: undefined,
     }
   }
 
   async componentDidMount() {
     const matches = await MatchService.getMatches(this.props.match.params.leagueId)
     const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
-    const teams = await TeamService.getTeams(this.props.match.params.leagueId)
 
-    this.setState({ matches, players, teams })
+    this.setState({ matches, players })
   }
 
   render() {
@@ -41,30 +38,6 @@ export default class MatchesComponent extends Component {
               </Card.Content>
             </Card>
             ))}
-        </Card.Group>
-        <Header as="h1">Týmy</Header>
-        <Card.Group>
-          {this.state.teams && this.state.teams.map(team => (
-            <Card>
-              <Card.Content>
-                <Card.Header>
-                  {team.czName} ({team.shortcut})
-                </Card.Header>
-              </Card.Content>
-            </Card>
-                ))}
-        </Card.Group>
-        <Header as="h1">Hráči</Header>
-        <Card.Group>
-          {this.state.players && this.state.players.map(player => (
-            <Card>
-              <Card.Content>
-                <Card.Header>
-                  {player.firstName} {player.lastName} ({player.team.shortcut})
-                </Card.Header>
-              </Card.Content>
-            </Card>
-                ))}
         </Card.Group>
       </div>
     )
