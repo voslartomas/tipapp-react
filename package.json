@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "jest-localstorage-mock": "^2.2.0",
     "moment": "^2.22.0",
     "react": "^16.3.0",
     "react-datepicker": "^1.4.0",
@@ -20,11 +21,15 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "babel-jest": "^22.4.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0"
+    "eslint-plugin-react": "^7.7.0",
+    "react-test-renderer": "^16.3.1"
   }
 }

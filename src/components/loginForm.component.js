@@ -60,7 +60,7 @@ export default class LoginFormComponent extends Component {
                   onChange={event => this.setState({ password: event.target.value })}
                 />
 
-                <Button color="teal" fluid size="large" onClick={() => this.logIn()}>Přihlásit se<i style={{marginLeft: '5px'}} class="sign in icon"></i></Button>
+                <Button color="teal" fluid size="large" onClick={() => this.logIn()}>Přihlásit se<i style={{ marginLeft: '5px' }} className="sign in icon" /></Button>
               </Segment>
             </Form>
           </Grid.Column>
