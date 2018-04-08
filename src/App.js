@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import LoginFormComponent from './components/loginForm.component'
 import SecuredComponent from './components/secured.component'
 import './App.css'
+import moment from 'moment'
+import 'moment/locale/cs'
+
+moment.locale('cs')
 
 class App extends Component {
   constructor(props) {

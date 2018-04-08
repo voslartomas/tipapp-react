@@ -6,6 +6,11 @@ import TeamsComponent from '../teams/teams.component'
 import PlayersComponent from '../players/players.component'
 import MatchFormComponent from '../matches/matchForm.component'
 import TeamFormComponent from '../teams/teamForm.component'
+import LeagueUsersComponent from './leagueUsers.component'
+import LeagueBetsComponent from './bets/leagueBets.component'
+import LeagueUserFormComponent from './leagueUserForm.component'
+import SerieFormComponent from './bets/serieForm.component'
+import SingleFormComponent from './bets/singleForm.component'
 
 export default class LeaguesMenuComponent extends Component {
   constructor(props) {
@@ -28,15 +33,26 @@ export default class LeaguesMenuComponent extends Component {
             <Menu.Item>
               <Link to={`/leagues/${leagueId}/players`} style={{ marginRight: '5px' }}>Hráči</Link>
             </Menu.Item>
+            <Menu.Item>
+              <Link to={`/leagues/${leagueId}/users`} style={{ marginRight: '5px' }}>Soutěžící</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to={`/leagues/${leagueId}/bets/serie`} style={{ marginRight: '5px' }}>Sázky</Link>
+            </Menu.Item>
           </Sidebar>
           <Sidebar.Pusher>
             <Segment basic>
               <Route exact path="/leagues/:leagueId/matches" component={MatchesComponent} />
               <Route exact path="/leagues/:leagueId/teams" component={TeamsComponent} />
               <Route exact path="/leagues/:leagueId/players" component={PlayersComponent} />
+              <Route exact path="/leagues/:leagueId/users" component={LeagueUsersComponent} />
+              <Route exact path="/leagues/:leagueId/bets/:type" component={LeagueBetsComponent} />
 
               <Route exact path="/leagues/:leagueId/matches/form/:matchId" component={MatchFormComponent} />
               <Route exact path="/leagues/:leagueId/teams/form/:teamId" component={TeamFormComponent} />
+              <Route exact path="/leagues/:leagueId/users/form/:userId" component={LeagueUserFormComponent} />
+              <Route exact path="/leagues/:leagueId/bets/serie/form/:serieId" component={SerieFormComponent} />
+              <Route exact path="/leagues/:leagueId/bets/single/form/:singleId" component={SingleFormComponent} />
             </Segment>
           </Sidebar.Pusher>
         </Sidebar.Pushable>

@@ -29,7 +29,7 @@ export default class MatchFormComponent extends Component {
         match = await MatchService.getMatchById(matchId)
         match.dateTime = moment(match.dateTime)
       } catch (e) {
-        console.error(e)
+        console.eråror(e)
       }
     }
 
