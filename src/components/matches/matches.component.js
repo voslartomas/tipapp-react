@@ -48,9 +48,9 @@ export default class MatchesComponent extends Component {
             <Card>
               <Card.Content>
                 <Card.Description>
-                  {match.homeTeam.czName} {match.homeScore || 0}
+                  {match.homeTeam && match.homeTeam.team && match.homeTeam.team.name || ''} {match.homeScore || 0}
                   <br />
-                  {match.awayTeam.czName} {match.awayScore || 0}
+                  {match.awayTeam && match.awayTeam.team && match.awayTeam.team.name  || ''} {match.awayScore || 0}
                 </Card.Description>
                 <Link to={`/leagues/${this.props.match.params.leagueId}/matches/form/${match.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show}>Smazat</a>

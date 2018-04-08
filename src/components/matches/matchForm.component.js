@@ -20,8 +20,10 @@ export default class MatchFormComponent extends Component {
   }
 
   async componentDidMount() {
-    const matchId = this.props.match.params.matchId
-    let match = {}
+    const { matchId, leagueId } = this.props.match.params
+    let match = {
+      leagueId,
+    }
     if (matchId !== 'new') {
       try {
         match = await MatchService.getMatchById(matchId)
@@ -31,11 +33,11 @@ export default class MatchFormComponent extends Component {
       }
     }
 
-    const teams = await TeamService.getAllTeams()
-    const teamsOptions = teams.map(team => ({
-      key: team.id,
-      text: team.czName,
-      value: team.id,
+    const teams = await TeamService.getTeams(leagueId)
+    const teamsOptions = teams.map(leagueTeam => ({
+      key: leagueTeam.id,
+      text: leagueTeam.team.name,
+      value: leagueTeam.id,
     }))
 
     const leagues = await LeagueService.getAllLeagues()
@@ -75,7 +77,7 @@ export default class MatchFormComponent extends Component {
       <div>
         <Header as="h1">Přidat/Upravit zápas</Header>
         <Form onSubmit={() => this.saveForm()}>
-          <Form.Field>
+          <Form.Field style={{ display: 'none' }}>
             <Form.Select
               fluid
               required
