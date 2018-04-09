@@ -34,16 +34,16 @@ export default class PlayersComponent extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {this.state.players && this.state.players.map(player => (
+            {this.state.players && this.state.players.map(leaguePlayer => (
               <Table.Row>
                 <Table.Cell>
-                  <Label ribbon>{player.firstName} {player.lastName}</Label>
+                  <Label ribbon>{leaguePlayer.player.firstName} {leaguePlayer.player.lastName}</Label>
                 </Table.Cell>
-                <Table.Cell>{player.team.czName}</Table.Cell>
-                <Table.Cell>{player.seasonGames}</Table.Cell>
-                <Table.Cell>{player.seasonGoals}</Table.Cell>
-                <Table.Cell>{player.seasonAssists}</Table.Cell>
-                <Table.Cell>{player.seasonGoals + player.seasonAssists}</Table.Cell>
+                <Table.Cell>{leaguePlayer.leagueTeam.team.name}</Table.Cell>
+                <Table.Cell>{leaguePlayer.seasonGames}</Table.Cell>
+                <Table.Cell>{leaguePlayer.seasonGoals}</Table.Cell>
+                <Table.Cell>{leaguePlayer.seasonAssists}</Table.Cell>
+                <Table.Cell>{leaguePlayer.seasonGoals + leaguePlayer.seasonAssists}</Table.Cell>
               </Table.Row>
           ))}
           </Table.Body>

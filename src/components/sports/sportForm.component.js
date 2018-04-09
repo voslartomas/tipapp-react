@@ -49,21 +49,12 @@ export default class SportFormComponent extends Component {
         <Header as="h1">Přidat/Upravit sport</Header>
         <Form onSubmit={() => this.saveForm()}>
           <Form.Field>
-            <label>Český název</label>
+            <label>Název</label>
             <Input
               required
-              placeholder="Český název sportu"
-              value={this.state.sport.czName}
-              onChange={event => this.setState({ sport: { ...this.state.sport, czName: event.target.value } })}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Anglický název</label>
-            <Input
-              required
-              placeholder="Anglický název sportu"
-              value={this.state.sport.engName}
-              onChange={event => this.setState({ sport: { ...this.state.sport, engName: event.target.value } })}
+              placeholder="Název sportu"
+              value={this.state.sport.name}
+              onChange={event => this.setState({ sport: { ...this.state.sport, name: event.target.value } })}
             />
           </Form.Field>
           <Button type="submit">Potvrdit změny</Button>

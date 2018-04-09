@@ -18,8 +18,10 @@ export default class TeamFormComponent extends Component {
   }
 
   async componentDidMount() {
-    const teamId = this.props.match.params.teamId
-    let team = {}
+    const { teamId, leagueId } = this.props.match.params
+    let team = {
+      leagueId,
+    }
     if (teamId !== 'new') {
       try {
         team = await TeamService.getTeamById(teamId)
@@ -28,35 +30,21 @@ export default class TeamFormComponent extends Component {
       }
     }
 
-    const sports = await SportService.getSports()
-    const sportsOptions = sports.map(sport => ({
-      key: sport.id,
-      text: sport.czName,
-      value: sport.id,
-    }))
-
-    // console.log(sportsOptions)
-
-    const leagues = await LeagueService.getAllLeagues()
-    const leaguesOptions = leagues.map(league => ({
-      key: league.id,
-      text: league.name,
-      value: league.id,
+    const teams = await TeamService.getAllTeams()
+    const teamsOptions = teams.map(team => ({
+      key: team.id,
+      text: team.name,
+      value: team.id,
     }))
 
     this.setState({
-      sportsOptions,
-      leaguesOptions,
+      teamsOptions,
       team,
     })
   }
 
   async saveForm() {
-    if (this.state.team.id) {
-      await TeamService.update(this.state.team, this.state.team.id)
-    } else {
-      await TeamService.create(this.state.team)
-    }
+    await LeagueService.createTeam(this.props.match.params.leagueId, this.state.team)
 
     this.setState({
       redirect: `/leagues/${this.state.team.leagueId}/teams`,
@@ -72,58 +60,18 @@ export default class TeamFormComponent extends Component {
 
     return (
       <div>
-        <Header as="h1">Přidat/Upravit tým</Header>
+        <Header as="h1">Přidat tým</Header>
         <Form onSubmit={() => this.saveForm()}>
           <Form.Field>
-            <label>Český název</label>
-            <Input
-              required
-              placeholder="Český název týmu"
-              value={this.state.team.czName}
-              onChange={event => this.setState({ team: { ...this.state.team, czName: event.target.value } })}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Anglický název</label>
-            <Input
-              required
-              placeholder="Anglický název týmu"
-              value={this.state.team.engName}
-              onChange={event => this.setState({ team: { ...this.state.team, engName: event.target.value } })}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label>Zkratka</label>
-            <Input
-              required
-              placeholder="Zkratka týmu"
-              value={this.state.team.shortcut}
-              onChange={event => this.setState({ team: { ...this.state.team, shortcut: event.target.value } })}
-            />
-          </Form.Field>
-          <Form.Field>
             <Form.Select
               fluid
               required
-              label="Sport"
-              options={this.state.sportsOptions}
-              value={this.state.team.sportId}
-              placeholder="Vyberte sport"
+              label="Tým"
+              options={this.state.teamsOptions}
+              value={this.state.team.teamId}
+              placeholder="Vyberte tým"
               onChange={(event, { name, value }) => {
-                this.setState({ team: { ...this.state.team, sportId: value } })
-              }}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Form.Select
-              fluid
-              required
-              label="Liga"
-              options={this.state.leaguesOptions}
-              value={this.state.team.leagueId}
-              placeholder="Vyberte ligu"
-              onChange={(event, { name, value }) => {
-                this.setState({ team: { ...this.state.team, leagueId: value } })
+                this.setState({ team: { ...this.state.team, teamId: value } })
               }}
             />
           </Form.Field>
