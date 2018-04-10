@@ -6,6 +6,7 @@ import TeamsComponent from '../teams/teams.component'
 import PlayersComponent from '../players/players.component'
 import MatchFormComponent from '../matches/matchForm.component'
 import TeamFormComponent from '../teams/teamForm.component'
+import PlayerFormComponent from '../players/playerForm.component'
 import LeagueUsersComponent from './leagueUsers.component'
 import LeagueBetsComponent from './bets/leagueBets.component'
 import LeagueUserFormComponent from './leagueUserForm.component'
@@ -50,6 +51,7 @@ export default class LeaguesMenuComponent extends Component {
 
               <Route exact path="/leagues/:leagueId/matches/form/:matchId" component={MatchFormComponent} />
               <Route exact path="/leagues/:leagueId/teams/form/:teamId" component={TeamFormComponent} />
+              <Route exact path="/leagues/:leagueId/players/form/:playerId" component={PlayerFormComponent} />
               <Route exact path="/leagues/:leagueId/users/form/:userId" component={LeagueUserFormComponent} />
               <Route exact path="/leagues/:leagueId/bets/serie/form/:serieId" component={SerieFormComponent} />
               <Route exact path="/leagues/:leagueId/bets/single/form/:singleId" component={SingleFormComponent} />

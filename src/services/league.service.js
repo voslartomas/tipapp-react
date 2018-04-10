@@ -45,4 +45,19 @@ export default class LeagueService {
   static async deleteTeam(leagueId, teamId) {
     return await api.delete(`api/leagues/${leagueId}/teams/${teamId}`)
   }
+
+  // Players
+  static async getPlayers(leagueId: number) {
+    const response = await api.get(`api/leagues/${leagueId}/players`)
+
+    return response.body
+  }
+
+  static async createPlayer(leagueId, player) {
+    return await api.post(`api/leagues/${leagueId}/players`, player)
+  }
+
+  static async deletePlayer(leagueId, playerId) {
+    return await api.delete(`api/leagues/${leagueId}/players/${playerId}`)
+  }
 }
