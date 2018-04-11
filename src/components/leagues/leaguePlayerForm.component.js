@@ -55,7 +55,7 @@ export default class LeaguePlayerFormComponent extends Component {
     await LeagueService.createPlayer(this.props.match.params.leagueId, this.state.player)
 
     this.setState({
-      redirect: `/leagues/${this.state.leaguePlayer.leagueId}/player`,
+      redirect: `/leagues/${this.state.leaguePlayer.leagueId}/players`,
     })
   }
 
