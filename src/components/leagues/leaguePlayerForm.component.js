@@ -19,12 +19,12 @@ export default class LeaguePlayerFormComponent extends Component {
 
   async componentDidMount() {
     const { playerId, leagueId } = this.props.match.params
-    let player = {
+    let leaguePlayer = {
       leagueId,
     }
     if (playerId !== 'new') {
       try {
-        player = await LeagueService.getPlayerById(leagueId, playerId)
+        leaguePlayer = await LeagueService.getPlayerById(leagueId, playerId)
       } catch (e) {
         console.error(e)
       }
@@ -40,12 +40,12 @@ export default class LeaguePlayerFormComponent extends Component {
     const players = await PlayerService.getAllPlayers()
     const playersOptions = players.map(player => ({
       key: player.id,
-      text: player.firstName + " " + player.lastName,
+      text: `${player.firstName} ${player.lastName}`,
       value: player.id,
     }))
 
     this.setState({
-      player,
+      leaguePlayer,
       leagueTeamsOptions,
       playersOptions,
     })
@@ -55,7 +55,7 @@ export default class LeaguePlayerFormComponent extends Component {
     await LeagueService.createPlayer(this.props.match.params.leagueId, this.state.player)
 
     this.setState({
-      redirect: `/leagues/${this.state.player.leagueId}/player`,
+      redirect: `/leagues/${this.state.leaguePlayer.leagueId}/player`,
     })
   }
 
@@ -72,13 +72,13 @@ export default class LeaguePlayerFormComponent extends Component {
       <div>
         <Header as="h1">Přidat hráče</Header>
         <Form onSubmit={() => this.saveForm()}>
-        <Form.Field>
+          <Form.Field>
             <Form.Select
               fluid
               required
               label="Tým"
               options={this.state.leagueTeamsOptions}
-              value={this.state.player.leagueTeamId}
+              value={this.state.leaguePlayer.leagueTeamId}
               placeholder="Vyberte tým"
               onChange={(event, { name, value }) => {
                 this.setState({ player: { ...this.state.player, leagueTeamId: value } })
@@ -91,7 +91,7 @@ export default class LeaguePlayerFormComponent extends Component {
               required
               label="Hráč"
               options={this.state.playersOptions}
-              value={this.state.player.playerId}
+              value={this.state.leaguePlayer.playerId}
               placeholder="Vyberte hráče"
               onChange={(event, { name, value }) => {
                 this.setState({ player: { ...this.state.player, playerId: value } })
@@ -102,7 +102,7 @@ export default class LeaguePlayerFormComponent extends Component {
             <label>Hry za sezónu</label>
             <Input
               placeholder="Hry za sezónu"
-              value={this.state.player.seasonGames}
+              value={this.state.leaguePlayer.seasonGames}
               onChange={event => this.setState({ player: { ...this.state.player, seasonGames: event.target.value } })}
             />
           </Form.Field>
@@ -110,7 +110,7 @@ export default class LeaguePlayerFormComponent extends Component {
             <label>Góly za sezónu</label>
             <Input
               placeholder="Góly za sezónu"
-              value={this.state.player.seasonGoals}
+              value={this.state.leaguePlayer.seasonGoals}
               onChange={event => this.setState({ player: { ...this.state.player, seasonGoals: event.target.value } })}
             />
           </Form.Field>
@@ -118,15 +118,15 @@ export default class LeaguePlayerFormComponent extends Component {
             <label>Asistence za sezónu</label>
             <Input
               placeholder="Asistence za sezónu"
-              value={this.state.player.seasonAssists}
+              value={this.state.leaguePlayer.seasonAssists}
               onChange={event => this.setState({ player: { ...this.state.player, seasonAssists: event.target.value } })}
             />
           </Form.Field>
           <Form.Field>
             <Checkbox
               label="Nejlepší střelec"
-              checked={this.state.player.bestScorer}
-              onChange={event => this.setState({ player: { ...this.state.player, bestScorer: !this.state.player.bestScorer } })}
+              checked={this.state.leaguePlayer.bestScorer}
+              onChange={event => this.setState({ player: { ...this.state.player, bestScorer: !this.state.leaguePlayer.bestScorer } })}
             />
           </Form.Field>
           <Button type="submit">Potvrdit změny</Button>
