@@ -18,13 +18,13 @@ export default class LeagueTeamFormComponent extends Component {
   }
 
   async componentDidMount() {
-    const { leagueTeamId, leagueId } = this.props.match.params
+    const { teamId, leagueId } = this.props.match.params
     let leagueTeam = {
       leagueId,
     }
-    if (leagueTeamId !== 'new') {
+    if (teamId !== 'new') {
       try {
-        leagueTeam = await TeamService.getTeamById(leagueTeamId)
+        leagueTeam = await TeamService.getTeamById(teamId)
       } catch (e) {
         console.error(e)
       }
@@ -52,10 +52,10 @@ export default class LeagueTeamFormComponent extends Component {
   }
 
   async saveForm() {
-    await LeagueService.createTeam(this.props.match.params.leagueId, this.state.team)
+    await LeagueService.createTeam(this.props.match.params.leagueId, this.state.leagueTeam)
 
     this.setState({
-      redirect: `/leagues/${this.state.team.leagueId}/teams`,
+      redirect: `/leagues/${this.state.leagueTeam.leagueId}/teams`,
     })
   }
 
@@ -70,19 +70,6 @@ export default class LeagueTeamFormComponent extends Component {
       <div>
         <Header as="h1">Přidat tým</Header>
         <Form onSubmit={() => this.saveForm()}>
-          <Form.Field>
-            <Form.Select
-              fluid
-              required
-              label="Liga"
-              options={this.state.leaguesOptions}
-              value={this.state.leagueTeam.leagueId}
-              placeholder="Vyberte ligu"
-              onChange={(event, { name, value }) => {
-                this.setState({ leagueTeam: { ...this.state.leagueTeam, leagueId: value } })
-              }}
-            />
-          </Form.Field>
           <Form.Field>
             <Form.Select
               fluid
