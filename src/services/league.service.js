@@ -53,6 +53,12 @@ export default class LeagueService {
     return response.body
   }
 
+  static async getPlayerById(leagueId: number, playerId: number) {
+    const response = await api.get(`api/leagues/${leagueId}/players/${playerId}`)
+
+    return response.body
+  }
+
   static async createPlayer(leagueId, player) {
     return await api.post(`api/leagues/${leagueId}/players`, player)
   }
