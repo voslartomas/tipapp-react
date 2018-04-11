@@ -43,10 +43,14 @@ export default class TeamFormComponent extends Component {
   }
 
   async saveForm() {
-    await LeagueService.createTeam(this.props.match.params.leagueId, this.state.team)
+    if (this.state.team.id) {
+      await TeamService.update(this.state.team, this.state.team.id)
+    } else {
+      await TeamService.create(this.state.team)
+    }
 
     this.setState({
-      redirect: `/leagues/${this.state.team.leagueId}/teams`,
+      redirect: `/`,
     })
   }
 
