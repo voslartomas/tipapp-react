@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PlayerService from '../../services/player.service'
+import LeagueService from '../../services/league.service'
 import { Button, Icon, Header, Table, Label, Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
@@ -24,8 +25,9 @@ export default class PlayersComponent extends Component {
 
   show = () => this.setState({ open: true })
   handleDeleteConfirm = async (playerId) => {
-    await PlayerService.deletePlayer(this.props.match.params.leagueId, playerId)
+    await LeagueService.deletePlayer(this.props.match.params.leagueId, playerId)
     this.loadPlayers()
+    this.setState({'open': false})
   }
   handleDeleteCancel = () => this.setState({ open: false })
 
