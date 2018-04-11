@@ -63,7 +63,7 @@ export default class SerieFormComponent extends Component {
     }
 
     this.setState({
-      redirect: `/leagues/${this.state.serie.leagueId}/bets`,
+      redirect: `/leagues/${this.state.serie.leagueId}/bets/serie`,
     })
   }
 
