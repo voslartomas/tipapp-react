@@ -37,10 +37,20 @@ export default class SportsComponent extends Component {
       <div>
       <Header as="h1">Sporty</Header>
       <Link to="/sports/form/new">
-          <Button primary>
-            Přidat sport
-          </Button>
-        </Link>
+        <Button primary>
+          Přidat sport
+        </Button>
+      </Link>
+      <Link to="/teams/form/new">
+        <Button primary>
+          Přidat tým
+        </Button>
+      </Link>
+      <Link to="/players/form/new">
+        <Button primary>
+          Přidat hráče
+        </Button>
+      </Link>
       <Divider/>
       <Card.Group>
         {this.state.sports && this.state.sports.map(sport => (

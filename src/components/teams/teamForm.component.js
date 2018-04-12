@@ -12,7 +12,6 @@ export default class TeamFormComponent extends Component {
     this.state = {
       team: {},
       sportsOptions: [],
-      leaguesOptions: [],
       redirect: undefined,
     }
   }
@@ -30,24 +29,28 @@ export default class TeamFormComponent extends Component {
       }
     }
 
-    const teams = await TeamService.getAllTeams()
-    const teamsOptions = teams.map(team => ({
-      key: team.id,
-      text: team.name,
-      value: team.id,
+    const sports = await SportService.getSports()
+    const sportsOptions = sports.map(sport => ({
+      key: sport.id,
+      text: sport.name,
+      value: sport.id,
     }))
 
     this.setState({
-      teamsOptions,
+      sportsOptions,
       team,
     })
   }
 
   async saveForm() {
-    await LeagueService.createTeam(this.props.match.params.leagueId, this.state.team)
+    if (this.state.team.id) {
+      await TeamService.update(this.state.team, this.state.team.id)
+    } else {
+      await TeamService.create(this.state.team)
+    }
 
     this.setState({
-      redirect: `/leagues/${this.state.team.leagueId}/teams`,
+      redirect: `/`,
     })
   }
 
@@ -66,13 +69,40 @@ export default class TeamFormComponent extends Component {
             <Form.Select
               fluid
               required
-              label="Tým"
-              options={this.state.teamsOptions}
-              value={this.state.team.teamId}
-              placeholder="Vyberte tým"
+              label="Sport"
+              options={this.state.sportsOptions}
+              value={this.state.team.sportId}
+              placeholder="Vyberte sport"
               onChange={(event, { name, value }) => {
-                this.setState({ team: { ...this.state.team, teamId: value } })
+                this.setState({ team: { ...this.state.team, sportId: value } })
               }}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Název týmu</label>
+            <Input
+              required
+              placeholder="Název týmu"
+              value={this.state.team.name}
+              onChange={event => this.setState({ team: { ...this.state.team, name: event.target.value } })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Přezdívka týmu</label>
+            <Input
+              required
+              placeholder="Přezdívka týmu"
+              value={this.state.team.nickname}
+              onChange={event => this.setState({ team: { ...this.state.team, nickname: event.target.value } })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Zkratka týmu</label>
+            <Input
+              required
+              placeholder="Zkratka týmu"
+              value={this.state.team.shortcut}
+              onChange={event => this.setState({ team: { ...this.state.team, shortcut: event.target.value } })}
             />
           </Form.Field>
           <Button type="submit">Potvrdit změny</Button>
