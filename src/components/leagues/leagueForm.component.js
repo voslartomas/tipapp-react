@@ -25,7 +25,7 @@ export default class LeagueFormComponent extends Component {
     const sports = await SportService.getSports()
     const sportsOptions = sports.map(sport => ({
       key: sport.id,
-      text: sport.czName,
+      text: sport.name,
       value: sport.id,
     }))
 

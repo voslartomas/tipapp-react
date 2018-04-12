@@ -24,8 +24,8 @@ export default class SpecialBetsSerieComponent extends Component {
 
   show = () => this.setState({ open: true })
   handleDeleteConfirm = async (betId) => {
-    await BetsSingleService.delete(betId)
-    this.loadBets()
+    await BetsSingleService.delete(this.props.match.params.leagueId, betId);
+    this.loadBets();
   }
   handleDeleteCancel = () => this.setState({ open: false })
 

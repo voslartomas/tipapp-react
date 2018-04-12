@@ -6,6 +6,8 @@ import LeaguesMenuComponent from './leagues/leaguesMenu.component'
 import LeaguesComponent from './leagues/leagues.component'
 import LeagueFormComponent from './leagues/leagueForm.component'
 import SportFormComponent from './sports/sportForm.component'
+import TeamFormComponent from './teams/teamForm.component';
+import PlayerFormComponent from './players/playerForm.component';
 
 export default class SecuredComponent extends Component {
   componentDidMount() {
@@ -27,6 +29,8 @@ export default class SecuredComponent extends Component {
           <Route exact path="/sports/:sportId" component={LeaguesComponent} />
           <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
           <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
+          <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
+          <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
         </Segment>
       </div>
     )
