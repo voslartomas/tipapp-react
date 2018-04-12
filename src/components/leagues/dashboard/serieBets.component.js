@@ -60,12 +60,12 @@ export default class SerieBetsComponent extends Component {
     }
   }
 
-  betTipped(bet) {
+  betPlaced(bet) {
     return this.state.inputSerieBets[bet.id]
   }
 
   betCorrect(bet) {
-    if (this.betTipped(bet)) {
+    if (this.betPlaced(bet)) {
       return this.state.inputSerieBets[bet.id].homeTeamScore == bet.homeTeamScore &&
         this.state.inputSerieBets[bet.id].awayTeamScore == bet.awayTeamScore
     }
@@ -82,8 +82,8 @@ export default class SerieBetsComponent extends Component {
             <Card.Content>
               {bet.homeTeamScore > 0 && bet.awayTeamScore > 0 &&
               <div><span>Výsledek {bet.homeTeam.team.name} {bet.homeTeamScore}:{bet.awayTeamScore} {bet.awayTeam.team.name}</span><br />
-                {this.betTipped(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {this.state.inputSerieBets[bet.id].homeTeamScore}:{this.state.inputSerieBets[bet.id].awayTeamScore}</span>}
-                {!this.betTipped(bet) && <span>Nevsazeno</span>}
+                {this.betPlaced(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {this.state.inputSerieBets[bet.id].homeTeamScore}:{this.state.inputSerieBets[bet.id].awayTeamScore}</span>}
+                {!this.betPlaced(bet) && <span>Nevsazeno</span>}
               </div>}
 
               {bet.homeTeamScore === 0 && bet.awayTeamScore === 0 &&

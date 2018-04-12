@@ -11,7 +11,7 @@ export default class SingleBetsComponent extends Component {
     super(props)
 
     this.state = {
-      serieBets: [],
+      singleBets: [],
       inputSingleBets: {},
       playersOptions: [],
       teamsOptions: [],
@@ -49,57 +49,69 @@ export default class SingleBetsComponent extends Component {
     userBets.forEach((userBet) => {
       inputSingleBets[userBet.leagueSpecialBetSingleId] = {
         leagueSpecialBetSingleId: userBet.leagueSpecialBetSingleId,
-        homeTeamScore: userBet.homeTeamScore,
-        awayTeamScore: userBet.awayTeamScore,
+        result: userBet
       }
     })
 
-    this.setState({ serieBets: bets, userSingleBets: userBets, inputSingleBets })
+    this.setState({ singleBets: bets, userSingleBets: userBets, inputSingleBets })
   }
 
-  handleSingleBetChange(id, event) {
-    let defaultHome,
-      defaultAway = 0
-    if (this.state.inputSingleBets[id]) {
-      defaultHome = this.state.inputSingleBets[id].homeTeamScore
-      defaultAway = this.state.inputSingleBets[id].awayTeamScore
-    }
-
+  handleSingleBetChange(bet, value) {
     this.setState({
       inputSingleBets: Object.assign(this.state.inputSingleBets, {
-        [id]: {
-          leagueSpecialBetSingleId: id,
-          homeTeamScore: event.target.name === 'homeTeamScore' ? parseInt(event.target.value) : defaultHome,
-          awayTeamScore: event.target.name === 'awayTeamScore' ? parseInt(event.target.value) : defaultAway,
+        [bet.id]: {
+          value,
+          bet,
         },
       }),
     })
   }
 
   submitSingleBet(id) {
-    if (this.state.inputSingleBets[id]) {
-      UserBetsSingleService.put(this.props.match.params.leagueId, this.state.inputSingleBets[id])
+    const userBet = this.state.inputSingleBets[id]
+    if (userBet) {
+      let data = {
+        leagueSpecialBetSingleId: userBet.bet.id
+      }
+
+      if (userBet.bet.specialBetSingle.specialBetType === 1) {
+        data['playerResultId'] = userBet.value
+      } else if (userBet.bet.specialBetSingle.specialBetType === 2) {
+        data['teamResultId'] = userBet.value
+      } else {
+        data['value'] = userBet.value
+      }
+
+      UserBetsSingleService.put(this.props.match.params.leagueId, data)
       this.loadBets()
     }
   }
 
   getResult(bet) {
-    if (bet.specialBetValue) {
-      return bet.specialBetValue
-    } else if (bet.specialBetPlayerResult) {
-      return `${bet.specialBetPlayerResult.player.firstName} ${bet.specialBetPlayerResult.player.lastName}`
-    } else if (bet.specialBetTeamResult) {
-      return bet.specialBetTeamResult.team.name
+    if (!this.state.inputSingleBets[bet.id]) {
+      return undefined
     }
-    return undefined
+    const userBet = this.state.inputSingleBets[bet.id]
+
+    if (!userBet.result) {
+      return undefined
+    }
+
+    if (userBet.result.value) {
+      return userBet.result.value
+    } else if (userBet.result.playerResult) {
+      return `${userBet.result.playerResult.player.firstName} ${userBet.result.playerResult.player.lastName}`
+    } else if (userBet.result.teamResult) {
+      return userBet.result.teamResult.team.name
+    }
   }
 
-  betTipped(bet) {
+  betPlaced(bet) {
     return this.state.inputSingleBets[bet.id]
   }
 
   betCorrect(bet) {
-    if (this.betTipped(bet)) {
+    if (this.betPlaced(bet)) {
       return this.state.inputSingleBets[bet.id].homeTeamScore == bet.homeTeamScore &&
         this.state.inputSingleBets[bet.id].awayTeamScore == bet.awayTeamScore
     }
@@ -108,24 +120,25 @@ export default class SingleBetsComponent extends Component {
   }
 
   render() {
+    console.log(this.state.inputSingleBets)
     return (
       <div>
         <h1>Single</h1>
         <Card.Group>
-          {this.state.serieBets.map(bet => (<Card>
+          {this.state.singleBets.map(bet => (<Card>
             <Card.Content>
               {bet.specialBetSingle.name} {this.getResult(bet) && this.getResult(bet)}
               {!this.getResult(bet) && <div>
-
                 {bet.specialBetSingle.specialBetType === 1 && <Form.Field>
                   <Form.Select
                     fluid
                     required
                     label="Hráč"
+                    search
                     options={this.state.playersOptions}
                     placeholder="Vyberte hráče"
-                    onChange={(event, { name, value }) => {
-
+                    onChange={(e, { name, value }) => {
+                      this.handleSingleBetChange(bet, value)
                     }}
                   />
                 </Form.Field>}
@@ -135,15 +148,18 @@ export default class SingleBetsComponent extends Component {
                       fluid
                       required
                       label="Tým"
+                      search
                       options={this.state.teamsOptions}
                       placeholder="Vyberte tým"
-                      onChange={(event, { name, value }) => {
-
+                      onChange={(e, { name, value }) => {
+                        this.handleSingleBetChange(bet, value)
                       }}
                     />
                   </Form.Field>}
                 {bet.specialBetSingle.specialBetType === 3 && <span>
-                  <input type="text" />
+                  <input onChange={(e) => {
+                    this.handleSingleBetChange(bet, e.target.value)
+                  }} type="text" />
                 </span>}
 
                 <Button onClick={() => this.submitSingleBet(bet.id)}>Uložit sázku</Button>
