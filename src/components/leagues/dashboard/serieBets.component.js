@@ -86,7 +86,7 @@ export default class SerieBetsComponent extends Component {
                 {!this.betPlaced(bet) && <span>Nevsazeno</span>}
               </div>}
 
-              {bet.homeTeamScore === 0 && bet.awayTeamScore === 0 &&
+              {!bet.homeTeamScore && !bet.awayTeamScore &&
               <div>
                 <input value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].homeTeamScore) || 0} type="number" name="homeTeamScore" min="0" max="4" style={{ width: '35px' }} onChange={e => this.handleSerieBetChange(bet.id, e)} />
                   {bet.homeTeam.team.name} vs {bet.awayTeam.team.name}

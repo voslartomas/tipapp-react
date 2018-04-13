@@ -3,6 +3,7 @@ import { Menu, Segment, Sidebar, Icon, Header, Card, Button } from 'semantic-ui-
 import { Route, Link } from 'react-router-dom'
 import SerieBetsComponent from './serieBets.component'
 import SingleBetsComponent from './singleBets.component'
+import MatchBetsComponent from './matchBets.component'
 import BetsSerieService from '../../../services/betsSerie.service'
 import UserBetsSerieService from '../../../services/userBetsSerie.service'
 
@@ -18,6 +19,8 @@ export default class LeagueDashboardComponent extends Component {
         <SerieBetsComponent match={this.props.match} />
 
         <SingleBetsComponent match={this.props.match} />
+
+        <MatchBetsComponent match={this.props.match} />
       </div>
     )
   }
