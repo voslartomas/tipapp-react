@@ -13,6 +13,12 @@ export default class LeagueService {
     return response.body
   }
 
+  static async getLeaderBoard(leagueId) {
+    const response = await api.get(`api/leagues/${leagueId}/leaderboard`)
+
+    return response.body
+  }
+
   static async getLeagueById(leagueId) {
     const response = await api.get(`api/leagues/${leagueId}`)
 
@@ -20,50 +26,50 @@ export default class LeagueService {
   }
 
   static async delete(leagueId) {
-    return await api.delete(`api/leagues/${leagueId}`)
+    return api.delete(`api/leagues/${leagueId}`)
   }
 
   static async create(data) {
-    return await api.post('api/leagues', data)
+    return api.post('api/leagues', data)
   }
 
   static async update(data, id) {
-    return await api.put(`api/leagues/${id}`, data)
+    return api.put(`api/leagues/${id}`, data)
   }
 
   // Teams
-  static async getTeams(leagueId: number) {
+  static async getTeams(leagueId) {
     const response = await api.get(`api/leagues/${leagueId}/teams`)
 
     return response.body
   }
 
   static async createTeam(leagueId, team) {
-    return await api.post(`api/leagues/${leagueId}/teams`, team)
+    return api.post(`api/leagues/${leagueId}/teams`, team)
   }
 
   static async deleteTeam(leagueId, teamId) {
-    return await api.delete(`api/leagues/${leagueId}/teams/${teamId}`)
+    return api.delete(`api/leagues/${leagueId}/teams/${teamId}`)
   }
 
   // Players
-  static async getPlayers(leagueId: number) {
+  static async getPlayers(leagueId) {
     const response = await api.get(`api/leagues/${leagueId}/players`)
 
     return response.body
   }
 
-  static async getPlayerById(leagueId: number, playerId: number) {
+  static async getPlayerById(leagueId, playerId) {
     const response = await api.get(`api/leagues/${leagueId}/players/${playerId}`)
 
     return response.body
   }
 
   static async createPlayer(leagueId, player) {
-    return await api.post(`api/leagues/${leagueId}/players`, player)
+    return api.post(`api/leagues/${leagueId}/players`, player)
   }
 
   static async deletePlayer(leagueId, playerId) {
-    return await api.delete(`api/leagues/${leagueId}/players/${playerId}`)
+    return api.delete(`api/leagues/${leagueId}/players/${playerId}`)
   }
 }

@@ -6,6 +6,7 @@ import SingleBetsComponent from './singleBets.component'
 import MatchBetsComponent from './matchBets.component'
 import BetsSerieService from '../../../services/betsSerie.service'
 import UserBetsSerieService from '../../../services/userBetsSerie.service'
+import LeaderBoardComponent from '../leaderBoard.component'
 
 export default class LeagueDashboardComponent extends Component {
   constructor(props) {
@@ -21,6 +22,8 @@ export default class LeagueDashboardComponent extends Component {
         <SingleBetsComponent match={this.props.match} />
 
         <MatchBetsComponent match={this.props.match} />
+
+        <LeaderBoardComponent match={this.props.match} />
       </div>
     )
   }
