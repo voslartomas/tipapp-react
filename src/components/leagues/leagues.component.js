@@ -45,6 +45,7 @@ export default class LeaguesComponent extends Component {
                 <Card.Header>
                   <Link to={`/leagues/${league.id}/matches`}>{league.name}</Link>
                 </Card.Header>
+                <Link to={`/dashboard/${league.id}`} style={{marginRight: '5px'}}>Sázky</Link>
                 <Link to={`/leagues/form/${league.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show}>Smazat</a>
                 {/*<Confirm
