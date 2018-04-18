@@ -9,6 +9,7 @@ export default class LeaderBoardComponent extends Component {
 
     this.state = {
       players: [],
+      leagueId: undefined
     }
   }
 
@@ -19,10 +20,14 @@ export default class LeaderBoardComponent extends Component {
   async loadPlayers() {
     const players = await LeagueService.getLeaderBoard(this.props.match.params.leagueId)
 
-    this.setState({ players })
+    this.setState({ players, leagueId: this.props.id })
   }
 
   render() {
+    if (this.props.id !== this.state.leagueId) {
+        this.componentDidMount()
+    }
+
     return (
       <div>
         <Header as="h1">Tabulka</Header>
