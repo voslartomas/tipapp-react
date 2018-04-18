@@ -11,6 +11,7 @@ export default class SerieBetsComponent extends Component {
     this.state = {
       serieBets: [],
       inputSerieBets: {},
+      leagueId: undefined
     }
   }
 
@@ -31,7 +32,7 @@ export default class SerieBetsComponent extends Component {
       }
     })
 
-    this.setState({ serieBets: bets, userSerieBets: userBets, inputSerieBets })
+    this.setState({ serieBets: bets, userSerieBets: userBets, inputSerieBets, leagueId: this.props.id })
   }
 
   handleSerieBetChange(id, event) {
@@ -74,6 +75,10 @@ export default class SerieBetsComponent extends Component {
   }
 
   render() {
+    if (this.props.id !== this.state.leagueId) {
+        this.componentDidMount()
+    }
+
     return (
       <div>
         <h1>Serie</h1>

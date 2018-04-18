@@ -17,13 +17,13 @@ export default class LeagueDashboardComponent extends Component {
     return (
       <div>
         <h1>Sázky</h1>
-        <SerieBetsComponent match={this.props.match} />
+        <SerieBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />
 
-        <SingleBetsComponent match={this.props.match} />
+        <SingleBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />
 
-        <MatchBetsComponent match={this.props.match} />
+        <MatchBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />
 
-        <LeaderBoardComponent match={this.props.match} />
+        <LeaderBoardComponent match={this.props.match} id={this.props.match.params.leagueId} />
       </div>
     )
   }

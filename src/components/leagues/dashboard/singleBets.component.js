@@ -15,6 +15,7 @@ export default class SingleBetsComponent extends Component {
       inputSingleBets: {},
       playersOptions: [],
       teamsOptions: [],
+      leagueId: undefined
     }
   }
 
@@ -37,6 +38,7 @@ export default class SingleBetsComponent extends Component {
     this.setState({
       playersOptions,
       teamsOptions,
+      leagueId: this.props.id
     })
     this.loadBets()
   }
@@ -120,7 +122,10 @@ export default class SingleBetsComponent extends Component {
   }
 
   render() {
-    console.log(this.state.inputSingleBets)
+    if (this.props.id !== this.state.leagueId) {
+        this.componentDidMount()
+    }
+
     return (
       <div>
         <h1>Single</h1>

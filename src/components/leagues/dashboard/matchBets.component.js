@@ -13,10 +13,16 @@ export default class MatchBetsComponent extends Component {
     this.state = {
       matchBets: [],
       inputBets: {},
+      leagueId: undefined
     }
   }
 
   async componentDidMount() {
+    this.loadPlayers()
+    this.loadBets()
+  }
+
+  async loadPlayers() {
     const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
 
     const playersOptions = players.map(player => ({
@@ -25,11 +31,11 @@ export default class MatchBetsComponent extends Component {
       value: player.id,
     }))
 
-    this.setState({
-      playersOptions
-    })
 
-    this.loadBets()
+    this.setState({
+      playersOptions,
+      leagueId: this.props.id
+    })
   }
 
   async loadBets() {
@@ -87,7 +93,6 @@ export default class MatchBetsComponent extends Component {
   betCorrect(bet) {
     const userBet = this.betPlaced(bet)
     if (userBet) {
-      console.log('userBet', bet)
       return userBet.correctBet
     }
 
@@ -96,6 +101,10 @@ export default class MatchBetsComponent extends Component {
 
   render() {
     console.log('bets', this.state.inputBets)
+    if (this.props.id !== this.state.leagueId) {
+        this.componentDidMount()
+    }
+
     return (
       <div>
         <h1>Zápasy</h1>
