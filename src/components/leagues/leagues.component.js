@@ -4,6 +4,7 @@ import { Card, Header, Button, Divider, Confirm, Modal } from 'semantic-ui-react
 import { Link } from 'react-router-dom'
 import NHLService from '../../services/nhlService.service'
 import TeamService from '../../services/team.service'
+import PlayerService from '../../services/player.service'
 
 export default class LeaguesComponent extends Component {
   constructor(props) {
@@ -11,12 +12,15 @@ export default class LeaguesComponent extends Component {
 
     this.state = {
       leagues: [],
+      teams: [],
+      players: [],
     }
   }
 
   async componentDidMount() {
     this.loadLeagues()
     this.loadTeams()
+    this.loadPlayers()
   }
 
   async loadLeagues() {
@@ -24,14 +28,21 @@ export default class LeaguesComponent extends Component {
     this.setState({ leagues, open: false })
   }
 
-  async importTeamsFromNHL(leagueId) {
-    NHLService.importTeams(leagueId)
+  async import(leagueId) {
+    NHLService.import(leagueId)
   }
 
   async loadTeams() {
     const teams = await TeamService.getAllTeams()
     this.setState({
       teams,
+    })
+  }
+
+  async loadPlayers() {
+    const players = await PlayerService.getAllPlayers()
+    this.setState({
+      players,
     })
   }
 
@@ -62,7 +73,7 @@ export default class LeaguesComponent extends Component {
                 <Link to={`/dashboard/${league.id}`} style={{marginRight: '5px'}}>Sázky</Link>
                 <Link to={`/leagues/form/${league.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show} style={{marginRight: '5px'}}>Smazat</a>
-                <a href="#" onClick={() => this.importTeamsFromNHL(league.id)}>Přidat týmy z NHL</a>
+                <a href="#" onClick={() => this.import(league.id)}>Přidat údaje z NHL</a>
                 {/*<Confirm
                   open={this.state.open}
                   content='Opravdu smazat?'
@@ -95,6 +106,19 @@ export default class LeaguesComponent extends Component {
               <Card.Content>
                 <Card.Header>
                   {team.name}
+                </Card.Header>
+              </Card.Content>
+            </Card>
+          ))}
+        </Card.Group>
+        <Divider/>
+        <Header as="h1">Hráči</Header>
+        <Card.Group>
+          {this.state.players && this.state.players.map(player => (
+            <Card key={player.id}>
+              <Card.Content>
+                <Card.Header>
+                  {player.firstName} {player.lastName}
                 </Card.Header>
               </Card.Content>
             </Card>

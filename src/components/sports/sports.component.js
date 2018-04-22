@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import SportService from '../../services/sport.service'
 import { Card, Header, Button, Divider, Confirm, Modal, Transition } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import PlayerService from '../../services/player.service'
 import NHLService from '../../services/nhlService.service'
 
 export default class SportsComponent extends Component {
@@ -11,14 +10,11 @@ export default class SportsComponent extends Component {
 
     this.state = {
       sports: [],
-      teams: [],
-      players: [],
     }
   }
 
   async componentDidMount() {
     this.loadSports()
-    this.loadPlayers()
   }
 
   async loadSports() {
@@ -26,17 +22,6 @@ export default class SportsComponent extends Component {
     this.setState({
       sports,
     })
-  }
-
-  async loadPlayers() {
-    const players = await PlayerService.getAllPlayers()
-    this.setState({
-      players,
-    })
-  }
-
-  async importPlayersFromNHL() {
-    NHLService.importPlayers()
   }
 
   show = () => this.setState({ open: true })
@@ -96,22 +81,6 @@ export default class SportsComponent extends Component {
                   <Button positive onClick={() => this.handleDeleteConfirm(sport.id)} icon='checkmark' labelPosition='right' content='Ano'/>
                 </Modal.Actions>
               </Modal>
-            </Card.Content>
-          </Card>
-        ))}
-      </Card.Group>
-      <Divider/>
-      <Header as="h1">Hráči</Header>
-      <Button primary onClick={() => this.importPlayersFromNHL()}>
-        Přidat hráče z NHL
-      </Button>
-      <Card.Group>
-        {this.state.players && this.state.players.map(player => (
-          <Card key={player.id}>
-            <Card.Content>
-              <Card.Header>
-                {player.firstName} {player.lastName}
-              </Card.Header>
             </Card.Content>
           </Card>
         ))}
