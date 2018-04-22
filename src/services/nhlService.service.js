@@ -1,8 +1,8 @@
 import api from '../helpers/api'
 
 export default class NHLService {
-  static async importTeams() {
-    const response = await api.get(`api/leagues/import/nhl/`)
+  static async importTeams(leagueId) {
+    const response = await api.get(`api/leagues/import/nhl/${leagueId}/teams`)
 
     return response.body
   }

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import LeagueService from '../../services/league.service'
 import { Card, Header, Button, Divider, Confirm, Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import NHLService from '../../services/nhlService.service'
+import TeamService from '../../services/team.service'
 
 export default class LeaguesComponent extends Component {
   constructor(props) {
@@ -14,11 +16,23 @@ export default class LeaguesComponent extends Component {
 
   async componentDidMount() {
     this.loadLeagues()
+    this.loadTeams()
   }
 
   async loadLeagues() {
     const leagues = await LeagueService.getLeagues(this.props.match.params.sportId)
     this.setState({ leagues, open: false })
+  }
+
+  async importTeamsFromNHL(leagueId) {
+    NHLService.importTeams(leagueId)
+  }
+
+  async loadTeams() {
+    const teams = await TeamService.getAllTeams()
+    this.setState({
+      teams,
+    })
   }
 
   show = () => this.setState({ open: true })
@@ -47,7 +61,8 @@ export default class LeaguesComponent extends Component {
                 </Card.Header>
                 <Link to={`/dashboard/${league.id}`} style={{marginRight: '5px'}}>Sázky</Link>
                 <Link to={`/leagues/form/${league.id}`} style={{marginRight: '5px'}}>Upravit</Link>
-                <a href="#" onClick={this.show}>Smazat</a>
+                <a href="#" onClick={this.show} style={{marginRight: '5px'}}>Smazat</a>
+                <a href="#" onClick={() => this.importTeamsFromNHL(league.id)}>Přidat týmy z NHL</a>
                 {/*<Confirm
                   open={this.state.open}
                   content='Opravdu smazat?'
@@ -71,6 +86,19 @@ export default class LeaguesComponent extends Component {
               </Card.Content>
             </Card>
         ))}
+        </Card.Group>
+        <Divider/>
+        <Header as="h1">Týmy</Header>
+        <Card.Group>
+          {this.state.teams && this.state.teams.map(team => (
+            <Card key={team.id}>
+              <Card.Content>
+                <Card.Header>
+                  {team.name}
+                </Card.Header>
+              </Card.Content>
+            </Card>
+          ))}
         </Card.Group>
       </div>
     )
