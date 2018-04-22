@@ -32,6 +32,10 @@ export default class LeaguesComponent extends Component {
     NHLService.import(leagueId)
   }
 
+  async updateMatches(leagueId) {
+    NHLService.updateMatches(leagueId)
+  }
+
   async loadTeams() {
     const teams = await TeamService.getAllTeams()
     this.setState({
@@ -74,6 +78,7 @@ export default class LeaguesComponent extends Component {
                 <Link to={`/leagues/form/${league.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                 <a href="#" onClick={this.show} style={{marginRight: '5px'}}>Smazat</a>
                 <a href="#" onClick={() => this.import(league.id)}>Přidat údaje z NHL</a>
+                <a href="#" onClick={() => this.updateMatches(league.id)}>Vysledky zapasu</a>
                 {/*<Confirm
                   open={this.state.open}
                   content='Opravdu smazat?'

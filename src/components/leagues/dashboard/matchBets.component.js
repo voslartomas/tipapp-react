@@ -113,7 +113,7 @@ export default class MatchBetsComponent extends Component {
                   {bet.homeTeam.team.name} vs {bet.awayTeam.team.name}
                 <input value={(this.state.inputBets[bet.id] && this.state.inputBets[bet.id].awayScore) || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet.id, e)} />
                 <Form.Field>
-                  <Form.Select
+                  {/*<Form.Select
                     fluid
                     required
                     label="Střelec"
@@ -124,7 +124,7 @@ export default class MatchBetsComponent extends Component {
                     onChange={(e, { name, value }) => {
                       this.handleBetChange(bet.id, e, value)
                     }}
-                  />
+                  />*/}
                 </Form.Field>
                 <Button onClick={() => this.submitSerieBet(bet.id)}>Uložit sázku</Button>
               </div>}

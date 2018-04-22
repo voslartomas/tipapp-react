@@ -6,4 +6,10 @@ export default class NHLService {
 
     return response.body
   }
+
+  static async updateMatches(leagueId) {
+    const response = await api.get(`api/leagues/import/nhl/${leagueId}/matches`)
+
+    return response.body
+  }
 }
