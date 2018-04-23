@@ -49,6 +49,7 @@ export default class MatchBetsComponent extends Component {
         homeScore: userBet.homeScore,
         awayScore: userBet.awayScore,
         scorerId: userBet.scorerId,
+        correctBet: userBet.correctBet
       }
     })
 
@@ -100,7 +101,6 @@ export default class MatchBetsComponent extends Component {
   }
 
   render() {
-    console.log('bets', this.state.inputBets)
     if (this.props.id !== this.state.leagueId) {
         this.componentDidMount()
     }
@@ -111,7 +111,7 @@ export default class MatchBetsComponent extends Component {
         <Card.Group>
           {this.state.matchBets.map(bet => (<Card>
             <Card.Content>
-              {bet.homeScore > 0 && bet.awayScore > 0 &&
+              {bet.homeScore !== null && bet.awayScore !== null &&
               <div><span>Výsledek {bet.homeTeam.team.name} {bet.homeScore}:{bet.awayScore} {bet.awayTeam.team.name} {moment(bet.dateTime).fromNow()}</span><br />
                 {this.betPlaced(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {this.state.inputBets[bet.id].homeScore}:{this.state.inputBets[bet.id].awayScore}</span>}
                 {!this.betPlaced(bet) && <span>Nevsazeno</span>}
@@ -122,7 +122,7 @@ export default class MatchBetsComponent extends Component {
                   {bet.homeTeam.team.name} vs {bet.awayTeam.team.name}
                 <input value={(this.state.inputBets[bet.id] && this.state.inputBets[bet.id].awayScore) || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet.id, e)} />
                 <Form.Field>
-                  <Form.Select
+                  {/*<Form.Select
                     fluid
                     required
                     label="Střelec"
@@ -133,7 +133,7 @@ export default class MatchBetsComponent extends Component {
                     onChange={(e, { name, value }) => {
                       this.handleBetChange(bet.id, e, value)
                     }}
-                  />
+                  />*/}
                 </Form.Field>
                 <Button onClick={() => this.submitSerieBet(bet.id)}>Uložit sázku</Button>
               </div>}

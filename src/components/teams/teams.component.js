@@ -3,8 +3,6 @@ import LeagueService from '../../services/league.service'
 import { Button, Image, Icon, Header, Table, Label, Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
-import NHLService from '../../services/nhl.service'
-
 export default class TeamsComponent extends Component {
   constructor(props) {
     super(props)
@@ -16,8 +14,6 @@ export default class TeamsComponent extends Component {
 
   async componentDidMount() {
     this.loadTeams()
-
-    console.log(await NHLService.getAllTeams());
   }
 
   async loadTeams() {

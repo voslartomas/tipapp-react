@@ -11,8 +11,9 @@ import LeagueBetsComponent from './bets/leagueBets.component'
 import LeagueUserFormComponent from './leagueUserForm.component'
 import SerieFormComponent from './bets/serieForm.component'
 import SingleFormComponent from './bets/singleForm.component'
-import LeagueTeamFormComponent from './leagueTeamForm.component';
-import LeaguePlayerFormComponent from './leaguePlayerForm.component';
+import LeagueTeamFormComponent from './leagueTeamForm.component'
+import LeaguePlayerFormComponent from './leaguePlayerForm.component'
+import SettingsComponent from './settings.component'
 
 export default class LeaguesMenuComponent extends Component {
   constructor(props) {
@@ -41,6 +42,9 @@ export default class LeaguesMenuComponent extends Component {
             <Menu.Item>
               <Link to={`/leagues/${leagueId}/bets/serie`} style={{ marginRight: '5px' }}>Sázky</Link>
             </Menu.Item>
+            <Menu.Item>
+              <Link to={`/leagues/${leagueId}/settings`} style={{ marginRight: '5px' }}>Nastavení</Link>
+            </Menu.Item>
           </Sidebar>
           <Sidebar.Pusher>
             <Segment basic>
@@ -49,6 +53,7 @@ export default class LeaguesMenuComponent extends Component {
               <Route exact path="/leagues/:leagueId/players" component={PlayersComponent} />
               <Route exact path="/leagues/:leagueId/users" component={LeagueUsersComponent} />
               <Route exact path="/leagues/:leagueId/bets/:type" component={LeagueBetsComponent} />
+              <Route exact path="/leagues/:leagueId/settings" component={SettingsComponent} />
 
               <Route exact path="/leagues/:leagueId/matches/form/:matchId" component={MatchFormComponent} />
               <Route exact path="/leagues/:leagueId/teams/form/:teamId" component={LeagueTeamFormComponent} />
