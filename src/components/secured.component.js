@@ -9,6 +9,7 @@ import LeagueFormComponent from './leagues/leagueForm.component'
 import SportFormComponent from './sports/sportForm.component'
 import TeamFormComponent from './teams/teamForm.component';
 import PlayerFormComponent from './players/playerForm.component';
+import SelectLeagueComponent from './selectLeague.component';
 
 export default class SecuredComponent extends Component {
   componentDidMount() {
@@ -20,6 +21,7 @@ export default class SecuredComponent extends Component {
       <div>
         <Menu>
           <Menu.Item><h3>NEYMAR</h3></Menu.Item>
+          <SelectLeagueComponent />
           <Menu.Item name="sports"><Link to="/">Sporty</Link></Menu.Item>
           <Menu.Item position="right" name="logout" onClick={() => this.props.logout()}> Odhlásit <i style={{ marginLeft: '5px' }} className="sign out icon" /></Menu.Item>
         </Menu>
