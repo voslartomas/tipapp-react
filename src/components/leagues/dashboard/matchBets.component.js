@@ -43,6 +43,7 @@ export default class MatchBetsComponent extends Component {
         homeScore: userBet.homeScore,
         awayScore: userBet.awayScore,
         scorerId: userBet.scorerId,
+        correctBet: userBet.correctBet
       }
     })
 
@@ -87,7 +88,6 @@ export default class MatchBetsComponent extends Component {
   betCorrect(bet) {
     const userBet = this.betPlaced(bet)
     if (userBet) {
-      console.log('userBet', bet)
       return userBet.correctBet
     }
 
@@ -95,14 +95,13 @@ export default class MatchBetsComponent extends Component {
   }
 
   render() {
-    console.log('bets', this.state.inputBets)
     return (
       <div>
         <h1>Zápasy</h1>
         <Card.Group>
           {this.state.matchBets.map(bet => (<Card>
             <Card.Content>
-              {bet.homeScore > 0 && bet.awayScore > 0 &&
+              {bet.homeScore !== null && bet.awayScore !== null &&
               <div><span>Výsledek {bet.homeTeam.team.name} {bet.homeScore}:{bet.awayScore} {bet.awayTeam.team.name} {moment(bet.dateTime).fromNow()}</span><br />
                 {this.betPlaced(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {this.state.inputBets[bet.id].homeScore}:{this.state.inputBets[bet.id].awayScore}</span>}
                 {!this.betPlaced(bet) && <span>Nevsazeno</span>}
