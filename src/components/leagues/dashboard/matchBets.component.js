@@ -3,6 +3,7 @@ import { Menu, Segment, Sidebar, Icon, Header, Card, Button, Form } from 'semant
 import { Route, Link } from 'react-router-dom'
 import moment from 'moment'
 import MatchService from '../../../services/match.service'
+import LeagueService from '../../../services/league.service'
 import UserBetsMatchService from '../../../services/userBetsMatch.service'
 import PlayerService from '../../../services/player.service'
 
@@ -12,83 +13,60 @@ export default class MatchBetsComponent extends Component {
 
     this.state = {
       matchBets: [],
-      inputBets: {},
-      leagueId: undefined
+      leagueId: undefined,
+      players: []
     }
   }
 
   async componentDidMount() {
-    this.loadPlayers()
-    this.loadBets()
+    await this.loadBets()
   }
 
-  async loadPlayers() {
-    const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
-
+  async loadPlayers(match) {
+    const players = await PlayerService.getPlayersByTeams(this.props.match.params.leagueId, match)
+    console.log(players)
     const playersOptions = players.map(player => ({
       key: player.id,
       text: `${player.player.firstName} ${player.player.lastName}`,
       value: player.id,
     }))
 
-
-    this.setState({
-      playersOptions,
-      leagueId: this.props.id
-    })
+    return playersOptions
   }
 
   async loadBets() {
-    const bets = await MatchService.getMatches(this.props.match.params.leagueId)
-    const userBets = await UserBetsMatchService.getAll(this.props.match.params.leagueId)
+    const matches = await LeagueService.getBetsMatches(this.props.match.params.leagueId)
 
-    const inputBets = []
-    userBets.forEach((userBet) => {
-      inputBets[userBet.matchId] = {
-        matchId: userBet.matchId,
-        homeScore: userBet.homeScore,
-        awayScore: userBet.awayScore,
-        scorerId: userBet.scorerId,
-        correctBet: userBet.correctBet
+    const players = []
+    for (const match of matches) {
+      if (this.canBet(match)) {
+        const a = await this.loadPlayers(match)
+        players[match.matchId] = a
       }
-    })
+    }
 
-    this.setState({ matchBets: bets, userMatchBets: userBets, inputBets })
+    this.setState({ matchBets: matches, leagueId: this.props.id, players })
   }
 
-  handleBetChange(id, event, scorerId = undefined) {
-    let defaultHome,
-      defaultAway = 0
-    if (this.state.inputBets[id]) {
-      defaultHome = this.state.inputBets[id].homeScore
-      defaultAway = this.state.inputBets[id].awayScore
-    }
-
-    if (!scorerId && this.state.inputBets[id]) {
-      scorerId = this.state.inputBets[id].scorerId;
-    }
-
-    this.setState({
-      inputBets: Object.assign(this.state.inputBets, {
-        [id]: {
-          matchId: id,
-          homeScore: event.target.name === 'homeScore' ? parseInt(event.target.value) : defaultHome,
-          awayScore: event.target.name === 'awayScore' ? parseInt(event.target.value) : defaultAway,
-          scorerId
-        },
-      }),
-    })
+  getPlayers(matchId) {
+    return this.state.players[matchId] || []
   }
 
-  submitSerieBet(id) {
-    if (this.state.inputBets[id]) {
-      UserBetsMatchService.put(this.props.match.params.leagueId, this.state.inputBets[id])
-      this.loadBets()
+  async handleBetChange(bet, event, scorerId = undefined) {
+    if (!scorerId) {
+      scorerId = bet.scorerId;
     }
+
+    await UserBetsMatchService.put(this.props.match.params.leagueId, {matchId: bet.matchId,
+      homeScore: event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeScore,
+      awayScore: event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayScore,
+      scorerId}, bet.id)
+
+    await this.loadBets()
   }
 
   betPlaced(bet) {
-    return this.state.inputBets[bet.id]
+    return bet.id
   }
 
   betCorrect(bet) {
@@ -100,45 +78,52 @@ export default class MatchBetsComponent extends Component {
     return false
   }
 
+  canBet(bet) {
+    return new Date(bet.matchDateTime).getTime() > new Date().getTime()
+  }
+
   render() {
     if (this.props.id !== this.state.leagueId) {
-        this.componentDidMount()
+        // this.componentDidMount()
     }
-
+    console.log('re-render', Object.assign({}, this.state.players), Object.assign({}, this.state))
     return (
       <div>
         <h1>Zápasy</h1>
         <Card.Group>
-          {this.state.matchBets.map(bet => (<Card>
-            <Card.Content>
-              {bet.homeScore !== null && bet.awayScore !== null &&
-              <div><span>Výsledek {bet.homeTeam.team.name} {bet.homeScore}:{bet.awayScore} {bet.awayTeam.team.name} {moment(bet.dateTime).fromNow()}</span><br />
-                {this.betPlaced(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {this.state.inputBets[bet.id].homeScore}:{this.state.inputBets[bet.id].awayScore}</span>}
-                {!this.betPlaced(bet) && <span>Nevsazeno</span>}
-              </div>}
+          {this.state.matchBets.map(bet => (
+            <Card style={{width: '650px'}}>
+              <Card.Content style={{}}>
+                {bet.matchHomeScore !== null && bet.matchAwayScore !== null &&
+                <div>
+                {moment(bet.matchDateTime).format('D.M.Y h:mm')}<br />
+                {moment(bet.matchDateTime).fromNow()}<br />
+                {bet.homeTeam} {bet.matchHomeScore}<br />
+                {bet.awayTeam} {bet.matchAwayScore}<br />
+                {this.betPlaced(bet) && !this.canBet(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {bet.homeScore}:{bet.awayScore}</span>}
+                </div>}
 
-              {<div>
-                <input value={(this.state.inputBets[bet.id] && this.state.inputBets[bet.id].homeScore) || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet.id, e)} />
-                  {bet.homeTeam.team.name} vs {bet.awayTeam.team.name}
-                <input value={(this.state.inputBets[bet.id] && this.state.inputBets[bet.id].awayScore) || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet.id, e)} />
-                <Form.Field>
-                  {/*<Form.Select
-                    fluid
-                    required
-                    label="Střelec"
-                    search
-                    value={this.state.inputBets[bet.id] && this.state.inputBets[bet.id].scorerId}
-                    options={this.state.playersOptions}
-                    placeholder="Vyberte hráče"
-                    onChange={(e, { name, value }) => {
-                      this.handleBetChange(bet.id, e, value)
-                    }}
-                  />*/}
-                </Form.Field>
-                <Button onClick={() => this.submitSerieBet(bet.id)}>Uložit sázku</Button>
-              </div>}
-            </Card.Content>
-          </Card>))}
+                {this.canBet(bet) && <div>
+                  <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />
+                    {bet.homeTeam} vs {bet.awayTeam}
+                  <input value={bet.awayScore || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />
+                  <Form.Field>
+                    {<Form.Select
+                      fluid
+                      required
+                      label="Střelec"
+                      search
+                      value={bet.scorerId}
+                      options={this.getPlayers(bet.matchId)}
+                      placeholder="Vyberte hráče"
+                      onChange={(e, { name, value }) => {
+                        this.handleBetChange(bet, e, value)
+                      }}
+                    />}
+                  </Form.Field>
+                </div>}
+              </Card.Content>
+            </Card>))}
         </Card.Group>
       </div>
     )
