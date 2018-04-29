@@ -100,7 +100,7 @@ export default class MatchBetsComponent extends Component {
                 {moment(bet.matchDateTime).fromNow()}<br />
                 {bet.homeTeam} {bet.matchHomeScore}<br />
                 {bet.awayTeam} {bet.matchAwayScore}<br />
-                {this.betPlaced(bet) && !this.canBet(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {bet.homeScore}:{bet.awayScore}</span>}
+                {this.betPlaced(bet) && !this.canBet(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {bet.homeScore}:{bet.awayScore}, {bet.scorer}</span>}
                 </div>}
 
                 {this.canBet(bet) && <div>
@@ -122,6 +122,8 @@ export default class MatchBetsComponent extends Component {
                     />}
                   </Form.Field>
                 </div>}
+                {this.betPlaced(bet) && bet.totalPoints}
+                {!this.betPlaced(bet) && <span>Nevsazeno</span>}
               </Card.Content>
             </Card>))}
         </Card.Group>
