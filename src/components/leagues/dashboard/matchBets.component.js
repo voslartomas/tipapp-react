@@ -27,7 +27,7 @@ export default class MatchBetsComponent extends Component {
     console.log(players)
     const playersOptions = players.map(player => ({
       key: player.id,
-      text: `${player.player.firstName} ${player.player.lastName}`,
+      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
       value: player.id,
     }))
 
