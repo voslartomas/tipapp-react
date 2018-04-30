@@ -41,7 +41,7 @@ export default class MatchBetsComponent extends Component {
     for (const match of matches) {
       if (this.canBet(match)) {
         const a = await this.loadPlayers(match)
-        players[match.matchId] = a
+        players[match.matchId1] = a
       }
     }
 
@@ -57,9 +57,9 @@ export default class MatchBetsComponent extends Component {
       scorerId = bet.scorerId;
     }
 
-    await UserBetsMatchService.put(this.props.match.params.leagueId, {matchId: bet.matchId,
-      homeScore: event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeScore,
-      awayScore: event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayScore,
+    await UserBetsMatchService.put(this.props.match.params.leagueId, {matchId: bet.matchId1,
+      homeScore: event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeScore || 0,
+      awayScore: event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayScore || 0,
       scorerId}, bet.id)
 
     await this.loadBets()
@@ -86,7 +86,7 @@ export default class MatchBetsComponent extends Component {
     if (this.props.id !== this.state.leagueId) {
         // this.componentDidMount()
     }
-    console.log('re-render', Object.assign({}, this.state.players), Object.assign({}, this.state))
+
     return (
       <div>
         <h1>Zápasy</h1>
@@ -114,7 +114,7 @@ export default class MatchBetsComponent extends Component {
                       label="Střelec"
                       search
                       value={bet.scorerId}
-                      options={this.getPlayers(bet.matchId)}
+                      options={this.getPlayers(bet.matchId1)}
                       placeholder="Vyberte hráče"
                       onChange={(e, { name, value }) => {
                         this.handleBetChange(bet, e, value)
