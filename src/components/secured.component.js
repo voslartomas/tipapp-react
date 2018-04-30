@@ -19,23 +19,27 @@ export default class SecuredComponent extends Component {
   render() {
     return (
       <div>
-        <Menu>
-          <Menu.Item><h3>NEYMAR</h3></Menu.Item>
-          <SelectLeagueComponent />
-          <Menu.Item name="sports"><Link to="/">Sporty</Link></Menu.Item>
-          <Menu.Item position="right" name="logout" onClick={() => this.props.logout()}> Odhlásit <i style={{ marginLeft: '5px' }} className="sign out icon" /></Menu.Item>
-        </Menu>
-
-        <Segment>
-          <Route exact path="/" component={SportsComponent} />
-          <Route path="/dashboard/:leagueId" component={LeagueDashboardComponent} />
-          <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
-          <Route exact path="/sports/:sportId" component={LeaguesComponent} />
-          <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
-          <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
-          <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
-          <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
-        </Segment>
+        <nav>
+          <h1 class="brand"><a href="#"><b>NEYMAR | </b>FIFA WORLD CUP 2018</a></h1>
+          <ul>
+              <li class="category">LEAGUES:</li>
+              <SelectLeagueComponent />
+              <li><Link to="/">Admin</Link></li>
+              <li><a onClick={() => this.props.logout()} href="#">LOG OUT</a></li>
+          </ul>
+        </nav>
+        <div class="box">
+          <div>
+            <Route exact path="/" component={SportsComponent} />
+            <Route path="/dashboard/:leagueId" component={LeagueDashboardComponent} />
+            <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
+            <Route exact path="/sports/:sportId" component={LeaguesComponent} />
+            <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
+            <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
+            <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
+            <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
+          </div>
+        </div>
       </div>
     )
   }

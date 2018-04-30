@@ -23,35 +23,53 @@ export default class LeaderBoardComponent extends Component {
     this.setState({ players, leagueId: this.props.id })
   }
 
+  background(i) {
+    switch (i) {
+      case 0:
+        return 'gold'
+      case 1:
+        return 'silver'
+      case 2:
+        return '#CD7F32'
+      default:
+    }
+  }
+
+  color(i) {
+    if (i < 3) {
+      return '#202020'
+    }
+
+    return 'white'
+  }
+
   render() {
     if (this.props.id !== this.state.leagueId) {
         this.componentDidMount()
     }
 
     return (
-      <div>
-        <Header as="h1">Tabulka</Header>
-        <Divider />
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Pořadí</Table.HeaderCell>
-              <Table.HeaderCell>Jméno</Table.HeaderCell>
-              <Table.HeaderCell>Body</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
+      <div class="page">
+        <div class="box-header">Výsledková listina</div>
+        <table>
+            <tbody><tr>
+                <th width="5%"></th>
+                <th width="55%" align="left">NAME</th>
+                <th width="20%">POINTS</th>
+                <th width="20%">PRICE</th>
+            </tr>
             {this.state.players && this.state.players.map((player, i) => (
-              <Table.Row>
-                <Table.Cell>
-                  <Label ribbon>{i+1}.</Label>
-                </Table.Cell>
-                <Table.Cell>{player.firstName} {player.lastName}</Table.Cell>
-                <Table.Cell>{player.totalPoints}</Table.Cell>
-              </Table.Row>
+              <tr>
+                <td align="left" style={{ background: this.background(i), color: this.color(i) }}>
+                  {i+1}.
+                </td>
+                <td align="left">{player.firstName} {player.lastName}</td>
+                <td><b>{player.totalPoints}</b></td>
+                <td></td>
+              </tr>
           ))}
-          </Table.Body>
-        </Table>
+        </tbody>
+        </table>
       </div>
     )
   }
