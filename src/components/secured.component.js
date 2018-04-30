@@ -29,19 +29,7 @@ export default class SecuredComponent extends Component {
           </ul>
         </nav>
         <div class="box">
-          <div class="league-bar">
-            <ul>
-                <li><a href="#" class="actual-games">ACTUAL GAMES</a></li>
-                <li><a href="#" class="my-bets">MY BETS</a></li>
-                <li><a href="#" class="table">TABLE</a></li>
-                <li><a href="#" class="all-bets">ALL BETS</a></li>
-                <li><a href="#" class="rules">RULES</a></li>
-                <li><a href="#" class="settings">SETTINGS</a></li>
-            </ul>
-            <div style={{clear: 'both'}}></div>
-          </div>
-
-          <div id="pageBox">
+          <div>
             <Route exact path="/" component={SportsComponent} />
             <Route path="/dashboard/:leagueId" component={LeagueDashboardComponent} />
             <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
