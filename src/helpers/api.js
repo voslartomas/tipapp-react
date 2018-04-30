@@ -5,7 +5,7 @@ class Api {
 
   constructor() {
     if (process.env.REACT_APP_ENV === 'production') {
-        this.baseUrl = 'http://18.195.173.121:8001/'
+        this.baseUrl = 'http://52.58.100.173:8001/'
     }
   }
 
