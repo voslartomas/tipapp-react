@@ -82,45 +82,49 @@ export default class MatchBetsComponent extends Component {
     }
 
     return (
-      <div>
-        <h1>Zápasy</h1>
-        <Card.Group>
-          {this.state.matchBets.map(bet => (
-            <Card style={{width: '650px'}}>
-              <Card.Content style={{}}>
-                {bet.matchHomeScore !== null && bet.matchAwayScore !== null &&
-                <div>
-                {moment(bet.matchDateTime).format('D.M.Y h:mm')}<br />
-                {moment(bet.matchDateTime).fromNow()}<br />
-                {bet.homeTeam} {bet.matchHomeScore}<br />
-                {bet.awayTeam} {bet.matchAwayScore}<br />
-                {this.betPlaced(bet) && !this.canBet(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {bet.homeScore}:{bet.awayScore}, {bet.scorer}</span>}
-                </div>}
-
-                {this.canBet(bet) && <div>
-                  <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />
-                    {bet.homeTeam} vs {bet.awayTeam}
-                  <input value={bet.awayScore || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />
-                  <Form.Field>
-                    {<Form.Select
-                      fluid
-                      required
-                      label="Střelec"
-                      search
-                      value={bet.scorerId}
-                      options={this.getPlayers(bet)}
-                      placeholder="Vyberte hráče"
-                      onChange={(e, { name, value }) => {
-                        this.handleBetChange(bet, e, value)
-                      }}
-                    />}
-                  </Form.Field>
-                </div>}
-                {this.betPlaced(bet) && bet.totalPoints}
-                {!this.betPlaced(bet) && <span>Nevsazeno</span>}
-              </Card.Content>
-            </Card>))}
-        </Card.Group>
+      <div class="page">
+      <div class="box-header">Zápasy</div>
+      <table>
+        <tbody>
+          <tr>
+              <th width="40%" align="left">Zápas</th>
+              <th width="10%">Výsledek</th>
+              <th width="10%">Datum</th>
+              <th width="10%">Tip</th>
+              <th width="20%">Střelec</th>
+              <th width="10%">Body</th>
+          </tr>
+        {this.state.matchBets.map(bet => (
+        <tr>
+            <td align="left">{bet.homeTeam} - {bet.awayTeam}</td>
+            <td>{moment(bet.matchDateTime).fromNow()}</td>
+            <td>{bet.matchHomeScore}:{bet.matchAwayScore}</td>
+            <td>{!this.canBet(bet) && <div>{bet.homeScore}:{bet.awayScore}</div>}
+            {this.canBet(bet) && <div>
+              <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />:
+              <input value={bet.awayScore || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />
+            </div>}
+            </td>
+            <td>{!this.canBet(bet) && <span>{bet.scorer}</span>}
+            {this.canBet(bet) && <Form.Field>
+              {<Form.Select
+                fluid
+                required
+                search
+                value={bet.scorerId}
+                options={this.getPlayers(bet)}
+                placeholder="Vyberte hráče"
+                onChange={(e, { name, value }) => {
+                  this.handleBetChange(bet, e, value)
+                }}
+              />}
+            </Form.Field>}
+            </td>
+            <td><b>+{bet.totalPoints}</b></td>
+        </tr>
+          ))}
+        </tbody>
+        </table>
       </div>
     )
   }

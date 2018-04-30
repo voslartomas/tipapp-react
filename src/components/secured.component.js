@@ -19,23 +19,39 @@ export default class SecuredComponent extends Component {
   render() {
     return (
       <div>
-        <Menu>
-          <Menu.Item><h3>NEYMAR</h3></Menu.Item>
-          <SelectLeagueComponent />
-          <Menu.Item name="sports"><Link to="/">Sporty</Link></Menu.Item>
-          <Menu.Item position="right" name="logout" onClick={() => this.props.logout()}> Odhlásit <i style={{ marginLeft: '5px' }} className="sign out icon" /></Menu.Item>
-        </Menu>
+        <nav>
+          <h1 class="brand"><a href="#"><b>NEYMAR | </b>FIFA WORLD CUP 2018</a></h1>
+          <ul>
+              <li class="category">LEAGUES:</li>
+              <SelectLeagueComponent />
+              <li><Link to="/">Admin</Link></li>
+              <li><a onClick={() => this.props.logout()} href="#">LOG OUT</a></li>
+          </ul>
+        </nav>
+        <div class="box">
+          <div class="league-bar">
+            <ul>
+                <li><a href="#" class="actual-games">ACTUAL GAMES</a></li>
+                <li><a href="#" class="my-bets">MY BETS</a></li>
+                <li><a href="#" class="table">TABLE</a></li>
+                <li><a href="#" class="all-bets">ALL BETS</a></li>
+                <li><a href="#" class="rules">RULES</a></li>
+                <li><a href="#" class="settings">SETTINGS</a></li>
+            </ul>
+            <div style={{clear: 'both'}}></div>
+          </div>
 
-        <Segment>
-          <Route exact path="/" component={SportsComponent} />
-          <Route path="/dashboard/:leagueId" component={LeagueDashboardComponent} />
-          <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
-          <Route exact path="/sports/:sportId" component={LeaguesComponent} />
-          <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
-          <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
-          <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
-          <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
-        </Segment>
+          <div id="pageBox">
+            <Route exact path="/" component={SportsComponent} />
+            <Route path="/dashboard/:leagueId" component={LeagueDashboardComponent} />
+            <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
+            <Route exact path="/sports/:sportId" component={LeaguesComponent} />
+            <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
+            <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
+            <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
+            <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
+          </div>
+        </div>
       </div>
     )
   }

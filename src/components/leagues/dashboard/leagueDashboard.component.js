@@ -16,7 +16,6 @@ export default class LeagueDashboardComponent extends Component {
   render() {
     return (
       <div>
-        <h1>Sázky</h1>
         <SerieBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />
 
         <SingleBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />

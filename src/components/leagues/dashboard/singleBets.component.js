@@ -20,7 +20,7 @@ export default class SingleBetsComponent extends Component {
   }
 
   async componentDidMount() {
-    const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
+    const players = await PlayerService.getPlayers(this.props.match.params.leagueId, [])
     const teams = await LeagueService.getTeams(this.props.match.params.leagueId)
 
     const playersOptions = players.map(player => ({

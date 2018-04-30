@@ -36,7 +36,7 @@ class App extends Component {
     const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('token').length > 0
 
     return (
-      <div>
+      <div class="main">
         {!isLoggedIn && <LoginFormComponent login={() => this.login()} />}
         {isLoggedIn && <SecuredComponent logout={() => this.logout()} />}
       </div>
