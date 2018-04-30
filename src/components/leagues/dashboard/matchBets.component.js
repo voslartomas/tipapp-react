@@ -22,34 +22,28 @@ export default class MatchBetsComponent extends Component {
     await this.loadBets()
   }
 
-  async loadPlayers(match) {
-    const players = await PlayerService.getPlayersByTeams(this.props.match.params.leagueId, match)
-    console.log(players)
-    const playersOptions = players.map(player => ({
-      key: player.id,
-      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
-      value: player.id,
-    }))
-
-    return playersOptions
-  }
-
   async loadBets() {
     const matches = await LeagueService.getBetsMatches(this.props.match.params.leagueId)
 
-    const players = []
+    const teams = []
     for (const match of matches) {
       if (this.canBet(match)) {
-        const a = await this.loadPlayers(match)
-        players[match.matchId1] = a
+        teams.push(match.awayTeamId, match.homeTeamId)
       }
     }
+
+    const players = await PlayerService.getPlayersByTeams(this.props.match.params.leagueId, teams)
 
     this.setState({ matchBets: matches, leagueId: this.props.id, players })
   }
 
-  getPlayers(matchId) {
-    return this.state.players[matchId] || []
+  getPlayers(match) {
+    return this.state.players.filter(player => player.leagueTeamId === match.homeTeamId || player.leagueTeamId === match.awayTeamId)
+      .map(player => ({
+      key: player.id,
+      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
+      value: player.id,
+    }))
   }
 
   async handleBetChange(bet, event, scorerId = undefined) {
@@ -114,7 +108,7 @@ export default class MatchBetsComponent extends Component {
                       label="Střelec"
                       search
                       value={bet.scorerId}
-                      options={this.getPlayers(bet.matchId1)}
+                      options={this.getPlayers(bet)}
                       placeholder="Vyberte hráče"
                       onChange={(e, { name, value }) => {
                         this.handleBetChange(bet, e, value)
