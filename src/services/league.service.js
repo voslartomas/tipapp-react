@@ -81,6 +81,10 @@ export default class LeagueService {
     return api.post(`api/leagues/${leagueId}/players`, player)
   }
 
+  static async updatePlayer(leagueId, player, id) {
+    return api.put(`api/leagues/${leagueId}/players/${id}`, player)
+  }
+
   static async deletePlayer(leagueId, playerId) {
     return api.delete(`api/leagues/${leagueId}/players/${playerId}`)
   }
