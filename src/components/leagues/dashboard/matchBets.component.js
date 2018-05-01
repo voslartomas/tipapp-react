@@ -88,8 +88,8 @@ export default class MatchBetsComponent extends Component {
         <tbody>
           <tr>
               <th width="40%" align="left">Zápas</th>
-              <th width="10%">Výsledek</th>
               <th width="10%">Datum</th>
+              <th width="10%">Výsledek</th>
               <th width="10%">Tip</th>
               <th width="20%">Střelec</th>
               <th width="10%">Body</th>
@@ -98,7 +98,7 @@ export default class MatchBetsComponent extends Component {
         <tr>
             <td align="left">{bet.homeTeam} - {bet.awayTeam}</td>
             <td>{moment(bet.matchDateTime).fromNow()}</td>
-            <td>{bet.matchHomeScore}:{bet.matchAwayScore}</td>
+            <td>{bet.matchHomeScore}:{bet.matchAwayScore}{bet.matchOvertime ? 'P' : ''}</td>
             <td>{!this.canBet(bet) && <div>{bet.homeScore}:{bet.awayScore}</div>}
             {this.canBet(bet) && <div>
               <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />:
