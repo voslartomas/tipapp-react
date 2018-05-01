@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 import api from '../helpers/api'
-import { Link } from 'react-router-dom'
 
 export default class LoginFormComponent extends Component {
   constructor(props) {
@@ -62,7 +61,6 @@ export default class LoginFormComponent extends Component {
                 />
 
                 <Button color="teal" fluid size="large" onClick={() => this.logIn()}>Přihlásit se<i style={{ marginLeft: '5px' }} className="sign in icon" /></Button>
-                <Link to='/register'>Nemáš ještě účet? Registruj se…</Link>
               </Segment>
             </Form>
           </Grid.Column>

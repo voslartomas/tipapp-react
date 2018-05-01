@@ -4,8 +4,6 @@ import SecuredComponent from './components/secured.component'
 import './App.css'
 import moment from 'moment'
 import 'moment/locale/cs'
-import RegisterFormComponent from './components/registerForm.component'
-import { Route } from 'react-router-dom'
 
 moment.locale('cs')
 
@@ -39,7 +37,6 @@ class App extends Component {
 
     return (
       <div>
-        <Route exact path='/register' component={RegisterFormComponent} />
         {!isLoggedIn && <LoginFormComponent login={() => this.login()} />}
         {isLoggedIn && <SecuredComponent logout={() => this.logout()} />}
       </div>
