@@ -20,7 +20,7 @@ export default class SingleBetsComponent extends Component {
   }
 
   async componentDidMount() {
-    const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
+    const players = await PlayerService.getPlayers(this.props.match.params.leagueId, [])
     const teams = await LeagueService.getTeams(this.props.match.params.leagueId)
 
     const playersOptions = players.map(player => ({
@@ -51,7 +51,8 @@ export default class SingleBetsComponent extends Component {
     userBets.forEach((userBet) => {
       inputSingleBets[userBet.leagueSpecialBetSingleId] = {
         leagueSpecialBetSingleId: userBet.leagueSpecialBetSingleId,
-        result: userBet
+        result: userBet,
+        totalPoints: userBet.totalPoints
       }
     })
 
@@ -127,52 +128,65 @@ export default class SingleBetsComponent extends Component {
     }
 
     return (
-      <div>
-        <h1>Single</h1>
-        <Card.Group>
-          {this.state.singleBets.map(bet => (<Card>
-            <Card.Content>
-              {bet.specialBetSingle.name} {this.getResult(bet) && this.getResult(bet)}
-              {!this.getResult(bet) && <div>
-                {bet.specialBetSingle.specialBetType === 1 && <Form.Field>
-                  <Form.Select
-                    fluid
-                    required
-                    label="Hráč"
-                    search
-                    options={this.state.playersOptions}
-                    placeholder="Vyberte hráče"
-                    onChange={(e, { name, value }) => {
-                      this.handleSingleBetChange(bet, value)
-                    }}
-                  />
-                </Form.Field>}
-                {bet.specialBetSingle.specialBetType === 2 &&
-                  <Form.Field>
+      <div class="page">
+        <div class="box-header">Speciální</div>
+        <table>
+          <tr>
+              <th width="40%" align="left">Název</th>
+              <th width="10%">Výsledek</th>
+              <th width="10%">Tip</th>
+              <th width="10%">Body</th>
+          </tr>
+          {this.state.singleBets.map(bet => (
+            <tr>
+                <td align="left">{bet.specialBetSingle.name}</td>
+                <td>
+                  {bet.specialBetTeamResult && bet.specialBetTeamResult.team.name}
+                  {bet.specialBetPlayerResult && bet.specialBetPlayerResult.player.firstName}
+                  {bet.specialBetValue && bet.specialBetValue}
+                </td>
+                <td>
+                {this.getResult(bet)}
+                {!this.getResult(bet) && <div>
+                  {bet.specialBetSingle.specialBetType === 1 && <Form.Field>
                     <Form.Select
                       fluid
                       required
-                      label="Tým"
+                      label="Hráč"
                       search
-                      options={this.state.teamsOptions}
-                      placeholder="Vyberte tým"
+                      options={this.state.playersOptions}
+                      placeholder="Vyberte hráče"
                       onChange={(e, { name, value }) => {
                         this.handleSingleBetChange(bet, value)
                       }}
                     />
                   </Form.Field>}
-                {bet.specialBetSingle.specialBetType === 3 && <span>
-                  <input onChange={(e) => {
-                    this.handleSingleBetChange(bet, e.target.value)
-                  }} type="text" />
-                </span>}
-
-                <Button onClick={() => this.submitSingleBet(bet.id)}>Uložit sázku</Button>
-              </div>}
-
-            </Card.Content>
-          </Card>))}
-        </Card.Group>
+                  {bet.specialBetSingle.specialBetType === 2 &&
+                    <Form.Field>
+                      <Form.Select
+                        fluid
+                        required
+                        label="Tým"
+                        search
+                        options={this.state.teamsOptions}
+                        placeholder="Vyberte tým"
+                        onChange={(e, { name, value }) => {
+                          this.handleSingleBetChange(bet, value)
+                        }}
+                      />
+                    </Form.Field>}
+                  {bet.specialBetSingle.specialBetType === 3 && <span>
+                    <input onChange={(e) => {
+                      this.handleSingleBetChange(bet, e.target.value)
+                    }} type="text" />
+                  </span>}
+                  <Button onClick={() => this.submitSingleBet(bet.id)}>Uložit sázku</Button>
+                  </div>}
+                </td>
+                <td><b>+{this.betPlaced(bet) && this.betPlaced(bet).totalPoints}</b></td>
+            </tr>
+          ))}
+        </table>
       </div>
     )
   }

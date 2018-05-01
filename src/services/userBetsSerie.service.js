@@ -8,6 +8,7 @@ export default class UserBetsSerieService {
   }
 
   static async put(leagueId, data, id = 0) {
+    delete data.id
     return await api.put(`api/leagues/${leagueId}/user/bets/series/${id}`, data)
   }
 }

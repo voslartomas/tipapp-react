@@ -45,6 +45,7 @@ export default class SpecialBetsSerieComponent extends Component {
               <Table.HeaderCell>Typ</Table.HeaderCell>
               <Table.HeaderCell>Datum</Table.HeaderCell>
               <Table.HeaderCell>Výsledek</Table.HeaderCell>
+              <Table.HeaderCell>Body</Table.HeaderCell>
               <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -58,7 +59,7 @@ export default class SpecialBetsSerieComponent extends Component {
                   {bet.specialBetPlayerResult && `${bet.specialBetPlayerResult.player.firstName} ${bet.specialBetPlayerResult.player.lastName}`}
                   {bet.specialBetValue && bet.specialBetValue}
                 </Table.Cell>
-
+                <Table.Cell>{bet.points}</Table.Cell>
                 <Table.Cell>
                   <Link to={`/leagues/${this.props.match.params.leagueId}/bets/single/form/${bet.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                   <a href="#" onClick={this.show}>Smazat</a>

@@ -136,6 +136,14 @@ export default class SingleFormComponent extends Component {
             />
           </Form.Field>
           <Form.Field>
+            <label>Body</label>
+            <Input
+              placeholder="Bdoy"
+              value={this.state.single.points}
+              onChange={event => this.setState({ single: { ...this.state.single, points: event.target.value } })}
+            />
+          </Form.Field>
+          <Form.Field>
             <label>Vyberte datum a čas</label>
             <DatePicker
               selected={this.state.single.dateTime}

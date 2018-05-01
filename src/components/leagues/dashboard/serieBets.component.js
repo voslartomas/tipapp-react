@@ -29,6 +29,8 @@ export default class SerieBetsComponent extends Component {
         leagueSpecialBetSerieId: userBet.leagueSpecialBetSerieId,
         homeTeamScore: userBet.homeTeamScore,
         awayTeamScore: userBet.awayTeamScore,
+        totalPoints: userBet.totalPoints,
+        id: userBet.id
       }
     })
 
@@ -49,6 +51,8 @@ export default class SerieBetsComponent extends Component {
           leagueSpecialBetSerieId: id,
           homeTeamScore: event.target.name === 'homeTeamScore' ? parseInt(event.target.value) : defaultHome,
           awayTeamScore: event.target.name === 'awayTeamScore' ? parseInt(event.target.value) : defaultAway,
+          totalPoints: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].totalPoints : 0,
+          id: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].id : 0,
         },
       }),
     })
@@ -56,7 +60,7 @@ export default class SerieBetsComponent extends Component {
 
   submitSerieBet(id) {
     if (this.state.inputSerieBets[id]) {
-      UserBetsSerieService.put(this.props.match.params.leagueId, this.state.inputSerieBets[id])
+      UserBetsSerieService.put(this.props.match.params.leagueId, this.state.inputSerieBets[id], this.state.inputSerieBets[id].id)
       this.loadBets()
     }
   }
@@ -80,27 +84,29 @@ export default class SerieBetsComponent extends Component {
     }
 
     return (
-      <div>
-        <h1>Serie</h1>
-        <Card.Group>
-          {this.state.serieBets.map(bet => (<Card>
-            <Card.Content>
-              {bet.homeTeamScore > 0 && bet.awayTeamScore > 0 &&
-              <div><span>Výsledek {bet.homeTeam.team.name} {bet.homeTeamScore}:{bet.awayTeamScore} {bet.awayTeam.team.name}</span><br />
-                {this.betPlaced(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {this.state.inputSerieBets[bet.id].homeTeamScore}:{this.state.inputSerieBets[bet.id].awayTeamScore}</span>}
-                {!this.betPlaced(bet) && <span>Nevsazeno</span>}
-              </div>}
-
-              {!bet.homeTeamScore && !bet.awayTeamScore &&
-              <div>
-                <input value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].homeTeamScore) || 0} type="number" name="homeTeamScore" min="0" max="4" style={{ width: '35px' }} onChange={e => this.handleSerieBetChange(bet.id, e)} />
-                  {bet.homeTeam.team.name} vs {bet.awayTeam.team.name}
+      <div class="page">
+      <div class="box-header">Série</div>
+        <table>
+          <tr>
+              <th width="40%" align="left">Zápas</th>
+              <th width="10%">Výsledek</th>
+              <th width="10%">Tip</th>
+              <th width="10%">Body</th>
+          </tr>
+          {this.state.serieBets.map(bet => (
+            <tr>
+              <td align="left">{bet.homeTeam.team.name} - {bet.awayTeam.team.name}</td>
+              <td>{bet.homeTeamScore}:{bet.awayTeamScore}</td>
+              <td>
+                {this.betPlaced(bet) && <span>{this.state.inputSerieBets[bet.id].homeTeamScore}:{this.state.inputSerieBets[bet.id].awayTeamScore}</span>}
+                <input value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].homeTeamScore) || 0} type="number" name="homeTeamScore" min="0" max="4" style={{ width: '35px' }} onChange={e => this.handleSerieBetChange(bet.id, e)} />:
                 <input value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].awayTeamScore) || 0} type="number" name="awayTeamScore" min="0" max="4" style={{ width: '35px' }} onChange={e => this.handleSerieBetChange(bet.id, e)} />
                 <Button onClick={() => this.submitSerieBet(bet.id)}>Uložit sázku</Button>
-              </div>}
-            </Card.Content>
-          </Card>))}
-        </Card.Group>
+                </td>
+              <td><b>+{this.betPlaced(bet) && this.betPlaced(bet).totalPoints}</b></td>
+            </tr>
+          ))}
+          </table>
       </div>
     )
   }

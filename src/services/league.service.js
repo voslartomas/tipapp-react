@@ -25,6 +25,12 @@ export default class LeagueService {
     return response.body
   }
 
+  static async getBetsMatches(leagueId, date = '2018-04-29') {
+    const response = await api.get(`api/leagues/${leagueId}/bets/matches?date=${date}`)
+
+    return response.body
+  }
+
   static async getLeagueById(leagueId) {
     const response = await api.get(`api/leagues/${leagueId}`)
 
@@ -73,6 +79,10 @@ export default class LeagueService {
 
   static async createPlayer(leagueId, player) {
     return api.post(`api/leagues/${leagueId}/players`, player)
+  }
+
+  static async updatePlayer(leagueId, player, id) {
+    return api.put(`api/leagues/${leagueId}/players/${id}`, player)
   }
 
   static async deletePlayer(leagueId, playerId) {

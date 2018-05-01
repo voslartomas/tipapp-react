@@ -3,6 +3,7 @@ import { Menu, Segment, Sidebar, Icon, Header, Card, Button, Form } from 'semant
 import { Route, Link } from 'react-router-dom'
 import moment from 'moment'
 import MatchService from '../../../services/match.service'
+import LeagueService from '../../../services/league.service'
 import UserBetsMatchService from '../../../services/userBetsMatch.service'
 import PlayerService from '../../../services/player.service'
 
@@ -12,83 +13,54 @@ export default class MatchBetsComponent extends Component {
 
     this.state = {
       matchBets: [],
-      inputBets: {},
-      leagueId: undefined
+      leagueId: undefined,
+      players: []
     }
   }
 
   async componentDidMount() {
-    this.loadPlayers()
-    this.loadBets()
-  }
-
-  async loadPlayers() {
-    const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
-
-    const playersOptions = players.map(player => ({
-      key: player.id,
-      text: `${player.player.firstName} ${player.player.lastName}`,
-      value: player.id,
-    }))
-
-
-    this.setState({
-      playersOptions,
-      leagueId: this.props.id
-    })
+    await this.loadBets()
   }
 
   async loadBets() {
-    const bets = await MatchService.getMatches(this.props.match.params.leagueId)
-    const userBets = await UserBetsMatchService.getAll(this.props.match.params.leagueId)
+    const matches = await LeagueService.getBetsMatches(this.props.match.params.leagueId)
 
-    const inputBets = []
-    userBets.forEach((userBet) => {
-      inputBets[userBet.matchId] = {
-        matchId: userBet.matchId,
-        homeScore: userBet.homeScore,
-        awayScore: userBet.awayScore,
-        scorerId: userBet.scorerId,
-        correctBet: userBet.correctBet
+    const teams = []
+    for (const match of matches) {
+      if (this.canBet(match)) {
+        teams.push(match.awayTeamId, match.homeTeamId)
       }
-    })
+    }
 
-    this.setState({ matchBets: bets, userMatchBets: userBets, inputBets })
+    const players = await PlayerService.getPlayersByTeams(this.props.match.params.leagueId, teams)
+
+    this.setState({ matchBets: matches, leagueId: this.props.id, players })
   }
 
-  handleBetChange(id, event, scorerId = undefined) {
-    let defaultHome,
-      defaultAway = 0
-    if (this.state.inputBets[id]) {
-      defaultHome = this.state.inputBets[id].homeScore
-      defaultAway = this.state.inputBets[id].awayScore
-    }
-
-    if (!scorerId && this.state.inputBets[id]) {
-      scorerId = this.state.inputBets[id].scorerId;
-    }
-
-    this.setState({
-      inputBets: Object.assign(this.state.inputBets, {
-        [id]: {
-          matchId: id,
-          homeScore: event.target.name === 'homeScore' ? parseInt(event.target.value) : defaultHome,
-          awayScore: event.target.name === 'awayScore' ? parseInt(event.target.value) : defaultAway,
-          scorerId
-        },
-      }),
-    })
+  getPlayers(match) {
+    return this.state.players.filter(player => player.leagueTeamId === match.homeTeamId || player.leagueTeamId === match.awayTeamId)
+      .map(player => ({
+      key: player.id,
+      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
+      value: player.id,
+    }))
   }
 
-  submitSerieBet(id) {
-    if (this.state.inputBets[id]) {
-      UserBetsMatchService.put(this.props.match.params.leagueId, this.state.inputBets[id])
-      this.loadBets()
+  async handleBetChange(bet, event, scorerId = undefined) {
+    if (!scorerId) {
+      scorerId = bet.scorerId;
     }
+
+    await UserBetsMatchService.put(this.props.match.params.leagueId, {matchId: bet.matchId1,
+      homeScore: event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeScore || 0,
+      awayScore: event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayScore || 0,
+      scorerId}, bet.id)
+
+    await this.loadBets()
   }
 
   betPlaced(bet) {
-    return this.state.inputBets[bet.id]
+    return bet.id
   }
 
   betCorrect(bet) {
@@ -100,46 +72,59 @@ export default class MatchBetsComponent extends Component {
     return false
   }
 
+  canBet(bet) {
+    return new Date(bet.matchDateTime).getTime() > new Date().getTime()
+  }
+
   render() {
     if (this.props.id !== this.state.leagueId) {
-        this.componentDidMount()
+        // this.componentDidMount()
     }
 
     return (
-      <div>
-        <h1>Zápasy</h1>
-        <Card.Group>
-          {this.state.matchBets.map(bet => (<Card>
-            <Card.Content>
-              {bet.homeScore !== null && bet.awayScore !== null &&
-              <div><span>Výsledek {bet.homeTeam.team.name} {bet.homeScore}:{bet.awayScore} {bet.awayTeam.team.name} {moment(bet.dateTime).fromNow()}</span><br />
-                {this.betPlaced(bet) && <span style={{ color: this.betCorrect(bet) ? 'green' : 'red' }}>Tip {this.state.inputBets[bet.id].homeScore}:{this.state.inputBets[bet.id].awayScore}</span>}
-                {!this.betPlaced(bet) && <span>Nevsazeno</span>}
-              </div>}
-
-              {<div>
-                <input value={(this.state.inputBets[bet.id] && this.state.inputBets[bet.id].homeScore) || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet.id, e)} />
-                  {bet.homeTeam.team.name} vs {bet.awayTeam.team.name}
-                <input value={(this.state.inputBets[bet.id] && this.state.inputBets[bet.id].awayScore) || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet.id, e)} />
-                <Form.Field>
-                  {/*<Form.Select
-                    fluid
-                    required
-                    label="Střelec"
-                    search
-                    value={this.state.inputBets[bet.id] && this.state.inputBets[bet.id].scorerId}
-                    options={this.state.playersOptions}
-                    placeholder="Vyberte hráče"
-                    onChange={(e, { name, value }) => {
-                      this.handleBetChange(bet.id, e, value)
-                    }}
-                  />*/}
-                </Form.Field>
-                <Button onClick={() => this.submitSerieBet(bet.id)}>Uložit sázku</Button>
-              </div>}
-            </Card.Content>
-          </Card>))}
-        </Card.Group>
+      <div class="page">
+      <div class="box-header">Zápasy</div>
+      <table>
+        <tbody>
+          <tr>
+              <th width="40%" align="left">Zápas</th>
+              <th width="10%">Datum</th>
+              <th width="10%">Výsledek</th>
+              <th width="10%">Tip</th>
+              <th width="20%">Střelec</th>
+              <th width="10%">Body</th>
+          </tr>
+        {this.state.matchBets.map(bet => (
+        <tr>
+            <td align="left">{bet.homeTeam} - {bet.awayTeam}</td>
+            <td>{moment(bet.matchDateTime).fromNow()}</td>
+            <td>{bet.matchHomeScore}:{bet.matchAwayScore}{bet.matchOvertime ? 'P' : ''}</td>
+            <td>{!this.canBet(bet) && <div>{bet.homeScore}:{bet.awayScore}</div>}
+            {this.canBet(bet) && <div>
+              <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />:
+              <input value={bet.awayScore || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />
+            </div>}
+            </td>
+            <td>{!this.canBet(bet) && <span>{bet.scorer}</span>}
+            {this.canBet(bet) && <Form.Field>
+              {<Form.Select
+                fluid
+                required
+                search
+                value={bet.scorerId}
+                options={this.getPlayers(bet)}
+                placeholder="Vyberte hráče"
+                onChange={(e, { name, value }) => {
+                  this.handleBetChange(bet, e, value)
+                }}
+              />}
+            </Form.Field>}
+            </td>
+            <td><b>+{bet.totalPoints}</b></td>
+        </tr>
+          ))}
+        </tbody>
+        </table>
       </div>
     )
   }
