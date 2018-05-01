@@ -51,7 +51,8 @@ export default class SingleBetsComponent extends Component {
     userBets.forEach((userBet) => {
       inputSingleBets[userBet.leagueSpecialBetSingleId] = {
         leagueSpecialBetSingleId: userBet.leagueSpecialBetSingleId,
-        result: userBet
+        result: userBet,
+        totalPoints: userBet.totalPoints
       }
     })
 
@@ -182,7 +183,7 @@ export default class SingleBetsComponent extends Component {
                   <Button onClick={() => this.submitSingleBet(bet.id)}>Uložit sázku</Button>
                   </div>}
                 </td>
-                <td></td>
+                <td><b>+{this.betPlaced(bet) && this.betPlaced(bet).totalPoints}</b></td>
             </tr>
           ))}
         </table>

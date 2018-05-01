@@ -29,6 +29,8 @@ export default class SerieBetsComponent extends Component {
         leagueSpecialBetSerieId: userBet.leagueSpecialBetSerieId,
         homeTeamScore: userBet.homeTeamScore,
         awayTeamScore: userBet.awayTeamScore,
+        totalPoints: userBet.totalPoints,
+        id: userBet.id
       }
     })
 
@@ -49,6 +51,8 @@ export default class SerieBetsComponent extends Component {
           leagueSpecialBetSerieId: id,
           homeTeamScore: event.target.name === 'homeTeamScore' ? parseInt(event.target.value) : defaultHome,
           awayTeamScore: event.target.name === 'awayTeamScore' ? parseInt(event.target.value) : defaultAway,
+          totalPoints: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].totalPoints : 0,
+          id: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].id : 0,
         },
       }),
     })
@@ -56,7 +60,7 @@ export default class SerieBetsComponent extends Component {
 
   submitSerieBet(id) {
     if (this.state.inputSerieBets[id]) {
-      UserBetsSerieService.put(this.props.match.params.leagueId, this.state.inputSerieBets[id])
+      UserBetsSerieService.put(this.props.match.params.leagueId, this.state.inputSerieBets[id], this.state.inputSerieBets[id].id)
       this.loadBets()
     }
   }
@@ -99,7 +103,7 @@ export default class SerieBetsComponent extends Component {
                 <input value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].awayTeamScore) || 0} type="number" name="awayTeamScore" min="0" max="4" style={{ width: '35px' }} onChange={e => this.handleSerieBetChange(bet.id, e)} />
                 <Button onClick={() => this.submitSerieBet(bet.id)}>Uložit sázku</Button>
                 </td>
-              <td></td>
+              <td><b>+{this.betPlaced(bet) && this.betPlaced(bet).totalPoints}</b></td>
             </tr>
           ))}
           </table>
