@@ -38,12 +38,8 @@ class App extends Component {
     const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('token').length > 0
 
     return (
-<<<<<<< HEAD
-      <div>
-        <Route exact path='/register' component={RegisterFormComponent} />
-=======
       <div class="main">
->>>>>>> 5979ab4d4c2fbb45811d04ffbe3652f93683a7d5
+        <Route exact path='/register' component={RegisterFormComponent} />
         {!isLoggedIn && <LoginFormComponent login={() => this.login()} />}
         {isLoggedIn && <SecuredComponent logout={() => this.logout()} />}
       </div>
