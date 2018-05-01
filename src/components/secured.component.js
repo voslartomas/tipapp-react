@@ -20,10 +20,9 @@ export default class SecuredComponent extends Component {
     return (
       <div>
         <nav>
-          <h1 class="brand"><a href="#"><b>NEYMAR | </b>FIFA WORLD CUP 2018</a></h1>
+          <h1 class="brand"><a href="#"><b>NEYMAR | </b><SelectLeagueComponent /></a></h1>
           <ul>
-              <li class="category">LEAGUES:</li>
-              <SelectLeagueComponent />
+
               <li><Link to="/">Admin</Link></li>
               <li><a onClick={() => this.props.logout()} href="#">LOG OUT</a></li>
           </ul>

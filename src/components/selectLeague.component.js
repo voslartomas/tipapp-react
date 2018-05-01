@@ -57,19 +57,14 @@ export default class SelectLeagueComponent extends Component {
     }
 
     return (
-      <div>
-      <Form.Field>
-        <Form.Select
+        <Form.Select style={{backgroundColor: '#202020', color: 'white', float: 'right'}}
           fluid
-          required
           options={this.state.leagues}
           value={this.state.league}
           onChange={(event, { name, value }) => {
             this.setState({ league: value, redirect: `/dashboard/${value}` })
           }}
         />
-      </Form.Field>
-      </div>
     )
   }
 }
