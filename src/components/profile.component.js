@@ -16,7 +16,9 @@ export default class ProfileComponent extends Component {
   show = () => this.setState({ open: true })
   handleDeleteCancel = () => this.setState({ open: false })
   handleDeleteConfirm = async (userId) => {
+    this.setState({ open: false })
     await UserService.delete(userId)
+    this.props.logout()
     this.loadUser()
   }
   

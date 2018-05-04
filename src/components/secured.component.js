@@ -41,7 +41,7 @@ export default class SecuredComponent extends Component {
             <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
             <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
             <Route exact path="/profile/edit/:userId" component={UserFormComponent} />
-            <Route exact path="/profile" component={ProfileComponent} />
+            <Route exact path="/profile" render={routeProps => <ProfileComponent {...routeProps} logout={this.props.logout}/>} />
           </div>
         </div>
       </div>
