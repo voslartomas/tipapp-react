@@ -13,6 +13,12 @@ export default class UserService {
     return response.body
   }
 
+  static async getCurrentUser() {
+    const response = await api.get('api/users/current')
+
+    return response.body
+  }
+
   static async delete(userId) {
     return await api.delete(`api/users/${userId}`)
   }

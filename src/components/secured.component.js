@@ -10,6 +10,8 @@ import SportFormComponent from './sports/sportForm.component'
 import TeamFormComponent from './teams/teamForm.component';
 import PlayerFormComponent from './players/playerForm.component';
 import SelectLeagueComponent from './selectLeague.component';
+import ProfileComponent from './profile.component';
+import UserFormComponent from './userForm.component';
 
 export default class SecuredComponent extends Component {
   componentDidMount() {
@@ -24,6 +26,7 @@ export default class SecuredComponent extends Component {
           <ul>
 
               <li><Link to="/">Admin</Link></li>
+              <li><Link to="/profile">Profil</Link></li>
               <li><a onClick={() => this.props.logout()} href="#">LOG OUT</a></li>
           </ul>
         </nav>
@@ -37,6 +40,8 @@ export default class SecuredComponent extends Component {
             <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
             <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
             <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
+            <Route exact path="/profile/edit/:userId" component={UserFormComponent} />
+            <Route exact path="/profile" component={ProfileComponent} />
           </div>
         </div>
       </div>
