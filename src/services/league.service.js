@@ -25,8 +25,14 @@ export default class LeagueService {
     return response.body
   }
 
-  static async getBetsMatches(leagueId, date = '2018-04-29') {
-    const response = await api.get(`api/leagues/${leagueId}/bets/matches?date=${date}`)
+  static async getBetsSeries(leagueId) {
+    const response = await api.get(`api/leagues/${leagueId}/users/bets/series`)
+
+    return response.body
+  }
+
+  static async getBetsMatches(leagueId) {
+    const response = await api.get(`api/leagues/${leagueId}/bets/matches`)
 
     return response.body
   }

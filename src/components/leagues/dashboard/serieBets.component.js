@@ -3,6 +3,7 @@ import { Menu, Segment, Sidebar, Icon, Header, Card, Button } from 'semantic-ui-
 import { Route, Link } from 'react-router-dom'
 import BetsSerieService from '../../../services/betsSerie.service'
 import UserBetsSerieService from '../../../services/userBetsSerie.service'
+import LeagueService from '../../../services/league.service'
 
 export default class SerieBetsComponent extends Component {
   constructor(props) {
@@ -20,93 +21,77 @@ export default class SerieBetsComponent extends Component {
   }
 
   async loadBets() {
-    const bets = await BetsSerieService.getAll(this.props.match.params.leagueId)
-    const userBets = await UserBetsSerieService.getAll(this.props.match.params.leagueId)
+    const userBets = await LeagueService.getBetsSeries(this.props.match.params.leagueId)
 
-    const inputSerieBets = []
-    userBets.forEach((userBet) => {
-      inputSerieBets[userBet.leagueSpecialBetSerieId] = {
-        leagueSpecialBetSerieId: userBet.leagueSpecialBetSerieId,
-        homeTeamScore: userBet.homeTeamScore,
-        awayTeamScore: userBet.awayTeamScore,
-        totalPoints: userBet.totalPoints,
-        id: userBet.id
-      }
-    })
-
-    this.setState({ serieBets: bets, userSerieBets: userBets, inputSerieBets, leagueId: this.props.id })
+    this.setState({ serieBets: userBets, leagueId: this.props.id })
   }
 
-  handleSerieBetChange(id, event) {
-    let defaultHome,
-      defaultAway = 0
-    if (this.state.inputSerieBets[id]) {
-      defaultHome = this.state.inputSerieBets[id].homeTeamScore
-      defaultAway = this.state.inputSerieBets[id].awayTeamScore
-    }
+  async submitSerieBet(bet) {
+    await UserBetsSerieService.put(this.props.match.params.leagueId, {
+      homeTeamScore: bet.homeTeamScore,
+      awayTeamScore: bet.awayTeamScore,
+      leagueSpecialBetSerieId: bet.leagueSpecialBetSerieId
+    }, bet.id | 0)
 
-    this.setState({
-      inputSerieBets: Object.assign(this.state.inputSerieBets, {
-        [id]: {
-          leagueSpecialBetSerieId: id,
-          homeTeamScore: event.target.name === 'homeTeamScore' ? parseInt(event.target.value) : defaultHome,
-          awayTeamScore: event.target.name === 'awayTeamScore' ? parseInt(event.target.value) : defaultAway,
-          totalPoints: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].totalPoints : 0,
-          id: this.state.inputSerieBets[id] ? this.state.inputSerieBets[id].id : 0,
-        },
-      }),
-    })
+    this.loadBets()
   }
 
-  submitSerieBet(id) {
-    if (this.state.inputSerieBets[id]) {
-      UserBetsSerieService.put(this.props.match.params.leagueId, this.state.inputSerieBets[id], this.state.inputSerieBets[id].id)
-      this.loadBets()
-    }
+  async handleBetChange(bet, event) {
+    bet.homeTeamScore = event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeTeamScore || 0
+    bet.awayTeamScore = event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayTeamScore || 0
+
+    this.setState({ loading: false })
   }
 
   betPlaced(bet) {
-    return this.state.inputSerieBets[bet.id]
-  }
-
-  betCorrect(bet) {
-    if (this.betPlaced(bet)) {
-      return this.state.inputSerieBets[bet.id].homeTeamScore == bet.homeTeamScore &&
-        this.state.inputSerieBets[bet.id].awayTeamScore == bet.awayTeamScore
-    }
-
-    return false
+    return bet.id
   }
 
   render() {
     if (this.props.id !== this.state.leagueId) {
         this.componentDidMount()
     }
-
+    console.log(this.state.serieBets)
     return (
       <div class="page">
       <div class="box-header">Série</div>
         <table>
-          <tr>
-              <th width="40%" align="left">Zápas</th>
-              <th width="10%">Výsledek</th>
-              <th width="10%">Tip</th>
-              <th width="10%">Body</th>
-          </tr>
-          {this.state.serieBets.map(bet => (
+          <tbody>
             <tr>
-              <td align="left">{bet.homeTeam.team.name} - {bet.awayTeam.team.name}</td>
-              <td>{bet.homeTeamScore}:{bet.awayTeamScore}</td>
-              <td>
-                {this.betPlaced(bet) && <span>{this.state.inputSerieBets[bet.id].homeTeamScore}:{this.state.inputSerieBets[bet.id].awayTeamScore}</span>}
-                <input value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].homeTeamScore) || 0} type="number" name="homeTeamScore" min="0" max="4" style={{ width: '35px' }} onChange={e => this.handleSerieBetChange(bet.id, e)} />:
-                <input value={(this.state.inputSerieBets[bet.id] && this.state.inputSerieBets[bet.id].awayTeamScore) || 0} type="number" name="awayTeamScore" min="0" max="4" style={{ width: '35px' }} onChange={e => this.handleSerieBetChange(bet.id, e)} />
-                <Button onClick={() => this.submitSerieBet(bet.id)}>Uložit sázku</Button>
-                </td>
-              <td><b>+{this.betPlaced(bet) && this.betPlaced(bet).totalPoints}</b></td>
+                <th width="40%" align="left">Zápas</th>
+                <th width="10%">Výsledek</th>
+                <th width="10%">Tip</th>
+                <th width="10%">Body</th>
             </tr>
-          ))}
-          </table>
+            {this.state.serieBets.map(bet => (
+              <tr>
+                <td align="left">{bet.homeTeam} - {bet.awayTeam}</td>
+                <td>{bet.serieHomeScore}:{bet.serieAwayScore}</td>
+                <td>
+                  {this.betPlaced(bet) && <span>{bet.homeTeamScore}:{bet.awayTeamScore}</span>}
+                  <input
+                    value={(bet.homeTeamScore) || 0}
+                    type="number"
+                    onChange={e => this.handleBetChange(bet, e)}
+                    name="homeScore"
+                    min="0"
+                    max="4"
+                    style={{ width: '35px' }} />:
+                  <input
+                    value={(bet.awayTeamScore) || 0}
+                    type="number"
+                    onChange={e => this.handleBetChange(bet, e)}
+                    name="awayScore"
+                    min="0"
+                    max="4"
+                    style={{ width: '35px' }} />
+                  <Button onClick={() => this.submitSerieBet(bet)}>Uložit sázku</Button>
+                  </td>
+                <td><b>+{this.betPlaced(bet) && bet.totalPoints}</b></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     )
   }
