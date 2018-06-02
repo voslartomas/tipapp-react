@@ -34,7 +34,7 @@ export default class SelectLeagueComponent extends Component {
     const leaguesOptions = leagues.map(league => {
       if (league.league.isTheMostActive) {
         selectedLeague = league.league.id
-        redirect = `/dashboard/${league.league.id}`
+        if (window.location.pathname === '/') redirect = `/dashboard/${league.league.id}`
       }
       return ({
         key: league.league.id,
