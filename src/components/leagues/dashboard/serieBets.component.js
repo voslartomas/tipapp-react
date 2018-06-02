@@ -51,7 +51,7 @@ export default class SerieBetsComponent extends Component {
     if (this.props.id !== this.state.leagueId) {
         this.componentDidMount()
     }
-    console.log(this.state.serieBets)
+
     return (
       <div class="page">
       <div class="box-header">Série</div>
