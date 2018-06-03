@@ -23,11 +23,13 @@ export default class TeamsComponent extends Component {
   }
 
   show = () => this.setState({ open: true })
-  handleDeleteConfirm = async (teamId) => {
-    await LeagueService.deleteTeam(this.props.match.params.leagueId, teamId)
-    this.loadTeams()
+  handleDelete = async (teamId) => {
+    if (window.confirm('Opravdu smazat?')) {
+      await LeagueService.deleteTeam(this.props.match.params.leagueId, teamId)
+      this.loadTeams()
+    }
   }
-  handleDeleteCancel = () => this.setState({ open: false })
+
 
   render() {
     return (
@@ -52,21 +54,7 @@ export default class TeamsComponent extends Component {
               <Table.Row>
                 <Table.Cell>
                   <Label ribbon>{team.team.name} {team.team.shortcut}</Label>
-                  <a href="#" onClick={this.show}>Smazat</a>
-                  <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
-                    <Modal.Header>
-                      Smazat ?
-                    </Modal.Header>
-                    <Modal.Content>
-                      <p>Chcete opravdu smazat tento tým ?</p>
-                    </Modal.Content>
-                    <Modal.Actions>
-                      <Button negative onClick={this.handleDeleteCancel}>
-                        Ne
-                      </Button>
-                      <Button positive onClick={() => this.handleDeleteConfirm(team.id)} icon='checkmark' labelPosition='right' content='Ano'/>
-                    </Modal.Actions>
-                  </Modal>
+                  <a href="#" onClick={() => this.handleDelete(team.id)}>Smazat</a>
                 </Table.Cell>
                 <Table.Cell>{team.league.name}</Table.Cell>
                 <Table.Cell>{team.league.sport.name}</Table.Cell>

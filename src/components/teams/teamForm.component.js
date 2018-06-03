@@ -70,6 +70,7 @@ export default class TeamFormComponent extends Component {
               fluid
               required
               label="Sport"
+              search
               options={this.state.sportsOptions}
               value={this.state.team.sportId}
               placeholder="Vyberte sport"

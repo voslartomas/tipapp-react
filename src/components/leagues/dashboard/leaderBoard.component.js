@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import LeagueService from '../../services/league.service'
+import LeagueService from '../../../services/league.service'
 import { Header, Table, Divider, Label } from 'semantic-ui-react'
 
 

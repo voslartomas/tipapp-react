@@ -50,15 +50,17 @@ export default class LeagueService {
   }
 
   static async delete(leagueId) {
-    return api.delete(`api/leagues/${leagueId}`)
+    return await api.delete(`api/leagues/${leagueId}`)
   }
 
   static async create(data) {
-    return api.post('api/leagues', data)
+    const response = await api.post('api/leagues', data)
+
+    return response.body
   }
 
   static async update(data, id) {
-    return api.put(`api/leagues/${id}`, data)
+    return await api.put(`api/leagues/${id}`, data)
   }
 
   // Teams
