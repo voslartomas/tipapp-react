@@ -63,15 +63,6 @@ export default class SingleBetsComponent extends Component {
     return bet.betId
   }
 
-  betCorrect(bet) {
-    if (this.betPlaced(bet)) {
-      return this.state.inputSingleBets[bet.id].homeTeamScore == bet.homeTeamScore &&
-        this.state.inputSingleBets[bet.id].awayTeamScore == bet.awayTeamScore
-    }
-
-    return false
-  }
-
   async submitBet(bet) {
     const value = this.state.userBets[bet.singleId]
 
@@ -88,7 +79,7 @@ export default class SingleBetsComponent extends Component {
         data['value'] = value
       }
 
-      await UserBetsSingleService.put(this.props.match.params.leagueId, data)
+      await UserBetsSingleService.put(this.props.match.params.leagueId, data, bet.id | 0)
       this.loadBets()
     }
   }
