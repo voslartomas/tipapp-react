@@ -138,7 +138,7 @@ export default class SingleFormComponent extends Component {
           <Form.Field>
             <label>Body</label>
             <Input
-              placeholder="Bdoy"
+              placeholder="Body"
               value={this.state.single.points}
               onChange={event => this.setState({ single: { ...this.state.single, points: event.target.value } })}
             />

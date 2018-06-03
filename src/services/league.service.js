@@ -7,6 +7,12 @@ export default class LeagueService {
     return response.body
   }
 
+  static async getUserLeagues() {
+    const response = await api.get(`api/users/leagues`)
+
+    return response.body
+  }
+
   static async getActiveLeagues() {
     const response = await api.get(`api/leagues/active`)
 

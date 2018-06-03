@@ -44,6 +44,7 @@ export default class LeagueUsersComponent extends Component {
               <Table.HeaderCell>Jméno</Table.HeaderCell>
               <Table.HeaderCell>Zaplaceno</Table.HeaderCell>
               <Table.HeaderCell>Aktivní</Table.HeaderCell>
+              <Table.HeaderCell>Admin</Table.HeaderCell>
               <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -55,6 +56,7 @@ export default class LeagueUsersComponent extends Component {
                 </Table.Cell>
                 <Table.Cell>{leagueUser.paid && <span>Ano</span>}</Table.Cell>
                 <Table.Cell>{leagueUser.active && <span>Ano</span>}</Table.Cell>
+                <Table.Cell>{leagueUser.admin && <span>Ano</span>}</Table.Cell>
                 <Table.Cell>
                   <Link to={`/leagues/${this.props.match.params.leagueId}/users/form/${leagueUser.id}`} style={{marginRight: '5px'}}>Upravit</Link>
                   <a href="#" onClick={this.show}>Smazat</a>

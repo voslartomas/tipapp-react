@@ -24,7 +24,6 @@ export default class SecuredComponent extends Component {
         <nav>
           <h1 class="brand"><a href="#"><b>NEYMAR | </b><SelectLeagueComponent /></a></h1>
           <ul>
-
               <li><Link to="/">Admin</Link></li>
               <li><Link to="/profile">Profil</Link></li>
               <li><a onClick={() => this.props.logout()} href="#">LOG OUT</a></li>
@@ -32,7 +31,7 @@ export default class SecuredComponent extends Component {
         </nav>
         <div class="box">
           <div>
-            <Route exact path="/" component={SportsComponent} />
+            <Route exact path="/" component={LeaguesComponent} />
             <Route path="/dashboard/:leagueId" component={LeagueDashboardComponent} />
             <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
             <Route exact path="/sports/:sportId" component={LeaguesComponent} />
