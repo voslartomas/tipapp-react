@@ -87,7 +87,7 @@ export default class SerieBetsComponent extends Component {
                     style={{ width: '35px' }} />
                   <Button onClick={() => this.submitSerieBet(bet)}>Uložit sázku</Button>
                   </td>
-                <td><b>+{this.betPlaced(bet) && bet.totalPoints}</b></td>
+                <td><b>{this.betPlaced(bet) && bet.totalPoints}</b></td>
               </tr>
             ))}
           </tbody>

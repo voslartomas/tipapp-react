@@ -120,7 +120,7 @@ export default class MatchBetsComponent extends Component {
               />}
             </Form.Field>}
             </td>
-            <td><b>+{bet.totalPoints}</b></td>
+            <td><b>{bet.totalPoints}</b></td>
         </tr>
           ))}
         </tbody>
