@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Menu, Segment, Sidebar, Icon, Header, Card, Button, Form } from 'semantic-ui-react'
 import { Route, Link } from 'react-router-dom'
-import BetsSingleService from '../../../services/betsSingle.service'
+import moment from 'moment'
 import UserBetsSingleService from '../../../services/userBetsSingle.service'
 import PlayerService from '../../../services/player.service'
 import LeagueService from '../../../services/league.service'
@@ -44,7 +44,7 @@ export default class SingleBetsComponent extends Component {
   }
 
   async loadBets() {
-    const bets = await BetsSingleService.getAll(this.props.match.params.leagueId)
+    const bets = await UserBetsSingleService.getAll(this.props.match.params.leagueId)
 
     this.setState({ singleBets: bets })
   }
@@ -60,7 +60,7 @@ export default class SingleBetsComponent extends Component {
   }
 
   betPlaced(bet) {
-    return bet.betId
+    return bet.id
   }
 
   async submitBet(bet) {
@@ -106,6 +106,7 @@ export default class SingleBetsComponent extends Component {
           <tr>
               <th width="40%" align="left">Název</th>
               <th width="10%">Výsledek</th>
+              <th width="10%">Datum</th>
               <th width="10%">Tip</th>
               <th width="10%">Body</th>
           </tr>
@@ -117,6 +118,7 @@ export default class SingleBetsComponent extends Component {
                   {bet.player && bet.player}
                   {bet.value && bet.value}
                 </td>
+                <td>{this.canBet(bet) && <span>Konec {moment(bet.endDate).fromNow()}</span>}</td>
                 <td>
                 {this.getResult(bet)}
                 {this.canBet(bet) && <div>
@@ -149,7 +151,7 @@ export default class SingleBetsComponent extends Component {
                   <Button onClick={(e) => this.submitBet(bet)}>Uložit sázku</Button>
                   </div>}
                 </td>
-                <td><b>{this.betPlaced(bet) && this.betPlaced(bet).totalPoints}</b></td>
+                <td><b>{this.betPlaced(bet) && bet.totalPoints}</b></td>
             </tr>
           ))}
         </table>
