@@ -2,7 +2,7 @@ import api from '../helpers/api'
 
 export default class BetsSingleService {
   static async getAll(leagueId) {
-    const response = await api.get(`api/leagues/${leagueId}/bets/single`)
+    const response = await api.get(`api/leagues/${leagueId}/users/bets/single`)
 
     return response.body
   }
