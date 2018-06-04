@@ -46,14 +46,15 @@ export default class MatchBetsComponent extends Component {
     }))
   }
 
-  async handleBetChange(bet, event, scorerId = undefined) {
+  async handleBetChange(bet, value, type, scorerId = undefined) {
     if (!scorerId) {
       scorerId = bet.scorerId;
     }
 
     await UserBetsMatchService.put(this.props.match.params.leagueId, {matchId: bet.matchId1,
-      homeScore: event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeScore || 0,
-      awayScore: event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayScore || 0,
+      homeScore: type === 'homeScore' ? parseInt(value) : bet.homeScore || 0,
+      awayScore: type === 'awayScore' ? parseInt(value) : bet.awayScore || 0,
+      overtime: type === 'overtime' ? value: bet.overtime || false,
       scorerId}, bet.id)
 
     await this.loadBets()
@@ -101,8 +102,9 @@ export default class MatchBetsComponent extends Component {
             <td>{bet.matchHomeScore}:{bet.matchAwayScore}{bet.matchOvertime ? 'P' : ''}</td>
             <td>{!this.canBet(bet) && <div>{bet.homeScore}:{bet.awayScore}</div>}
             {this.canBet(bet) && <div>
-              <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />:
-              <input value={bet.awayScore || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e)} />
+              <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e.target.value, 'homeScore')} />:
+              <input value={bet.awayScore || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e.target.value, 'awayScore')} />
+              <input type="checkbox" title="Prodloužení" checked={bet.overtime} onChange={e => this.handleBetChange(bet, e.target.checked, 'overtime')} />
             </div>}
             </td>
             <td>{!this.canBet(bet) && <span>{bet.scorer}</span>}
@@ -115,7 +117,7 @@ export default class MatchBetsComponent extends Component {
                 options={this.getPlayers(bet)}
                 placeholder="Vyberte hráče"
                 onChange={(e, { name, value }) => {
-                  this.handleBetChange(bet, e, value)
+                  this.handleBetChange(bet, e, 'scorer', value)
                 }}
               />}
             </Form.Field>}

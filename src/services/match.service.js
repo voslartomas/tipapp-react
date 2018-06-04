@@ -6,8 +6,15 @@ export default class MatchService {
 
     return response.body
   }
+
   static async getMatchById(matchId) {
     const response = await api.get(`api/matches/${matchId}`)
+
+    return response.body
+  }
+
+  static async getMatchScorersById(matchId) {
+    const response = await api.get(`api/matches/${matchId}/scorers`)
 
     return response.body
   }

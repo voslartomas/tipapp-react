@@ -10,9 +10,9 @@ export default class SingleBetsComponent extends Component {
   constructor(props) {
     super(props)
 
+    this.userBets = {}
     this.state = {
       singleBets: [],
-      userBets: {},
       playersOptions: [],
       teamsOptions: [],
       leagueId: undefined
@@ -64,7 +64,7 @@ export default class SingleBetsComponent extends Component {
   }
 
   async submitBet(bet) {
-    const value = this.state.userBets[bet.singleId]
+    const value = this.userBets[bet.singleId]
 
     if (value) {
       let data = {
@@ -90,8 +90,7 @@ export default class SingleBetsComponent extends Component {
 
   handleChange(bet, value) {
     const userBets = this.state.userBets
-    userBets[bet.singleId] = value
-    this.setState({ userBets })
+    this.userBets[bet.singleId] = value
   }
 
   render() {
