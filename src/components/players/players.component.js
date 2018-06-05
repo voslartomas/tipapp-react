@@ -10,7 +10,7 @@ export default class PlayersComponent extends Component {
 
     this.state = {
       players: [],
-      search: 'McDavid'
+      search: ''
     }
   }
 
@@ -22,6 +22,23 @@ export default class PlayersComponent extends Component {
     const players = await PlayerService.getPlayers(this.props.match.params.leagueId)
 
     this.setState({ players })
+  }
+
+  filter(players) {
+    const search = this.normalize(this.state.search)
+
+    const p = players.filter(player => {
+      return (this.normalize(player.player.firstName).indexOf(search) !== -1 ||
+      this.normalize(player.player.lastName).indexOf(search) !== -1 ||
+      this.normalize(player.leagueTeam.team.name).indexOf(search) !== -1)
+    }
+    ).slice(0, 50)
+
+    return p
+  }
+
+  normalize(string) {
+    return string.replace(/^\s+|\s+$/g, '').toLowerCase()
   }
 
   show = () => this.setState({ open: true })
@@ -64,7 +81,7 @@ export default class PlayersComponent extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {this.state.players && this.state.players.filter(player => player.player.firstName.indexOf(this.state.search) !== -1).slice(0, 50).map(leaguePlayer => (
+            {this.state.players && this.filter(this.state.players).map(leaguePlayer => (
               <Table.Row>
                 <Table.Cell>
                   <Label ribbon>{leaguePlayer.player.firstName} {leaguePlayer.player.lastName}</Label>
