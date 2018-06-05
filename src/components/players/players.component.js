@@ -64,7 +64,7 @@ export default class PlayersComponent extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {this.state.players && this.state.players.filter(player => player.player.firstName.indexOf(this.state.search) !== -1).map(leaguePlayer => (
+            {this.state.players && this.state.players.filter(player => player.player.firstName.indexOf(this.state.search) !== -1).slice(0, 50).map(leaguePlayer => (
               <Table.Row>
                 <Table.Cell>
                   <Label ribbon>{leaguePlayer.player.firstName} {leaguePlayer.player.lastName}</Label>
