@@ -91,7 +91,7 @@ export default class LeagueUserFormComponent extends Component {
             <Checkbox
               label="Admin"
               checked={this.state.leagueUser.admin}
-              onChange={() => this.setState({ leagueUser: { ...this.state.leagueUser, active: !this.state.leagueUser.admin } })}
+              onChange={() => this.setState({ leagueUser: { ...this.state.leagueUser, admin: !this.state.leagueUser.admin } })}
             />
           </Form.Field>
           <Button type="submit">Potvrdit změny</Button>
