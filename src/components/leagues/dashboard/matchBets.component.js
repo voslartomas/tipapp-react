@@ -14,7 +14,8 @@ export default class MatchBetsComponent extends Component {
     this.state = {
       matchBets: [],
       leagueId: undefined,
-      players: []
+      players: [],
+      history: false
     }
   }
 
@@ -23,7 +24,12 @@ export default class MatchBetsComponent extends Component {
   }
 
   async loadBets() {
-    const matches = await LeagueService.getBetsMatches(this.props.match.params.leagueId)
+    let matches
+    if (this.state.history) {
+      matches = await LeagueService.getBetsMatchesHistory(this.props.match.params.leagueId)
+    } else {
+      matches = await LeagueService.getBetsMatches(this.props.match.params.leagueId)
+    }
 
     const teams = []
     for (const match of matches) {
@@ -77,14 +83,24 @@ export default class MatchBetsComponent extends Component {
     return new Date(bet.matchDateTime).getTime() > new Date().getTime()
   }
 
-  render() {
-    if (this.props.id !== this.state.leagueId) {
-        // this.componentDidMount()
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.history !== this.state.history) {
+      this.loadBets()
     }
+  }
 
+  toggleHistory() {
+    this.setState({ history: !this.state.history })
+  }
+
+  render() {
     return (
       <div class="page">
       <div class="box-header">Zápasy</div>
+
+      {!this.state.history && <span onClick={() => { this.toggleHistory() }}>Zobrazit historii</span>}
+      {this.state.history && <span onClick={() => { this.toggleHistory() }}>Zobrazit nadcházející</span>}
+
       <table>
         <tbody>
           <tr>

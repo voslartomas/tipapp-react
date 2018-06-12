@@ -38,7 +38,13 @@ export default class LeagueService {
   }
 
   static async getBetsMatches(leagueId) {
-    const response = await api.get(`api/leagues/${leagueId}/bets/matches`)
+    const response = await api.get(`api/leagues/${leagueId}/bets/matches?history=false&order=ASC&limitDays=30`)
+
+    return response.body
+  }
+
+  static async getBetsMatchesHistory(leagueId) {
+    const response = await api.get(`api/leagues/${leagueId}/bets/matches?history=true&order=DESC`)
 
     return response.body
   }

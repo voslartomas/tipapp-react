@@ -11,6 +11,7 @@ import LeaderBoardComponent from './leaderBoard.component'
 export default class LeagueDashboardComponent extends Component {
   constructor(props) {
     super(props)
+    console.log(props)
   }
 
   render() {
@@ -18,17 +19,18 @@ export default class LeagueDashboardComponent extends Component {
       <div>
         <div class="league-bar">
           <ul>
-              <li><a href="#" class="my-bets">Sázky</a></li>
-              <li><a href="#" class="table">Tabulka</a></li>
+              <li><Link to={`/dashboard/${this.props.match.params.leagueId}/matches`}>Zápasy</Link></li>
+              <li><Link to={`/dashboard/${this.props.match.params.leagueId}/singles`}>Speciální</Link></li>
+              <li><Link to={`/dashboard/${this.props.match.params.leagueId}/leaderBoard`}>Tabulka</Link></li>
           </ul>
           <div style={{clear: 'both'}}></div>
         </div>
 
-        <SerieBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />
-        <SingleBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />
-        <MatchBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />
+        {this.props.section === 'series' && <SerieBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />}
+        {this.props.section === 'singles' && <SingleBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />}
+        {this.props.section === 'matches' && <MatchBetsComponent match={this.props.match} id={this.props.match.params.leagueId} />}
 
-        <LeaderBoardComponent match={this.props.match} id={this.props.match.params.leagueId} />
+        {this.props.section === 'leaderboard' && <LeaderBoardComponent match={this.props.match} id={this.props.match.params.leagueId} />}
       </div>
     )
   }
