@@ -12,6 +12,7 @@ import PlayerFormComponent from './players/playerForm.component';
 import SelectLeagueComponent from './selectLeague.component';
 import ProfileComponent from './profile.component';
 import UserFormComponent from './userForm.component';
+import PasswordComponent from './password.component';
 
 export default class SecuredComponent extends Component {
   componentDidMount() {
@@ -41,6 +42,7 @@ export default class SecuredComponent extends Component {
             <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
             <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
             <Route exact path="/profile/edit/:userId" component={UserFormComponent} />
+            <Route exact path="/profile/password" component={PasswordComponent} />
             <Route exact path="/profile" render={routeProps => <ProfileComponent {...routeProps} logout={this.props.logout}/>} />
           </div>
         </div>

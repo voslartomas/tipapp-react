@@ -18,6 +18,9 @@ export default class UserService {
 
     return response.body
   }
+  static async changePassword(data) {
+    return await api.put(`api/users/password`, data)
+  }
 
   static async delete(userId) {
     return await api.delete(`api/users/${userId}`)
