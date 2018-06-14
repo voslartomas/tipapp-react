@@ -22,6 +22,10 @@ export default class MatchFormComponent extends Component {
   }
 
   getPlayers(match) {
+    if (!this.state.players) {
+      return []
+    }
+
     return this.state.players.filter(player => player.leagueTeamId === match.homeTeamId || player.leagueTeamId === match.awayTeamId)
       .map(player => ({
       key: player.id,
