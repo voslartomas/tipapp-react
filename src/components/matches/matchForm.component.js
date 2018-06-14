@@ -6,6 +6,7 @@ import moment from 'moment'
 import { Link, Redirect } from 'react-router-dom'
 import TeamService from '../../services/team.service';
 import LeagueService from '../../services/league.service';
+import PlayerService from '../../services/player.service'
 
 export default class MatchFormComponent extends Component {
   constructor(props) {
@@ -15,8 +16,22 @@ export default class MatchFormComponent extends Component {
       match: {},
       leaguesOptions: [],
       teamsOptions: [],
+      players: [],
       redirect: undefined,
     }
+  }
+
+  getPlayers(match) {
+    if (!this.state.players) {
+      return []
+    }
+
+    return this.state.players.filter(player => player.leagueTeamId === match.homeTeamId || player.leagueTeamId === match.awayTeamId)
+      .map(player => ({
+      key: player.id,
+      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
+      value: player.id,
+    }))
   }
 
   async componentDidMount() {
@@ -24,12 +39,16 @@ export default class MatchFormComponent extends Component {
     let match = {
       leagueId,
     }
+    let players
     if (matchId !== 'new') {
       try {
         match = await MatchService.getMatchById(matchId)
+        match.scorers = await MatchService.getMatchScorersById(matchId)
         match.dateTime = moment(match.dateTime)
+
+        players = await PlayerService.getPlayersByTeams(this.props.match.params.leagueId, [match.homeTeamId, match.awayTeamId])
       } catch (e) {
-        console.eråror(e)
+        console.error(e)
       }
     }
 
@@ -50,6 +69,7 @@ export default class MatchFormComponent extends Component {
     this.setState({
       teamsOptions,
       leaguesOptions,
+      players,
       match,
     })
   }
@@ -130,6 +150,19 @@ export default class MatchFormComponent extends Component {
               placeholder="Skóre hosté"
               value={this.state.match.awayScore}
               onChange={event => this.setState({ match: { ...this.state.match, awayScore: event.target.value } })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Střelci</label>
+            <Form.Select
+              fluid
+              required
+              search
+              multiple
+              value={this.state.match.scorers}
+              onChange={(e, { name, value }) => this.setState({ match: { ...this.state.match, scorers: value} })}
+              options={this.getPlayers(this.state.match)}
+              placeholder="Vyberte hráče"
             />
           </Form.Field>
           <Form.Field>

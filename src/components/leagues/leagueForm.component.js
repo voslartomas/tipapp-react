@@ -38,13 +38,17 @@ export default class LeagueFormComponent extends Component {
   async saveForm() {
     if (this.state.league.id) {
       await LeagueService.update(this.state.league, this.state.league.id)
-    } else {
-      await LeagueService.create(this.state.league)
-    }
 
-    this.setState({
-      redirect: `/leagues/${this.state.league.sportId}`,
-    })
+      this.setState({
+        redirect: `/`,
+      })
+    } else {
+      this.state.league = await LeagueService.create(this.state.league)
+
+      this.setState({
+        redirect: `/leagues/${this.state.league.id}/teams`,
+      })
+    }
   }
 
   render() {
@@ -55,7 +59,7 @@ export default class LeagueFormComponent extends Component {
     }
 
     return (
-      <div>
+      <div style={{backgroundColor: 'white'}}>
         <Header as="h1">Přidat/Upravit ligu</Header>
         <Form onSubmit={() => this.saveForm()}>
           <Form.Field>

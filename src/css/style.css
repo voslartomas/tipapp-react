@@ -4,6 +4,18 @@ body {
   margin: 0;
   padding: 0; }
 
+.pushable {
+  min-height: 400px;
+}
+
+.pushable>.pusher {
+  min-height: 400px;
+}
+
+.pusher table tr td {
+  background: white;
+}
+
 body {
   background: url("../img/body_bg.jpg") no-repeat center center fixed;
   background-size: cover; }

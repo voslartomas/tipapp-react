@@ -74,6 +74,7 @@ export default class LeagueTeamFormComponent extends Component {
             <Form.Select
               fluid
               required
+              search
               label="Tým"
               options={this.state.teamsOptions}
               value={this.state.leagueTeam.teamId}

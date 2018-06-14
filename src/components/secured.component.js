@@ -23,9 +23,8 @@ export default class SecuredComponent extends Component {
     return (
       <div>
         <nav>
-          <h1 class="brand"><a href="#"><b>NEYMAR | </b><SelectLeagueComponent /></a></h1>
+          <h1 className="brand"><a href="#"><b>NEYMAR | </b><SelectLeagueComponent /></a></h1>
           <ul>
-
               <li><Link to="/">Admin</Link></li>
               <li><Link to="/profile">Profil</Link></li>
               <li><a onClick={() => this.props.logout()} href="#">LOG OUT</a></li>
@@ -33,11 +32,14 @@ export default class SecuredComponent extends Component {
         </nav>
         <div class="box">
           <div>
-            <Route exact path="/" component={SportsComponent} />
-            <Route path="/dashboard/:leagueId" component={LeagueDashboardComponent} />
+            <Route exact path="/" component={LeaguesComponent} />
+            <Route path="/dashboard/:leagueId/matches" render={routeProps => <LeagueDashboardComponent {...routeProps} section="matches" />} />
+            <Route path="/dashboard/:leagueId/singles" render={routeProps => <LeagueDashboardComponent {...routeProps} section="singles" />} />
+            <Route path="/dashboard/:leagueId/leaderboard" render={routeProps => <LeagueDashboardComponent {...routeProps} section="leaderboard" />} />
+
             <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
             <Route exact path="/sports/:sportId" component={LeaguesComponent} />
-            <Route exact path="/leagues/form/:leagueId" component={LeagueFormComponent} />
+            <Route exact path="/league/form/:leagueId" component={LeagueFormComponent} />
             <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
             <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
             <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Header, Button, Divider, Confirm, Modal } from 'semantic-ui-react'
+import { Card, Header, Button, Divider, Confirm, Modal, Table, Label } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import EvaluatorService from '../../services/evaluator.service'
 
@@ -31,24 +31,28 @@ export default class EvaluatorsComponent extends Component {
           </Button>
         </Link>
         <Divider />
-        <table>
-          <tr>
-            <th>Nazev</th>
-            <th>Typ</th>
-            <th>Entita</th>
-            <th>Body</th>
-            <th>Akce</th>
-          </tr>
-          {this.state.evaluators.map(evaluator => (
-            <tr>
-              <td>{evaluator.name}</td>
-              <td>{evaluator.type}</td>
-              <td>{evaluator.entity}</td>
-              <td>{evaluator.points}</td>
-              <td>Smazat upravit</td>
-            </tr>
-          ))}
-        </table>
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Název</Table.HeaderCell>
+              <Table.HeaderCell>Typ</Table.HeaderCell>
+              <Table.HeaderCell>Entita</Table.HeaderCell>
+              <Table.HeaderCell>Body</Table.HeaderCell>
+              <Table.HeaderCell></Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {this.state.evaluators.map(evaluator => (
+              <Table.Row>
+                <Table.Cell>{evaluator.name}</Table.Cell>
+                <Table.Cell>{evaluator.type}</Table.Cell>
+                <Table.Cell>{evaluator.entity}</Table.Cell>
+                <Table.Cell>{evaluator.points}</Table.Cell>
+                <Table.Cell>Smazat upravit</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
       </div>
     )
   }

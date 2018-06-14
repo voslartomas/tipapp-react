@@ -7,6 +7,12 @@ export default class LeagueService {
     return response.body
   }
 
+  static async getUserLeagues() {
+    const response = await api.get(`api/users/leagues`)
+
+    return response.body
+  }
+
   static async getActiveLeagues() {
     const response = await api.get(`api/leagues/active`)
 
@@ -32,7 +38,13 @@ export default class LeagueService {
   }
 
   static async getBetsMatches(leagueId) {
-    const response = await api.get(`api/leagues/${leagueId}/bets/matches`)
+    const response = await api.get(`api/leagues/${leagueId}/bets/matches?history=false&order=ASC&limitDays=30`)
+
+    return response.body
+  }
+
+  static async getBetsMatchesHistory(leagueId) {
+    const response = await api.get(`api/leagues/${leagueId}/bets/matches?history=true&order=DESC`)
 
     return response.body
   }
@@ -44,15 +56,17 @@ export default class LeagueService {
   }
 
   static async delete(leagueId) {
-    return api.delete(`api/leagues/${leagueId}`)
+    return await api.delete(`api/leagues/${leagueId}`)
   }
 
   static async create(data) {
-    return api.post('api/leagues', data)
+    const response = await api.post('api/leagues', data)
+
+    return response.body
   }
 
   static async update(data, id) {
-    return api.put(`api/leagues/${id}`, data)
+    return await api.put(`api/leagues/${id}`, data)
   }
 
   // Teams

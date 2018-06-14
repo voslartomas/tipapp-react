@@ -76,22 +76,6 @@ export default class RegisterFormComponent extends Component {
                 />
                 <Form.Input
                   fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="E-Mail"
-                  value={this.state.user.email}
-                  onChange={event => this.setState({ user: {...this.state.user, email: event.target.value }})}
-                />
-                <Form.Input
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="Telefonní číslo"
-                  value={this.state.user.mobileNumber}
-                  onChange={event => this.setState({ user: {...this.state.user, mobileNumber: event.target.value }})}
-                />
-                <Form.Input
-                  fluid
                   icon="lock"
                   iconPosition="left"
                   placeholder="Heslo"

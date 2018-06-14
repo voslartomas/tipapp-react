@@ -51,7 +51,7 @@ export default class SerieBetsComponent extends Component {
     if (this.props.id !== this.state.leagueId) {
         this.componentDidMount()
     }
-    console.log(this.state.serieBets)
+
     return (
       <div class="page">
       <div class="box-header">Série</div>
@@ -87,7 +87,7 @@ export default class SerieBetsComponent extends Component {
                     style={{ width: '35px' }} />
                   <Button onClick={() => this.submitSerieBet(bet)}>Uložit sázku</Button>
                   </td>
-                <td><b>+{this.betPlaced(bet) && bet.totalPoints}</b></td>
+                <td><b>{this.betPlaced(bet) && bet.totalPoints}</b></td>
               </tr>
             ))}
           </tbody>
