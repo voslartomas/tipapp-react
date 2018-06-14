@@ -1,7 +1,7 @@
 import request from 'superagent'
 
 class Api {
-  baseUrl = 'http://52.58.100.173:8001/'
+  baseUrl = 'http://localhost:7300/'
 
   constructor() {
     if (process.env.REACT_APP_ENV === 'production') {
