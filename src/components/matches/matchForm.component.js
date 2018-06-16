@@ -36,13 +36,12 @@ export default class MatchFormComponent extends Component {
 
   async componentDidMount() {
     const { matchId, leagueId } = this.props.match.params
-    let match = {
-      leagueId,
-    }
+    let match = { leagueId }
     let players
     if (matchId !== 'new') {
       try {
         match = await MatchService.getMatchById(matchId)
+        console.log(match)
         match.scorers = await MatchService.getMatchScorersById(matchId)
         match.dateTime = moment(match.dateTime)
 
@@ -196,6 +195,13 @@ export default class MatchFormComponent extends Component {
               label="Vítěz"
               checked={this.state.match.winner}
               onChange={event => this.setState({ match: { ...this.state.match, winner: !this.state.match.winner } })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Checkbox
+              label="Vyřazovací zápas"
+              checked={this.state.match.isPlayoffGame}
+              onChange={event => this.setState({ match: { ...this.state.match, isPlayoffGame: !this.state.match.isPlayoffGame } })}
             />
           </Form.Field>
           <Form.Field>
