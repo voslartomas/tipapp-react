@@ -23,20 +23,42 @@ export default class LeaderBoardComponent extends Component {
     this.setState({ players, leagueId: this.props.id })
   }
 
-  background(i) {
-    switch (i) {
-      case 0:
-        return 'gold'
+  getPosition(player, index) {
+    const previousPosition = this.state.previousPosition
+    const previousPlayer = this.state.previousPlayer
+    let position
+
+    if (index === 0) {
+      position = index + 1
+    }
+
+    if (previousPlayer && player.totalPoints === previousPlayer.totalPoints) {
+      position = previousPosition
+    } else {
+      position = index + 1
+    }
+
+    this.state.previousPlayer = player
+    this.state.previousPosition = position
+    return position
+  }
+
+  background(player, i) {
+    const position = this.getPosition(player, i)
+    switch (position) {
       case 1:
-        return 'silver'
+        return 'gold'
       case 2:
+        return 'silver'
+      case 3:
         return '#CD7F32'
       default:
     }
   }
 
-  color(i) {
-    if (i < 3) {
+  color(player, i) {
+    const position = this.getPosition(player, i)
+    if (position < 3) {
       return '#202020'
     }
 
@@ -60,8 +82,8 @@ export default class LeaderBoardComponent extends Component {
             </tr>
             {this.state.players && this.state.players.map((player, i) => (
               <tr>
-                <td align="left" style={{ background: this.background(i), color: this.color(i) }}>
-                  {i+1}.
+                <td align="left" style={{ background: this.background(player, i), color: this.color(player, i) }}>
+                  {this.getPosition(player, i)}.
                 </td>
                 <td align="left">{player.firstName} {player.lastName}</td>
                 <td><b>{player.totalPoints}</b></td>
