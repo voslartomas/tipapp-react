@@ -120,7 +120,7 @@ export default class MatchBetsComponent extends Component {
             {this.canBet(bet) && <div>
               <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e.target.value, 'homeScore')} />:
               <input value={bet.awayScore || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => this.handleBetChange(bet, e.target.value, 'awayScore')} />
-              <input type="checkbox" title="Prodloužení" checked={bet.overtime} onChange={e => this.handleBetChange(bet, e.target.checked, 'overtime')} />
+              {/*<input type="checkbox" title="Prodloužení" checked={bet.overtime} onChange={e => this.handleBetChange(bet, e.target.checked, 'overtime')} />*/}
             </div>}
             </td>
             <td>{!this.canBet(bet) && <span>{bet.scorer}</span>}
