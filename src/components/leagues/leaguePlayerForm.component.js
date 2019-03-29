@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
+import { Card, Header, Form, Checkbox, Input, Button, Radio } from 'semantic-ui-react'
 import { Link, Redirect } from 'react-router-dom'
 import PlayerService from '../../services/player.service'
 import LeagueService from '../../services/league.service'
@@ -51,6 +51,17 @@ export default class LeaguePlayerFormComponent extends Component {
     })
   }
 
+  handleBestScorerChange = (e, { value }) => {
+    const val = parseInt(value)
+    console.log(val)
+    this.setState({ player: { ...this.state.player,
+      bestScorer: val === 1,
+      secondBestScorer: val === 2,
+      thirdBestScorer: val === 3,
+      fourthBestScorer: val === 4,
+    }}, () => { console.log(this.state )})
+  }
+
   async saveForm() {
     if (this.state.player.id) {
       await LeagueService.updatePlayer(this.props.match.params.leagueId, this.state.player, this.state.player.id)
@@ -69,8 +80,6 @@ export default class LeaguePlayerFormComponent extends Component {
     if (redirect) {
       return <Redirect to={redirect} />;
     }
-
-    console.log(this.state.player)
 
     return (
       <div>
@@ -105,7 +114,7 @@ export default class LeaguePlayerFormComponent extends Component {
           <Form.Field>
             <label>Hry za sezónu</label>
             <Input
-              placeholder="Hry za sezónu"
+              placeholder="Zápasy za sezónu"
               value={this.state.player.seasonGames}
               onChange={event => this.setState({ player: { ...this.state.player, seasonGames: event.target.value } })}
             />
@@ -127,11 +136,59 @@ export default class LeaguePlayerFormComponent extends Component {
             />
           </Form.Field>
           <Form.Field>
-            <Checkbox
-              label="Nejlepší střelec"
-              checked={this.state.player.bestScorer}
-              onChange={event => this.setState({ player: { ...this.state.player, bestScorer: !this.state.player.bestScorer } })}
-            />
+            <Form.Field>
+              <label>Nejlepší střelec</label>
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label="Nejlepší střelec"
+                name="radioGroup"
+                value="1"
+                checked={this.state.player.bestScorer}
+                onChange={this.handleBestScorerChange}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label="2. nejlepší střelec"
+                name="radioGroup"
+                value="2"
+                checked={this.state.player.secondBestScorer}
+                onChange={this.handleBestScorerChange}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label="3. nejlepší střelec"
+                name="radioGroup"
+                value="3"
+                checked={this.state.player.thirdBestScorer}
+                onChange={this.handleBestScorerChange}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label="4. nejlepší střelec"
+                name="radioGroup"
+                value="4"
+                checked={this.state.player.fourthBestScorer}
+                onChange={this.handleBestScorerChange}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label="Nepatří mezi nejlepší střelce"
+                name="radioGroup"
+                value="0"
+                checked={
+                  !this.state.player.bestScorer && 
+                  !this.state.player.secondBestScorer && 
+                  !this.state.player.thirdBestScorer && 
+                  !this.state.player.fourthBestScorer
+                }
+                onChange={this.handleBestScorerChange}
+              />
+            </Form.Field>
           </Form.Field>
           <Button type="submit">Potvrdit změny</Button>
         </Form>
