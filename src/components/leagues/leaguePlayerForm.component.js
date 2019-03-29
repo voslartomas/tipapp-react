@@ -53,13 +53,12 @@ export default class LeaguePlayerFormComponent extends Component {
 
   handleBestScorerChange = (e, { value }) => {
     const val = parseInt(value)
-    console.log(val)
     this.setState({ player: { ...this.state.player,
       bestScorer: val === 1,
       secondBestScorer: val === 2,
       thirdBestScorer: val === 3,
       fourthBestScorer: val === 4,
-    }}, () => { console.log(this.state )})
+    }})
   }
 
   async saveForm() {
