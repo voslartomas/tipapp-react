@@ -21,6 +21,7 @@ export default class LeagueDashboardComponent extends Component {
           <ul>
               <li><Link to={`/dashboard/${this.props.match.params.leagueId}/matches`}>Zápasy</Link></li>
               <li><Link to={`/dashboard/${this.props.match.params.leagueId}/singles`}>Speciální</Link></li>
+              <li><Link to={`/dashboard/${this.props.match.params.leagueId}/series`}>Série</Link></li>
               <li><Link to={`/dashboard/${this.props.match.params.leagueId}/leaderBoard`}>Tabulka</Link></li>
           </ul>
           <div style={{clear: 'both'}}></div>

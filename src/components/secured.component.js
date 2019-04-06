@@ -35,6 +35,7 @@ export default class SecuredComponent extends Component {
             <Route exact path="/" component={LeaguesComponent} />
             <Route path="/dashboard/:leagueId/matches" render={routeProps => <LeagueDashboardComponent {...routeProps} section="matches" />} />
             <Route path="/dashboard/:leagueId/singles" render={routeProps => <LeagueDashboardComponent {...routeProps} section="singles" />} />
+            <Route path="/dashboard/:leagueId/series" render={routeProps => <LeagueDashboardComponent {...routeProps} section="series" />} />
             <Route path="/dashboard/:leagueId/leaderboard" render={routeProps => <LeagueDashboardComponent {...routeProps} section="leaderboard" />} />
 
             <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
