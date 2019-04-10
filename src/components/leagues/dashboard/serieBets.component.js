@@ -1,9 +1,10 @@
+import { Button, Card, Header, Icon, Menu, Segment, Sidebar } from 'semantic-ui-react'
+import { Link, Route } from 'react-router-dom'
 import React, { Component } from 'react'
-import { Menu, Segment, Sidebar, Icon, Header, Card, Button } from 'semantic-ui-react'
-import { Route, Link } from 'react-router-dom'
+
 import BetsSerieService from '../../../services/betsSerie.service'
-import UserBetsSerieService from '../../../services/userBetsSerie.service'
 import LeagueService from '../../../services/league.service'
+import UserBetsSerieService from '../../../services/userBetsSerie.service'
 
 export default class SerieBetsComponent extends Component {
   constructor(props) {
@@ -47,6 +48,10 @@ export default class SerieBetsComponent extends Component {
     return bet.id
   }
 
+  canBet(bet) {
+    return new Date(bet.endDate).getTime() > new Date().getTime()
+  }
+
   render() {
     if (this.props.id !== this.state.leagueId) {
         this.componentDidMount()
@@ -69,6 +74,7 @@ export default class SerieBetsComponent extends Component {
                 <td>{bet.serieHomeScore}:{bet.serieAwayScore}</td>
                 <td>
                   {this.betPlaced(bet) && <span>{bet.homeTeamScore}:{bet.awayTeamScore}</span>}
+                  {this.canBet(bet) && <span>
                   <input
                     value={(bet.homeTeamScore) || 0}
                     type="number"
@@ -85,7 +91,9 @@ export default class SerieBetsComponent extends Component {
                     min="0"
                     max="4"
                     style={{ width: '35px' }} />
-                  <Button onClick={() => this.submitSerieBet(bet)}>Uložit sázku</Button>
+                  </span>}
+                  {this.canBet(bet) && <Button onClick={() => this.submitSerieBet(bet)}>Uložit sázku</Button>}
+
                   </td>
                 <td><b>{this.betPlaced(bet) && bet.totalPoints}</b></td>
               </tr>
