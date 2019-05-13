@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import MatchService from '../../services/match.service';
-import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
-import DatePicker from 'react-datepicker'
+import { Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
+import { Redirect } from 'react-router-dom'
 import moment from 'moment'
-import { Link, Redirect } from 'react-router-dom'
+import DatePicker from 'react-datepicker'
+import MatchService from '../../services/match.service';
 import TeamService from '../../services/team.service';
 import LeagueService from '../../services/league.service';
 import PlayerService from '../../services/player.service'
@@ -19,19 +19,6 @@ export default class MatchFormComponent extends Component {
       players: [],
       redirect: undefined,
     }
-  }
-
-  getPlayers(match) {
-    if (!this.state.players) {
-      return []
-    }
-
-    return this.state.players.filter(player => player.leagueTeamId === match.homeTeamId || player.leagueTeamId === match.awayTeamId)
-      .map(player => ({
-      key: player.id,
-      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
-      value: player.id,
-    }))
   }
 
   async componentDidMount() {
@@ -73,6 +60,19 @@ export default class MatchFormComponent extends Component {
     })
   }
 
+  getPlayers(match) {
+    if (!this.state.players) {
+      return []
+    }
+
+    return this.state.players.filter(player => player.leagueTeamId === match.homeTeamId || player.leagueTeamId === match.awayTeamId)
+      .map(player => ({
+        key: player.id,
+        text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
+        value: player.id,
+      }))
+  }
+
   async saveForm() {
     if (this.state.match.id) {
       await MatchService.update(this.state.match, this.state.match.id)
@@ -91,7 +91,7 @@ export default class MatchFormComponent extends Component {
     if (redirect) {
       return <Redirect to={redirect} />;
     }
-    console.log(this.state.match)
+
     return (
       <div>
         <Header as="h1">Přidat/Upravit zápas</Header>
@@ -180,35 +180,42 @@ export default class MatchFormComponent extends Component {
             <Checkbox
               label="Prodloužení"
               checked={this.state.match.overtime}
-              onChange={event => this.setState({ match: { ...this.state.match, overtime: !this.state.match.overtime } })}
+              onChange={() => this.setState({ match: { ...this.state.match, overtime: !this.state.match.overtime } })}
             />
           </Form.Field>
           <Form.Field>
             <Checkbox
               label="Nájezdy"
               checked={this.state.match.shotout}
-              onChange={event => this.setState({ match: { ...this.state.match, shotout: !this.state.match.shotout } })}
+              onChange={() => this.setState({ match: { ...this.state.match, shotout: !this.state.match.shotout } })}
             />
           </Form.Field>
           <Form.Field>
             <Checkbox
               label="Vítěz"
               checked={this.state.match.winner}
-              onChange={event => this.setState({ match: { ...this.state.match, winner: !this.state.match.winner } })}
+              onChange={() => this.setState({ match: { ...this.state.match, winner: !this.state.match.winner } })}
             />
           </Form.Field>
           <Form.Field>
             <Checkbox
               label="Vyřazovací zápas"
               checked={this.state.match.isPlayoffGame}
-              onChange={event => this.setState({ match: { ...this.state.match, isPlayoffGame: !this.state.match.isPlayoffGame } })}
+              onChange={() => this.setState({ match: { ...this.state.match, isPlayoffGame: !this.state.match.isPlayoffGame } })}
             />
           </Form.Field>
           <Form.Field>
             <Checkbox
               label="Je vyhodnocený"
               checked={this.state.match.isEvaluated}
-              onChange={event => this.setState({ match: { ...this.state.match, isEvaluated: !this.state.match.isEvaluated } })}
+              onChange={() => this.setState({ match: { ...this.state.match, isEvaluated: !this.state.match.isEvaluated } })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Checkbox
+              label="Dvojnásobné body"
+              checked={this.state.match.isDoubled}
+              onChange={() => this.setState({ match: { ...this.state.match, isDoubled: !this.state.match.isDoubled } })}
             />
           </Form.Field>
           <Button type="submit">Potvrdit změny</Button>
