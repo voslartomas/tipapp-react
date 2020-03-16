@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Route, Link } from 'react-router-dom'
-import { Card, Header, Button, Divider, Confirm, Modal, Table, Label } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { Header, Button, Divider, Modal, Table } from 'semantic-ui-react'
 import BetsSingleService from '../../../services/betsSingle.service'
 import moment from 'moment'
 
@@ -23,6 +23,7 @@ export default class SpecialBetsSerieComponent extends Component {
   }
 
   show = () => this.setState({ open: true })
+
   handleDeleteConfirm = async (betId) => {
     await BetsSingleService.delete(this.props.match.params.leagueId, betId);
     this.loadBets();
@@ -62,7 +63,7 @@ export default class SpecialBetsSerieComponent extends Component {
                 <Table.Cell>{bet.points}</Table.Cell>
                 <Table.Cell>
                   <Link to={`/leagues/${this.props.match.params.leagueId}/bets/single/form/${bet.id}`} style={{marginRight: '5px'}}>Upravit</Link>
-                  <a href="#" onClick={this.show}>Smazat</a>
+                  <button onClick={this.show}>Smazat</button>
                   <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
                     <Modal.Header>
                       Smazat {bet.id} ?

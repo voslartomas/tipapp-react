@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import LeagueUserService from '../../services/leagueUser.service'
 import UserService from '../../services/user.service'
-import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
-import { Link, Redirect } from 'react-router-dom'
+import { Header, Form, Checkbox, Button } from 'semantic-ui-react'
+import { Redirect } from 'react-router-dom'
 
 export default class LeagueUserFormComponent extends Component {
   constructor(props) {

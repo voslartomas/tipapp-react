@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Card, Header, Form, Checkbox, Input, Button, Message, Popup, Image, Modal } from 'semantic-ui-react'
-import UserService from '../services/user.service';
-import { Link, Redirect } from 'react-router-dom'
+import { Header, Form, Input, Button, Message } from 'semantic-ui-react'
+import UserService from '../services/user.service'
+import { Redirect } from 'react-router-dom'
 
 export default class PasswordComponent extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class PasswordComponent extends Component {
   }
 
   async saveForm() {
-    if (this.state.passwordNew == this.state.passwordNewAgain) {
+    if (this.state.passwordNew === this.state.passwordNewAgain) {
       await UserService.changePassword({password: this.state.passwordNew});
       this.setState({
         redirect: '/profile/',

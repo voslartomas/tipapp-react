@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Route, Link } from 'react-router-dom'
-import { Card, Header, Button, Divider, Confirm, Modal, Table, Label } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { Header, Button, Divider, Modal, Table } from 'semantic-ui-react'
 import BetsSerieService from '../../../services/betsSerie.service'
 import moment from 'moment'
 
@@ -61,7 +61,7 @@ export default class SpecialBetsSerieComponent extends Component {
 
                 <Table.Cell>
                   <Link to={`/leagues/${this.props.match.params.leagueId}/bets/serie/form/${bet.id}`} style={{marginRight: '5px'}}>Upravit</Link>
-                  <a href="#" onClick={this.show}>Smazat</a>
+                  <button onClick={this.show}>Smazat</button>
                   <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
                     <Modal.Header>
                       Smazat {bet.id} ?

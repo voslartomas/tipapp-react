@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import UserService from '../services/user.service'
 import { Button, Modal } from 'semantic-ui-react'
-import { Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default class ProfileComponent extends Component {
   constructor(props) {

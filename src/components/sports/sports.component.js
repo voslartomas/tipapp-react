@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import SportService from '../../services/sport.service'
-import { Card, Header, Button, Divider, Confirm, Modal, Transition } from 'semantic-ui-react'
+import { Card, Header, Button, Divider, Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import NHLService from '../../services/nhlService.service'
 
 export default class SportsComponent extends Component {
   constructor(props) {

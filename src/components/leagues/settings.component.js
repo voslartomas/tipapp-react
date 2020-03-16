@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Header, Divider, Dimmer, Loader } from 'semantic-ui-react'
+import { Header, Divider, Loader } from 'semantic-ui-react'
 import NHLService from '../../services/nhlService.service'
 
 export default class SettingsComponent extends Component {
@@ -12,15 +12,15 @@ export default class SettingsComponent extends Component {
   }
 
   async import() {
-    this.setState({loading: true})
+    this.setState({ loading: true })
     await NHLService.import(this.props.match.params.leagueId)
-    this.setState({loading: false})
+    this.setState({ loading: false })
   }
 
   async updateMatches() {
-    this.setState({loading: true})
+    this.setState({ loading: true })
     await NHLService.updateMatches(this.props.match.params.leagueId)
-    this.setState({loading: false})
+    this.setState({ loading: false })
   }
 
   render() {

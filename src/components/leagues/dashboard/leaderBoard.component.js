@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import LeagueService from '../../../services/league.service'
-import { Header, Table, Divider, Label } from 'semantic-ui-react'
 
 
 export default class LeaderBoardComponent extends Component {
@@ -38,8 +37,8 @@ export default class LeaderBoardComponent extends Component {
       position = index + 1
     }
 
-    this.state.previousPlayer = player
-    this.state.previousPosition = position
+    this.setState({ previousPlayer: player })
+    this.setState({ previousPosition: position })
     return position
   }
 

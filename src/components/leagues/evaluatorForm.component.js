@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import EvaluatorService from '../../services/evaluator.service'
-import SportService from '../../services/sport.service'
-import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
-import { Link, Redirect } from 'react-router-dom'
+import { Header, Form, Input, Button } from 'semantic-ui-react'
+import { Redirect } from 'react-router-dom'
 
 export default class EvaluatorFormComponent extends Component {
   constructor(props) {

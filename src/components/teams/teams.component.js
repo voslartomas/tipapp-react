@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LeagueService from '../../services/league.service'
-import { Button, Image, Icon, Header, Table, Label, Modal } from 'semantic-ui-react'
+import { Button, Header, Table, Label } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 export default class TeamsComponent extends Component {
@@ -54,7 +54,7 @@ export default class TeamsComponent extends Component {
               <Table.Row>
                 <Table.Cell>
                   <Label ribbon>{team.team.name} {team.team.shortcut}</Label>
-                  <a href="#" onClick={() => this.handleDelete(team.id)}>Smazat</a>
+                  <button onClick={() => this.handleDelete(team.id)}>Smazat</button>
                 </Table.Cell>
                 <Table.Cell>{team.league.name}</Table.Cell>
                 <Table.Cell>{team.league.sport.name}</Table.Cell>

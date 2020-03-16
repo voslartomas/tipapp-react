@@ -23,22 +23,19 @@ class App extends Component {
   }
 
   logout() {
-    console.log('loging out')
     localStorage.setItem('token', '')
     this.setState({ action: 'logout' })
   }
 
   setUser(user) {
-    this.setState({
-      user,
-    })
+    this.setState({ user })
   }
 
   render() {
     const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('token').length > 0
 
     return (
-      <div class="main">
+      <div>
         <Route exact path='/register' component={RegisterFormComponent} />
         {!isLoggedIn && <LoginFormComponent login={() => this.login()} />}
         {isLoggedIn && <SecuredComponent logout={() => this.logout()} />}

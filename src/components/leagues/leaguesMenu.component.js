@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { Menu, Segment, Sidebar, Icon, Header } from 'semantic-ui-react'
+import { Menu, Segment, Sidebar } from 'semantic-ui-react'
 import { Route, Link } from 'react-router-dom'
 import MatchesComponent from '../matches/matches.component'
 import TeamsComponent from '../teams/teams.component'
 import PlayersComponent from '../players/players.component'
 import MatchFormComponent from '../matches/matchForm.component'
-import PlayerFormComponent from '../players/playerForm.component'
 import LeagueUsersComponent from './leagueUsers.component'
 import LeagueBetsComponent from './bets/leagueBets.component'
 import LeagueUserFormComponent from './leagueUserForm.component'
@@ -18,9 +17,6 @@ import EvaluatorFormComponent from './evaluatorForm.component'
 import SettingsComponent from './settings.component'
 
 export default class LeaguesMenuComponent extends Component {
-  constructor(props) {
-    super(props)
-  }
 
   render() {
     const leagueId = this.props.match.params.leagueId

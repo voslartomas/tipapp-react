@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import LeagueService from '../../services/league.service'
 import SportService from '../../services/sport.service'
-import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
-import { Link, Redirect } from 'react-router-dom'
+import { Header, Form, Input, Button } from 'semantic-ui-react'
+import { Redirect } from 'react-router-dom'
 import TeamService from '../../services/team.service'
 
 export default class TeamFormComponent extends Component {

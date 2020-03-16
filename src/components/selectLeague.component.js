@@ -1,14 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Segment, Icon, Header } from 'semantic-ui-react'
-import SportsComponent from './sports/sports.component'
-import { Route, Link, Redirect } from 'react-router-dom'
-import LeaguesMenuComponent from './leagues/leaguesMenu.component'
-import LeaguesComponent from './leagues/leagues.component'
-import LeagueDashboardComponent from './leagues/dashboard/leagueDashboard.component'
-import LeagueFormComponent from './leagues/leagueForm.component'
-import SportFormComponent from './sports/sportForm.component'
-import TeamFormComponent from './teams/teamForm.component';
-import PlayerFormComponent from './players/playerForm.component';
+import { Redirect } from 'react-router-dom'
 import LeagueService from '../services/league.service'
 import { Form } from 'semantic-ui-react'
 
@@ -51,7 +42,6 @@ export default class SelectLeagueComponent extends Component {
     const { redirect } = this.state
 
     if (redirect) {
-      const t = redirect
       this.setState({redirect: undefined})
       return <Redirect to={redirect} />
     }

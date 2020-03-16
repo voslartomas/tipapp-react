@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import LeagueService from '../../services/league.service'
-import { Card, Header, Button, Divider, Confirm, Modal } from 'semantic-ui-react'
+import { Card, Header, Button, Divider } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 export default class LeaguesComponent extends Component {
@@ -46,7 +46,7 @@ export default class LeaguesComponent extends Component {
                   <Link to={`/leagues/${league.id}/matches`}>{league.name}</Link>
                 </Card.Header>
                 <Link to={`/league/form/${league.id}`} style={{marginRight: '5px'}}>Upravit</Link>
-                <a href="#" onClick={() => this.handleDelete(league.id)} style={{marginRight: '5px'}}>Smazat</a>
+                <button onClick={() => this.handleDelete(league.id)} style={{marginRight: '5px'}}>Smazat</button>
               </Card.Content>
             </Card>
         ))}

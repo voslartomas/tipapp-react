@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PlayerService from '../../services/player.service'
 import LeagueService from '../../services/league.service'
-import { Button, Icon, Header, Table, Label, Modal, Form, Input } from 'semantic-ui-react'
+import { Button, Header, Table, Label, Modal, Form, Input } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 export default class PlayersComponent extends Component {
@@ -85,7 +85,7 @@ export default class PlayersComponent extends Component {
               <Table.Row>
                 <Table.Cell>
                   <Label ribbon>{leaguePlayer.player.firstName} {leaguePlayer.player.lastName}</Label>
-                  <a href="#" onClick={this.show}>Smazat</a>
+                  <button onClick={this.show}>Smazat</button>
                   <Link to={`/leagues/${this.props.match.params.leagueId}/players/form/${leaguePlayer.id}`}>Upravit</Link>
                   <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
                     <Modal.Header>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Header, Button, Divider, Confirm, Modal, Table, Label } from 'semantic-ui-react'
+import { Header, Button, Divider, Table } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import EvaluatorService from '../../services/evaluator.service'
 

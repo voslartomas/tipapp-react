@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import LeagueUserService from '../../services/leagueUser.service'
-import { Card, Header, Button, Divider, Confirm, Modal, Table, Label } from 'semantic-ui-react'
+import { Header, Button, Divider, Modal, Table, Label } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 export default class LeagueUsersComponent extends Component {
@@ -59,7 +59,7 @@ export default class LeagueUsersComponent extends Component {
                 <Table.Cell>{leagueUser.admin && <span>Ano</span>}</Table.Cell>
                 <Table.Cell>
                   <Link to={`/leagues/${this.props.match.params.leagueId}/users/form/${leagueUser.id}`} style={{marginRight: '5px'}}>Upravit</Link>
-                  <a href="#" onClick={this.show}>Smazat</a>
+                  <button onClick={this.show}>Smazat</button>
                   <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
                     <Modal.Header>
                       Smazat {leagueUser.name} ?

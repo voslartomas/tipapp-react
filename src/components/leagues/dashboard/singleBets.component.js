@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Segment, Sidebar, Icon, Header, Card, Button, Form } from 'semantic-ui-react'
-import { Route, Link } from 'react-router-dom'
+import { Button, Form } from 'semantic-ui-react'
 import moment from 'moment'
 import UserBetsSingleService from '../../../services/userBetsSingle.service'
 import PlayerService from '../../../services/player.service'
@@ -89,7 +88,6 @@ export default class SingleBetsComponent extends Component {
   }
 
   handleChange(bet, value) {
-    const userBets = this.state.userBets
     this.userBets[bet.singleId] = value
   }
 

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import MatchService from '../../services/match.service'
-import PlayerService from '../../services/player.service'
-import TeamService from '../../services/team.service'
 import { Card, Header, Button, Divider, Modal } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
@@ -48,12 +46,12 @@ export default class MatchesComponent extends Component {
             <Card>
               <Card.Content>
                 <Card.Description>
-                  {match.homeTeam && match.homeTeam.team && match.homeTeam.team.name || ''} {match.homeScore || 0}
+                  {(match.homeTeam && match.homeTeam.team && match.homeTeam.team.name) || ''} {match.homeScore || 0}
                   <br />
-                  {match.awayTeam && match.awayTeam.team && match.awayTeam.team.name  || ''} {match.awayScore || 0}
+                  {(match.awayTeam && match.awayTeam.team && match.awayTeam.team.name)  || ''} {match.awayScore || 0}
                 </Card.Description>
                 <Link to={`/leagues/${this.props.match.params.leagueId}/matches/form/${match.id}`} style={{marginRight: '5px'}}>Upravit</Link>
-                <a href="#" onClick={this.show}>Smazat</a>
+                <button href="#" onClick={this.show}>Smazat</button>
                 <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
                   <Modal.Header>
                     Smazat ?

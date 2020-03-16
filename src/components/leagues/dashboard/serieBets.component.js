@@ -1,8 +1,5 @@
-import { Button, Card, Header, Icon, Menu, Segment, Sidebar } from 'semantic-ui-react'
-import { Link, Route } from 'react-router-dom'
+import { Button } from 'semantic-ui-react'
 import React, { Component } from 'react'
-
-import BetsSerieService from '../../../services/betsSerie.service'
 import LeagueService from '../../../services/league.service'
 import UserBetsSerieService from '../../../services/userBetsSerie.service'
 

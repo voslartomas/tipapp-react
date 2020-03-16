@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
+import { Header, Form, Input, Button } from 'semantic-ui-react'
 import UserService from '../services/user.service'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 export default class UserFormComponent extends Component {
   constructor(props) {
