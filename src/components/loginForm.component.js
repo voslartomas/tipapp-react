@@ -9,7 +9,7 @@ import {
   Segment
 } from 'semantic-ui-react'
 import api from '../helpers/api'
-import { Link } from 'react-router-dom'
+import { HashRouter, Link } from 'react-router-dom'
 
 export default class LoginFormComponent extends Component {
   constructor(props) {
@@ -32,7 +32,8 @@ export default class LoginFormComponent extends Component {
 
   render() {
     return (
-      <Grid
+      <HashRouter>
+        <Grid
         textAlign="center"
         style={{ height: "100vh" }}
         verticalAlign="middle"
@@ -89,7 +90,8 @@ export default class LoginFormComponent extends Component {
             </Grid>
           </Message>
         </Grid.Column>
-      </Grid>
+        </Grid>
+      </HashRouter>
     )
   }
 }

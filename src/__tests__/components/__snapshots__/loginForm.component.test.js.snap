@@ -2,109 +2,133 @@
 
 exports[`Login form component renders without crashing 1`] = `
 <div
-  className="login-form"
+  className="ui center aligned middle aligned grid"
+  style={
+    Object {
+      "height": "100vh",
+    }
+  }
 >
-  <style>
-    
-              body &gt; div,
-              body &gt; div &gt; div,
-              body &gt; div &gt; div &gt; div.login-form {
-                height: 100%;
-              }
-            
-  </style>
   <div
-    className="ui center aligned middle aligned grid"
+    className="column"
     style={
       Object {
-        "height": "100%",
+        "maxWidth": 450,
       }
     }
   >
-    <div
-      className="column"
-      style={
-        Object {
-          "maxWidth": 450,
-        }
-      }
+    <h2
+      className="ui black center aligned header"
     >
-      <h2
-        className="ui teal center aligned header"
-      >
-        Log-in
-      </h2>
-      <form
-        action={undefined}
-        className="ui large form"
-        onSubmit={[Function]}
+      Přihlášení
+    </h2>
+    <form
+      className="ui large form"
+      onSubmit={[Function]}
+    >
+      <div
+        className="ui stacked segment"
       >
         <div
-          className="ui stacked segment"
+          className="field"
         >
           <div
-            className="field"
+            className="ui left icon input"
           >
-            <div
-              className="ui fluid left icon input"
-              content={undefined}
-            >
-              <input
-                disabled={undefined}
-                onChange={[Function]}
-                placeholder="Uživatelské jméno"
-                required={undefined}
-                tabIndex={undefined}
-                type="text"
-                value=""
-              />
-              <i
-                aria-hidden="true"
-                className="user icon"
-              />
-            </div>
-          </div>
-          <div
-            className="field"
-          >
-            <div
-              className="ui fluid left icon input"
-              content={undefined}
-            >
-              <input
-                disabled={undefined}
-                onChange={[Function]}
-                placeholder="Heslo"
-                required={undefined}
-                tabIndex={undefined}
-                type="password"
-                value=""
-              />
-              <i
-                aria-hidden="true"
-                className="lock icon"
-              />
-            </div>
-          </div>
-          <button
-            className="ui teal large fluid button"
-            disabled={undefined}
-            onClick={[Function]}
-            role="button"
-            tabIndex={undefined}
-          >
-            Přihlásit se
-            <i
-              className="sign in icon"
-              style={
-                Object {
-                  "marginLeft": "5px",
-                }
-              }
+            <input
+              aria-describedby={null}
+              onChange={[Function]}
+              placeholder="Uživatelské jméno"
+              type="text"
+              value=""
             />
-          </button>
+            <i
+              aria-hidden="true"
+              className="user icon"
+              onClick={[Function]}
+            />
+          </div>
         </div>
-      </form>
+        <div
+          className="field"
+        >
+          <div
+            className="ui left icon input"
+          >
+            <input
+              aria-describedby={null}
+              onChange={[Function]}
+              placeholder="Heslo"
+              type="password"
+              value=""
+            />
+            <i
+              aria-hidden="true"
+              className="lock icon"
+              onClick={[Function]}
+            />
+          </div>
+        </div>
+        <div
+          className="ui checkbox"
+          onChange={[Function]}
+          onClick={[Function]}
+          onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          style={
+            Object {
+              "marginBottom": 10,
+            }
+          }
+        >
+          <input
+            checked={false}
+            className="hidden"
+            readOnly={true}
+            tabIndex={0}
+            type="checkbox"
+          />
+          <label>
+            Zapamatovat si mě
+          </label>
+        </div>
+         
+        <button
+          className="ui orange large fluid button"
+          onClick={[Function]}
+        >
+          Přihlásit se
+        </button>
+      </div>
+    </form>
+    <div
+      className="ui message"
+    >
+      <div
+        className="ui equal width grid"
+      >
+        <div
+          className="column"
+        >
+          <a
+            href="#/register"
+            onClick={[Function]}
+          >
+            Registrace
+          </a>
+        </div>
+        <div
+          className="column"
+        >
+          <a
+            href="#/recoverPassword"
+            onClick={[Function]}
+          >
+            Obnovit heslo
+          </a>
+           
+        </div>
+      </div>
     </div>
   </div>
 </div>
