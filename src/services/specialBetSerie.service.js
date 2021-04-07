@@ -1,9 +1,9 @@
-import api from '../helpers/api'
+import api from '../helpers/api';
 
 export default class SpecialBetSerieService {
   static async getAll() {
-    const response = await api.get('api/bets/series')
+    const response = await api.get('api/bets/series');
 
-    return response.body
+    return response.body;
   }
 }

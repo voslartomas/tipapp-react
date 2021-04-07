@@ -1,80 +1,83 @@
-import React, { Component } from 'react'
-import { Card, Header, Form, Checkbox, Input, Button, Radio } from 'semantic-ui-react'
-import { Link, Redirect } from 'react-router-dom'
-import PlayerService from '../../services/player.service'
-import LeagueService from '../../services/league.service'
+import React, { Component } from 'react';
+import { Header, Form, Input, Button, Radio } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+import PlayerService from '../../services/player.service';
+import LeagueService from '../../services/league.service';
 import TeamService from '../../services/team.service';
 
 export default class LeaguePlayerFormComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       player: {},
       playersOptions: [],
       leagueTeamsOptions: [],
       redirect: undefined,
-    }
+    };
   }
 
   async componentDidMount() {
-    const { playerId, leagueId } = this.props.match.params
+    const { playerId, leagueId } = this.props.match.params;
     let player = {
       leagueId,
-    }
+    };
     if (playerId !== 'new') {
       try {
-        player = await LeagueService.getPlayerById(leagueId, playerId)
+        player = await LeagueService.getPlayerById(leagueId, playerId);
       } catch (e) {
-        console.error(e)
+        console.error(e);
       }
     }
 
-    const teams = await TeamService.getTeams(leagueId)
-    const leagueTeamsOptions = teams.map(leagueTeam => ({
+    const teams = await TeamService.getTeams(leagueId);
+    const leagueTeamsOptions = teams.map((leagueTeam) => ({
       key: leagueTeam.id,
       text: leagueTeam.team.name,
       value: leagueTeam.id,
-    }))
+    }));
 
-    const players = await PlayerService.getAllPlayers()
-    const playersOptions = players.map(player => ({
-      key: player.id,
-      text: `${player.firstName} ${player.lastName}`,
-      value: player.id,
-    }))
+    const players = await PlayerService.getAllPlayers();
+    const playersOptions = players.map((_player) => ({
+      key: _player.id,
+      text: `${_player.firstName} ${_player.lastName}`,
+      value: _player.id,
+    }));
 
     this.setState({
       player,
       leagueTeamsOptions,
       playersOptions,
-    })
+    });
   }
 
   handleBestScorerChange = (e, { value }) => {
-    const val = parseInt(value)
-    this.setState({ player: { ...this.state.player,
-      bestScorer: val === 1,
-      secondBestScorer: val === 2,
-      thirdBestScorer: val === 3,
-      fourthBestScorer: val === 4,
-    }})
-  }
+    const val = parseInt(value);
+    this.setState({
+      player: {
+        ...this.state.player,
+        bestScorer: val === 1,
+        secondBestScorer: val === 2,
+        thirdBestScorer: val === 3,
+        fourthBestScorer: val === 4,
+      },
+    });
+  };
 
   async saveForm() {
     if (this.state.player.id) {
-      await LeagueService.updatePlayer(this.props.match.params.leagueId, this.state.player, this.state.player.id)
+      await LeagueService.updatePlayer(this.props.match.params.leagueId, this.state.player, this.state.player.id);
     } else {
-      await LeagueService.createPlayer(this.props.match.params.leagueId, this.state.player)
+      await LeagueService.createPlayer(this.props.match.params.leagueId, this.state.player);
     }
 
     this.setState({
       redirect: `/leagues/${this.props.match.params.leagueId}/players`,
-    })
+    });
   }
 
   render() {
-    const { redirect } = this.state
+    const { redirect } = this.state;
 
     if (redirect) {
       return <Redirect to={redirect} />;
@@ -92,8 +95,10 @@ export default class LeaguePlayerFormComponent extends Component {
               options={this.state.leagueTeamsOptions}
               value={this.state.player.leagueTeamId}
               placeholder="Vyberte tým"
-              onChange={(event, { name, value }) => {
-                this.setState({ player: { ...this.state.player, leagueTeamId: value } })
+              onChange={(event, { value }) => {
+                this.setState({
+                  player: { ...this.state.player, leagueTeamId: value },
+                });
               }}
             />
           </Form.Field>
@@ -105,8 +110,10 @@ export default class LeaguePlayerFormComponent extends Component {
               options={this.state.playersOptions}
               value={this.state.player.playerId}
               placeholder="Vyberte hráče"
-              onChange={(event, { name, value }) => {
-                this.setState({ player: { ...this.state.player, playerId: value } })
+              onChange={(event, { value }) => {
+                this.setState({
+                  player: { ...this.state.player, playerId: value },
+                });
               }}
             />
           </Form.Field>
@@ -115,7 +122,14 @@ export default class LeaguePlayerFormComponent extends Component {
             <Input
               placeholder="Zápasy za sezónu"
               value={this.state.player.seasonGames}
-              onChange={event => this.setState({ player: { ...this.state.player, seasonGames: event.target.value } })}
+              onChange={(event) =>
+                this.setState({
+                  player: {
+                    ...this.state.player,
+                    seasonGames: event.target.value,
+                  },
+                })
+              }
             />
           </Form.Field>
           <Form.Field>
@@ -123,7 +137,14 @@ export default class LeaguePlayerFormComponent extends Component {
             <Input
               placeholder="Góly za sezónu"
               value={this.state.player.seasonGoals}
-              onChange={event => this.setState({ player: { ...this.state.player, seasonGoals: event.target.value } })}
+              onChange={(event) =>
+                this.setState({
+                  player: {
+                    ...this.state.player,
+                    seasonGoals: event.target.value,
+                  },
+                })
+              }
             />
           </Form.Field>
           <Form.Field>
@@ -131,7 +152,14 @@ export default class LeaguePlayerFormComponent extends Component {
             <Input
               placeholder="Asistence za sezónu"
               value={this.state.player.seasonAssists}
-              onChange={event => this.setState({ player: { ...this.state.player, seasonAssists: event.target.value } })}
+              onChange={(event) =>
+                this.setState({
+                  player: {
+                    ...this.state.player,
+                    seasonAssists: event.target.value,
+                  },
+                })
+              }
             />
           </Form.Field>
           <Form.Field>
@@ -180,9 +208,9 @@ export default class LeaguePlayerFormComponent extends Component {
                 name="radioGroup"
                 value="0"
                 checked={
-                  !this.state.player.bestScorer && 
-                  !this.state.player.secondBestScorer && 
-                  !this.state.player.thirdBestScorer && 
+                  !this.state.player.bestScorer &&
+                  !this.state.player.secondBestScorer &&
+                  !this.state.player.thirdBestScorer &&
                   !this.state.player.fourthBestScorer
                 }
                 onChange={this.handleBestScorerChange}
@@ -192,6 +220,6 @@ export default class LeaguePlayerFormComponent extends Component {
           <Button type="submit">Potvrdit změny</Button>
         </Form>
       </div>
-    )
+    );
   }
 }

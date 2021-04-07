@@ -1,29 +1,28 @@
 import React, { Component } from 'react';
-import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
-import api from '../helpers/api'
-import RegisterService from '../services/register.service'
-import { Redirect } from 'react-router-dom'
+import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+import RegisterService from '../services/register.service';
 
 export default class RegisterFormComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       user: {},
-      redirect: undefined
-    }
+      redirect: undefined,
+    };
   }
 
   async register() {
-    RegisterService.register(this.state.user)
+    RegisterService.register(this.state.user);
 
     this.setState({
-      redirect: '/'
-    })
+      redirect: '/',
+    });
   }
 
   render() {
-    const { redirect } = this.state
+    const { redirect } = this.state;
 
     if (redirect) {
       return <Redirect to={redirect} />;
@@ -31,7 +30,8 @@ export default class RegisterFormComponent extends Component {
 
     return (
       <div className="login-form">
-        <style>{`
+        <style>
+          {`
           body > div,
           body > div > div,
           body > div > div > div.login-form {
@@ -39,11 +39,7 @@ export default class RegisterFormComponent extends Component {
           }
         `}
         </style>
-        <Grid
-          textAlign="center"
-          style={{ height: '100%' }}
-          verticalAlign="middle"
-        >
+        <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as="h2" color="teal" textAlign="center">
               Registrace
@@ -56,7 +52,14 @@ export default class RegisterFormComponent extends Component {
                   iconPosition="left"
                   placeholder="Křestní jméno"
                   value={this.state.user.firstName}
-                  onChange={event => this.setState({ user: {...this.state.user, firstName: event.target.value }})}
+                  onChange={(event) =>
+                    this.setState({
+                      user: {
+                        ...this.state.user,
+                        firstName: event.target.value,
+                      },
+                    })
+                  }
                 />
                 <Form.Input
                   fluid
@@ -64,7 +67,14 @@ export default class RegisterFormComponent extends Component {
                   iconPosition="left"
                   placeholder="Příjmení"
                   value={this.state.user.lastName}
-                  onChange={event => this.setState({ user: {...this.state.user, lastName: event.target.value }})}
+                  onChange={(event) =>
+                    this.setState({
+                      user: {
+                        ...this.state.user,
+                        lastName: event.target.value,
+                      },
+                    })
+                  }
                 />
                 <Form.Input
                   fluid
@@ -72,7 +82,14 @@ export default class RegisterFormComponent extends Component {
                   iconPosition="left"
                   placeholder="Uživatelské jméno"
                   value={this.state.user.username}
-                  onChange={event => this.setState({ user: {...this.state.user, username: event.target.value }})}
+                  onChange={(event) =>
+                    this.setState({
+                      user: {
+                        ...this.state.user,
+                        username: event.target.value,
+                      },
+                    })
+                  }
                 />
                 <Form.Input
                   fluid
@@ -81,14 +98,24 @@ export default class RegisterFormComponent extends Component {
                   placeholder="Heslo"
                   type="password"
                   value={this.state.user.password}
-                  onChange={event => this.setState({ user: {...this.state.user, password: event.target.value }})}
+                  onChange={(event) =>
+                    this.setState({
+                      user: {
+                        ...this.state.user,
+                        password: event.target.value,
+                      },
+                    })
+                  }
                 />
-                <Button color="teal" fluid size="large" onClick={() => this.register()}>Registrovat se<i style={{ marginLeft: '5px' }} className="sign in icon" /></Button>
+                <Button color="teal" fluid size="large" onClick={() => this.register()}>
+                  Registrovat se
+                  <i style={{ marginLeft: '5px' }} className="sign in icon" />
+                </Button>
               </Segment>
             </Form>
           </Grid.Column>
         </Grid>
       </div>
-    )
+    );
   }
 }
