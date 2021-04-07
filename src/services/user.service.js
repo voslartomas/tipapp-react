@@ -1,36 +1,37 @@
-import api from '../helpers/api'
+import api from '../helpers/api';
 
 export default class UserService {
-  static async getUsers(leagueId) {
-    const response = await api.get('api/users')
+  static async getUsers() {
+    const response = await api.get('api/users');
 
-    return response.body
+    return response.body;
   }
 
   static async getUserById(userId) {
-    const response = await api.get(`api/users/${userId}`)
+    const response = await api.get(`api/users/${userId}`);
 
-    return response.body
+    return response.body;
   }
 
   static async getCurrentUser() {
-    const response = await api.get('api/users/current')
+    const response = await api.get('api/users/current');
 
-    return response.body
+    return response.body;
   }
+
   static async changePassword(data) {
-    return await api.put(`api/users/password`, data)
+    await api.put('api/users/password', data);
   }
 
   static async delete(userId) {
-    return await api.delete(`api/users/${userId}`)
+    await api.delete(`api/users/${userId}`);
   }
 
   static async create(data) {
-    return await api.post('api/users', data)
+    await api.post('api/users', data);
   }
 
   static async update(data, id) {
-    return await api.put(`api/users/${id}`, data)
+    await api.put(`api/users/${id}`, data);
   }
 }

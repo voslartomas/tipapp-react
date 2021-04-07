@@ -1,74 +1,74 @@
-import React, { Component } from 'react'
-import { Card, Header, Form, Checkbox, Input, Button } from 'semantic-ui-react'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
-import { Link, Redirect } from 'react-router-dom'
-import TeamService from '../../../services/team.service'
-import BetsSerieService from '../../../services/betsSerie.service'
-import SpecialBetSerieService from '../../../services/specialBetSerie.service'
+import React, { Component } from 'react';
+import { Header, Form, Input, Button } from 'semantic-ui-react';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import { Redirect } from 'react-router-dom';
+import TeamService from '../../../services/team.service';
+import BetsSerieService from '../../../services/betsSerie.service';
+import SpecialBetSerieService from '../../../services/specialBetSerie.service';
 
 export default class SerieFormComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       serie: {},
       specialBetSerieTypeOptions: [],
       teamsOptions: [],
       redirect: undefined,
-    }
+    };
   }
 
   async componentDidMount() {
-    const { serieId, leagueId } = this.props.match.params
+    const { serieId, leagueId } = this.props.match.params;
     let serie = {
       leagueId,
-    }
+    };
 
     if (serieId !== 'new') {
       try {
-        serie = await BetsSerieService.getById(leagueId, serieId)
-        serie.dateTime = moment(serie.dateTime)
+        serie = await BetsSerieService.getById(leagueId, serieId);
+        serie.dateTime = moment(serie.dateTime);
       } catch (e) {
-        console.error(e)
+        console.error(e);
       }
     }
 
-    const teams = await TeamService.getTeams(leagueId)
-    const teamsOptions = teams.map(leagueTeam => ({
+    const teams = await TeamService.getTeams(leagueId);
+    const teamsOptions = teams.map((leagueTeam) => ({
       key: leagueTeam.id,
       text: leagueTeam.team.name,
       value: leagueTeam.id,
-    }))
+    }));
 
-    const betSeries = await SpecialBetSerieService.getAll()
-    const betSeriesOptions = betSeries.map(betSerie => ({
+    const betSeries = await SpecialBetSerieService.getAll();
+    const betSeriesOptions = betSeries.map((betSerie) => ({
       key: betSerie.id,
       text: betSerie.name,
       value: betSerie.id,
-    }))
+    }));
 
     this.setState({
       teamsOptions,
       betSeriesOptions,
       serie,
-    })
+    });
   }
 
   async saveForm() {
     if (this.state.serie.id) {
-      await BetsSerieService.update(this.props.match.params.leagueId, this.state.serie, this.state.serie.id)
+      await BetsSerieService.update(this.props.match.params.leagueId, this.state.serie, this.state.serie.id);
     } else {
-      await BetsSerieService.create(this.props.match.params.leagueId, this.state.serie)
+      await BetsSerieService.create(this.props.match.params.leagueId, this.state.serie);
     }
 
     this.setState({
       redirect: `/leagues/${this.state.serie.leagueId}/bets/serie`,
-    })
+    });
   }
 
   render() {
-    const { redirect } = this.state
+    const { redirect } = this.state;
 
     if (redirect) {
       return <Redirect to={redirect} />;
@@ -86,8 +86,10 @@ export default class SerieFormComponent extends Component {
               options={this.state.teamsOptions}
               value={this.state.serie.homeTeamId}
               placeholder="Vyberte tým"
-              onChange={(event, { name, value }) => {
-                this.setState({ serie: { ...this.state.serie, homeTeamId: value } })
+              onChange={(event, { value }) => {
+                this.setState({
+                  serie: { ...this.state.serie, homeTeamId: value },
+                });
               }}
             />
           </Form.Field>
@@ -99,8 +101,10 @@ export default class SerieFormComponent extends Component {
               options={this.state.teamsOptions}
               value={this.state.serie.awayTeamId}
               placeholder="Vyberte tým"
-              onChange={(event, { name, value }) => {
-                this.setState({ serie: { ...this.state.serie, awayTeamId: value } })
+              onChange={(event, { value }) => {
+                this.setState({
+                  serie: { ...this.state.serie, awayTeamId: value },
+                });
               }}
             />
           </Form.Field>
@@ -112,8 +116,10 @@ export default class SerieFormComponent extends Component {
               options={this.state.betSeriesOptions}
               value={this.state.serie.specialBetSerieId}
               placeholder="Vyberte typ"
-              onChange={(event, { name, value }) => {
-                this.setState({ serie: { ...this.state.serie, specialBetSerieId: value } })
+              onChange={(event, { value }) => {
+                this.setState({
+                  serie: { ...this.state.serie, specialBetSerieId: value },
+                });
               }}
             />
           </Form.Field>
@@ -122,7 +128,14 @@ export default class SerieFormComponent extends Component {
             <Input
               placeholder="Skóre domácí"
               value={this.state.serie.homeTeamScore}
-              onChange={event => this.setState({ serie: { ...this.state.serie, homeTeamScore: event.target.value } })}
+              onChange={(event) =>
+                this.setState({
+                  serie: {
+                    ...this.state.serie,
+                    homeTeamScore: event.target.value,
+                  },
+                })
+              }
             />
           </Form.Field>
           <Form.Field>
@@ -130,14 +143,25 @@ export default class SerieFormComponent extends Component {
             <Input
               placeholder="Skóre hosté"
               value={this.state.serie.awayTeamScore}
-              onChange={event => this.setState({ serie: { ...this.state.serie, awayTeamScore: event.target.value } })}
+              onChange={(event) =>
+                this.setState({
+                  serie: {
+                    ...this.state.serie,
+                    awayTeamScore: event.target.value,
+                  },
+                })
+              }
             />
           </Form.Field>
           <Form.Field>
             <label>Vyberte datum a čas</label>
             <DatePicker
               selected={this.state.serie.dateTime}
-              onChange={event => this.setState({ serie: { ...this.state.serie, dateTime: event } })}
+              onChange={(event) =>
+                this.setState({
+                  serie: { ...this.state.serie, dateTime: event },
+                })
+              }
               showTimeSelect
               timeFormat="HH:mm"
               timeIntervals={15}
@@ -148,6 +172,6 @@ export default class SerieFormComponent extends Component {
           <Button type="submit">Potvrdit změny</Button>
         </Form>
       </div>
-    )
+    );
   }
 }

@@ -1,33 +1,32 @@
-import request from 'superagent'
+import request from 'superagent';
 
 class Api {
-  baseUrl = 'http://localhost:7300/'
-
   constructor() {
-    if (process.env.REACT_APP_ENV === 'production') {
-        this.baseUrl = 'http://54.93.116.88:8001/'
-    }
+    const isProd = process.env.REACT_APP_ENV === 'production';
+    this.baseUrl = isProd ? 'http://54.93.116.88:8001/' : 'http://localhost:7300/';
   }
 
   async get(url) {
-    return await request.get(this.baseUrl+url)
-      .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
+    await request.get(this.baseUrl + url).set('Authorization', `Bearer ${localStorage.getItem('token')}`);
   }
 
   async delete(url) {
-    return await request.delete(this.baseUrl+url)
-      .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
+    await request.delete(this.baseUrl + url).set('Authorization', `Bearer ${localStorage.getItem('token')}`);
   }
 
   async post(url, data) {
-    return await request.post(this.baseUrl+url).send(data)
-      .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
+    await request
+      .post(this.baseUrl + url)
+      .send(data)
+      .set('Authorization', `Bearer ${localStorage.getItem('token')}`);
   }
 
   async put(url, data) {
-    return await request.put(this.baseUrl+url).send(data)
-      .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
+    await request
+      .put(this.baseUrl + url)
+      .send(data)
+      .set('Authorization', localStorage ? `Bearer ${localStorage.getItem('token')}` : null);
   }
 }
 
-export default new Api()
+export default new Api();

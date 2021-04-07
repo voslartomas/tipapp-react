@@ -1,26 +1,26 @@
-import React, { Component } from 'react'
-import { Header, Divider, Dimmer, Loader } from 'semantic-ui-react'
-import NHLService from '../../services/nhlService.service'
+import React, { Component } from 'react';
+import { Header, Divider, Loader } from 'semantic-ui-react';
+import NHLService from '../../services/nhlService.service';
 
 export default class SettingsComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      loading: false
-    }
+      loading: false,
+    };
   }
 
   async import() {
-    this.setState({loading: true})
-    await NHLService.import(this.props.match.params.leagueId)
-    this.setState({loading: false})
+    this.setState({ loading: true });
+    await NHLService.import(this.props.match.params.leagueId);
+    this.setState({ loading: false });
   }
 
   async updateMatches() {
-    this.setState({loading: true})
-    await NHLService.updateMatches(this.props.match.params.leagueId)
-    this.setState({loading: false})
+    this.setState({ loading: true });
+    await NHLService.updateMatches(this.props.match.params.leagueId);
+    this.setState({ loading: false });
   }
 
   render() {
@@ -33,6 +33,6 @@ export default class SettingsComponent extends Component {
         <button onClick={() => this.import()}>Import NHL</button>
         <button onClick={() => this.updateMatches()}>Aktualizace výsledků</button>
       </div>
-    )
+    );
   }
 }

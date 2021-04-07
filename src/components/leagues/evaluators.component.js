@@ -1,24 +1,24 @@
-import React, { Component } from 'react'
-import { Card, Header, Button, Divider, Confirm, Modal, Table, Label } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
-import EvaluatorService from '../../services/evaluator.service'
+import React, { Component } from 'react';
+import { Header, Button, Divider, Table } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import EvaluatorService from '../../services/evaluator.service';
 
 export default class EvaluatorsComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       evaluators: [],
-    }
+    };
   }
 
   async componentDidMount() {
-    this.loadEvaluators()
+    this.loadEvaluators();
   }
 
   async loadEvaluators() {
-    const evaluators = await EvaluatorService.getAll(this.props.match.params.leagueId)
-    this.setState({ evaluators })
+    const evaluators = await EvaluatorService.getAll(this.props.match.params.leagueId);
+    this.setState({ evaluators });
   }
 
   render() {
@@ -26,9 +26,7 @@ export default class EvaluatorsComponent extends Component {
       <div>
         <Header as="h1">Bodování</Header>
         <Link to={`/leagues/${this.props.match.params.leagueId}/evaluators/form/new`}>
-          <Button primary>
-            Přidat vyhodnocení
-          </Button>
+          <Button primary>Přidat vyhodnocení</Button>
         </Link>
         <Divider />
         <Table celled>
@@ -38,11 +36,11 @@ export default class EvaluatorsComponent extends Component {
               <Table.HeaderCell>Typ</Table.HeaderCell>
               <Table.HeaderCell>Entita</Table.HeaderCell>
               <Table.HeaderCell>Body</Table.HeaderCell>
-              <Table.HeaderCell></Table.HeaderCell>
+              <Table.HeaderCell />
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {this.state.evaluators.map(evaluator => (
+            {this.state.evaluators.map((evaluator) => (
               <Table.Row>
                 <Table.Cell>{evaluator.name}</Table.Cell>
                 <Table.Cell>{evaluator.type}</Table.Cell>
@@ -54,6 +52,6 @@ export default class EvaluatorsComponent extends Component {
           </Table.Body>
         </Table>
       </div>
-    )
+    );
   }
 }
