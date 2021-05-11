@@ -23,14 +23,14 @@ export default class SecuredComponent extends Component {
     return (
       <div>
         <nav>
-          <h1 className="brand"><a href="#"><b>NEYMAR | </b><SelectLeagueComponent /></a></h1>
+          <h1 className="brand"><a href="#"><SelectLeagueComponent /></a></h1>
           <ul>
               <li><Link to="/">Admin</Link></li>
               <li><Link to="/profile">Profil</Link></li>
-              <li><a onClick={() => this.props.logout()} href="#">LOG OUT</a></li>
+              <li><a onClick={() => this.props.logout()} href="#">Odhlášení</a></li>
           </ul>
         </nav>
-        <div class="box">
+        <div className="box">
           <div>
             <Route exact path="/" component={LeaguesComponent} />
             <Route path="/dashboard/:leagueId/matches" render={routeProps => <LeagueDashboardComponent {...routeProps} section="matches" />} />

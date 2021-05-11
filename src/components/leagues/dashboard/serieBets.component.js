@@ -58,8 +58,7 @@ export default class SerieBetsComponent extends Component {
     }
 
     return (
-      <div class="page">
-      <div class="box-header">Série</div>
+      <div className="page">
         <table>
           <tbody>
             <tr>

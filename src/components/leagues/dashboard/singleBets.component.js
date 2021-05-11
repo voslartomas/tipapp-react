@@ -99,9 +99,9 @@ export default class SingleBetsComponent extends Component {
     }
 
     return (
-      <div class="page">
-        <div class="box-header">Speciální</div>
+      <div className="page">
         <table>
+          <tbody>
           <tr>
               <th width="40%" align="left">Název</th>
               <th width="10%">Výsledek</th>
@@ -109,8 +109,8 @@ export default class SingleBetsComponent extends Component {
               <th width="10%">Tip</th>
               <th width="10%">Body</th>
           </tr>
-          {this.state.singleBets.map(bet => (
-            <tr>
+          {this.state.singleBets.map((bet, index) => (
+            <tr key={bet.id}>
                 <td align="left">{bet.name}</td>
                 <td>
                   {bet.team && bet.team}
@@ -153,6 +153,7 @@ export default class SingleBetsComponent extends Component {
                 <td><b>{this.betPlaced(bet) && bet.totalPoints}</b></td>
             </tr>
           ))}
+          </tbody>
         </table>
       </div>
     )

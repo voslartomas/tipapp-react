@@ -58,9 +58,9 @@ export default class LeaderBoardComponent extends Component {
 
   color(player, i) {
     const position = this.getPosition(player, i)
-    if (position < 3) {
+/*     if (position < 3) {
       return '#202020'
-    }
+    } */
 
     return 'white'
   }
@@ -71,23 +71,22 @@ export default class LeaderBoardComponent extends Component {
     }
 
     return (
-      <div class="page">
-        <div class="box-header">Výsledková listina</div>
+      <div className="page">
         <table>
             <tbody><tr>
                 <th width="5%"></th>
-                <th width="55%" align="left">NAME</th>
-                <th width="20%">POINTS</th>
-                <th width="20%">PRICE</th>
+                <th width="65%">Jméno</th>
+                <th width="30%">Body</th>
+                {/* <th width="20%">PRICE</th> */}
             </tr>
             {this.state.players && this.state.players.map((player, i) => (
-              <tr>
-                <td align="left" style={{ background: this.background(player, i), color: this.color(player, i) }}>
+              <tr key={player.id}>
+                <td align="left" style={{ /* background: this.background(player, i), */ color: this.color(player, i), textAlign: 'center' }}>
                   {this.getPosition(player, i)}.
                 </td>
-                <td align="left">{player.firstName} {player.lastName}</td>
+                <td align="left"   style={{ textAlign: 'center' }}>{player.firstName} {player.lastName}</td>
                 <td><b>{player.totalPoints}</b></td>
-                <td></td>
+{/*                 <td></td> */}
               </tr>
           ))}
         </tbody>

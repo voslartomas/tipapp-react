@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import { Menu, Segment, Sidebar, Icon, Header, Card, Button, Form } from 'semantic-ui-react'
-import { Route, Link } from 'react-router-dom'
+import { Form } from 'semantic-ui-react'
 import moment from 'moment'
-import MatchService from '../../../services/match.service'
 import LeagueService from '../../../services/league.service'
 import UserBetsMatchService from '../../../services/userBetsMatch.service'
 import PlayerService from '../../../services/player.service'
@@ -15,12 +13,23 @@ export default class MatchBetsComponent extends Component {
       matchBets: [],
       leagueId: undefined,
       players: [],
-      history: false
+      history: false,
     }
   }
 
   async componentDidMount() {
     await this.loadBets()
+  }
+
+  getPlayers(match) {
+    return this.state.players.filter((player) =>
+      player.leagueTeamId === match.homeTeamId ||
+      player.leagueTeamId === match.awayTeamId
+    ).map(player => ({
+      key: player.id,
+      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
+      value: player.id,
+    }))
   }
 
   async loadBets() {
@@ -41,15 +50,6 @@ export default class MatchBetsComponent extends Component {
     const players = await PlayerService.getPlayersByTeams(this.props.match.params.leagueId, teams)
 
     this.setState({ matchBets: matches, leagueId: this.props.id, players })
-  }
-
-  getPlayers(match) {
-    return this.state.players.filter(player => player.leagueTeamId === match.homeTeamId || player.leagueTeamId === match.awayTeamId)
-      .map(player => ({
-      key: player.id,
-      text: `${player.player.firstName} ${player.player.lastName} ${player.leagueTeam.team.shortcut}`,
-      value: player.id,
-    }))
   }
 
   async handleBetChange(bet, value, type, scorerId = undefined) {
@@ -95,9 +95,7 @@ export default class MatchBetsComponent extends Component {
 
   render() {
     return (
-      <div class="page">
-      <div class="box-header">Zápasy</div>
-
+      <div className="page">
       {!this.state.history && <span onClick={() => { this.toggleHistory() }}>Zobrazit historii</span>}
       {this.state.history && <span onClick={() => { this.toggleHistory() }}>Zobrazit nadcházející</span>}
 

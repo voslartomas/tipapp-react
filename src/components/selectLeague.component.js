@@ -18,7 +18,7 @@ export default class SelectLeagueComponent extends Component {
 
     this.state = {
       leagues: [],
-      league: undefined
+      league: undefined,
     }
   }
 
@@ -28,10 +28,11 @@ export default class SelectLeagueComponent extends Component {
 
   async loadLeagues() {
     const leagues = await LeagueService.getActiveLeagues()
-    let selectedLeague = undefined
-    let redirect = undefined
+    let selectedLeague
+    let redirect
 
-    const leaguesOptions = leagues.map(league => {
+    const leaguesOptions = leagues.sort((a, b) => a.league.isTheMostActive - b.league.isTheMostActive || a.league.createdAt - b.league.createdAt)
+      .map((league) => {
       if (league.league.isTheMostActive) {
         selectedLeague = league.league.id
         if (window.location.pathname === '/dashboard') redirect = `/dashboard/${league.league.id}/matches`
@@ -47,12 +48,11 @@ export default class SelectLeagueComponent extends Component {
   }
 
   render() {
-
     const { redirect } = this.state
 
     if (redirect) {
       const t = redirect
-      this.setState({redirect: undefined})
+      this.setState({ redirect: undefined })
       return <Redirect to={redirect} />
     }
 
