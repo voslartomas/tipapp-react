@@ -28,7 +28,6 @@ export default class MatchFormComponent extends Component {
     if (matchId !== 'new') {
       try {
         match = await MatchService.getMatchById(matchId)
-        console.log(match)
         match.scorers = await MatchService.getMatchScorersById(matchId)
         match.dateTime = moment(match.dateTime)
 

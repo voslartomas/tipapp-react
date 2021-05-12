@@ -13,7 +13,9 @@ export default class SerieBetsComponent extends Component {
     this.state = {
       serieBets: [],
       inputSerieBets: {},
-      leagueId: undefined
+      leagueId: undefined,
+      toggledBets: [],
+      otherPeopleBets: [],
     }
   }
 
@@ -52,6 +54,81 @@ export default class SerieBetsComponent extends Component {
     return new Date(bet.endDate).getTime() > new Date().getTime()
   }
 
+  async loadOtherBets(bet) {
+    await LeagueService.getUserBetsSerie(this.props.match.params.leagueId, bet.leagueSpecialBetSerieId).then(x => {
+      this.setState({
+        otherPeopleBets: this.state.otherPeopleBets.concat({
+          betId: bet.id,
+          bets: x,
+        }),
+      })
+
+    });
+  }
+
+  isToggledBet(betId) {
+    return this.state.toggledBets.includes(betId);
+  }
+
+  async onClickHandler(bet) {
+    if (!this.isToggledBet(bet.id) &&
+      !this.state.otherPeopleBets.find(x => x.betId === bet.id)) {
+      await this.loadOtherBets(bet)
+    }
+    this.setState({
+      toggledBets: this.isToggledBet(bet.id) ? this.state.toggledBets.filter(x => x !== bet.id) : this.state.toggledBets.concat(bet.id),
+    });
+  }
+
+  otherBets(bet) {
+    const other = this.state.otherPeopleBets.find(x => x.betId === bet.id)
+
+
+    return (
+      <React.Fragment>
+        {other.bets.filter(y => y.leagueUserId !== bet.leagueUserId).map((b,index) => (
+          <tr key={bet.id+index}>
+            <td>{`${b.leagueUser.user.firstName} ${b.leagueUser.user.lastName}`}</td>
+            <td />
+            <td>{b.homeTeamScore}:{b.awayTeamScore}</td>
+            <td>{b.totalPoints}</td>
+          </tr>
+      ))}
+      </React.Fragment>
+    )
+  }
+
+  betRow(bet) {
+    return (<tr onClick={() => this.onClickHandler(bet)}>
+      <td align="left"><Icon name={this.isToggledBet(bet.id) ? "angle up" : "angle down"} />{bet.homeTeam} - {bet.awayTeam}</td>
+      <td>{bet.serieHomeScore}:{bet.serieAwayScore}</td>
+      <td>
+        {this.betPlaced(bet) && <span>{bet.homeTeamScore}:{bet.awayTeamScore}</span>}
+        {this.canBet(bet) && <span>
+        <input
+          value={(bet.homeTeamScore) || 0}
+          type="number"
+          onChange={e => this.handleBetChange(bet, e)}
+          name="homeScore"
+          min="0"
+          max="4"
+          style={{ width: '35px' }} />:
+        <input
+          value={(bet.awayTeamScore) || 0}
+          type="number"
+          onChange={e => this.handleBetChange(bet, e)}
+          name="awayScore"
+          min="0"
+          max="4"
+          style={{ width: '35px' }} />
+        </span>}
+        {this.canBet(bet) && <Button onClick={() => this.submitSerieBet(bet)}>Uložit sázku</Button>}
+
+        </td>
+      <td><b>{this.betPlaced(bet) && bet.totalPoints}</b></td>
+    </tr>)
+  }
+
   render() {
     if (this.props.id !== this.state.leagueId) {
         this.componentDidMount()
@@ -62,40 +139,16 @@ export default class SerieBetsComponent extends Component {
         <table>
           <tbody>
             <tr>
-                <th width="40%" align="left">Zápas</th>
-                <th width="10%">Výsledek</th>
-                <th width="10%">Tip</th>
-                <th width="10%">Body</th>
+              <th width="40%" align="left">Zápas</th>
+              <th width="10%">Výsledek</th>
+              <th width="10%">Tip</th>
+              <th width="10%">Body</th>
             </tr>
             {this.state.serieBets.map(bet => (
-              <tr>
-                <td align="left">{bet.homeTeam} - {bet.awayTeam}</td>
-                <td>{bet.serieHomeScore}:{bet.serieAwayScore}</td>
-                <td>
-                  {this.betPlaced(bet) && <span>{bet.homeTeamScore}:{bet.awayTeamScore}</span>}
-                  {this.canBet(bet) && <span>
-                  <input
-                    value={(bet.homeTeamScore) || 0}
-                    type="number"
-                    onChange={e => this.handleBetChange(bet, e)}
-                    name="homeScore"
-                    min="0"
-                    max="4"
-                    style={{ width: '35px' }} />:
-                  <input
-                    value={(bet.awayTeamScore) || 0}
-                    type="number"
-                    onChange={e => this.handleBetChange(bet, e)}
-                    name="awayScore"
-                    min="0"
-                    max="4"
-                    style={{ width: '35px' }} />
-                  </span>}
-                  {this.canBet(bet) && <Button onClick={() => this.submitSerieBet(bet)}>Uložit sázku</Button>}
-
-                  </td>
-                <td><b>{this.betPlaced(bet) && bet.totalPoints}</b></td>
-              </tr>
+              <React.Fragment key={bet.betId}>
+                {this.betRow(bet)}
+                {this.isToggledBet(bet.id) && this.otherBets(bet)}
+              </React.Fragment>
             ))}
           </tbody>
         </table>

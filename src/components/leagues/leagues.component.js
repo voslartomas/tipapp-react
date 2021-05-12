@@ -40,7 +40,7 @@ export default class LeaguesComponent extends Component {
         <Divider />
         <Card.Group>
           {this.state.leagues && this.state.leagues.map(league => (
-            <Card>
+            <Card key={league.id}>
               <Card.Content>
                 <Card.Header>
                   <Link to={`/leagues/${league.id}/matches`}>{league.name}</Link>

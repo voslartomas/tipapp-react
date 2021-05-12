@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import LeagueService from '../../../services/league.service'
-import { Header, Table, Divider, Label } from 'semantic-ui-react'
 
 
 export default class LeaderBoardComponent extends Component {
@@ -9,7 +8,7 @@ export default class LeaderBoardComponent extends Component {
 
     this.state = {
       players: [],
-      leagueId: undefined
+      leagueId: undefined,
     }
   }
 
@@ -17,17 +16,9 @@ export default class LeaderBoardComponent extends Component {
     this.loadPlayers()
   }
 
-  async loadPlayers() {
-    const players = await LeagueService.getLeaderBoard(this.props.match.params.leagueId)
-
-    this.setState({ players, leagueId: this.props.id })
-  }
-
   getPosition(player, index) {
-    const previousPosition = this.state.previousPosition
-    const previousPlayer = this.state.previousPlayer
-    let position
-
+    const { previousPosition, previousPlayer } = this.state;
+    let position;
     if (index === 0) {
       position = index + 1
     }
@@ -42,6 +33,14 @@ export default class LeaderBoardComponent extends Component {
     this.state.previousPosition = position
     return position
   }
+
+  async loadPlayers() {
+    const players = await LeagueService.getLeaderBoard(this.props.match.params.leagueId)
+
+    this.setState({ players, leagueId: this.props.id })
+  }
+
+
 
   background(player, i) {
     const position = this.getPosition(player, i)
@@ -67,7 +66,7 @@ export default class LeaderBoardComponent extends Component {
 
   render() {
     if (this.props.id !== this.state.leagueId) {
-        this.componentDidMount()
+      this.loadPlayers()
     }
 
     return (
@@ -80,8 +79,8 @@ export default class LeaderBoardComponent extends Component {
                 {/* <th width="20%">PRICE</th> */}
             </tr>
             {this.state.players && this.state.players.map((player, i) => (
-              <tr key={player.id}>
-                <td align="left" style={{ /* background: this.background(player, i), */ color: this.color(player, i), textAlign: 'center' }}>
+                <tr key={player.id}>
+                  <td align="left" style={{ /* background: this.background(player, i), */ color: this.color(player, i), textAlign: 'center' }}>
                   {this.getPosition(player, i)}.
                 </td>
                 <td align="left"   style={{ textAlign: 'center' }}>{player.firstName} {player.lastName}</td>

@@ -38,11 +38,11 @@ export default class LoginFormComponent extends Component {
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
-              Log-in
+            <Header as="h2" color="yellow" textAlign="center">
+              Přihlášení
             </Header>
             <Form size="large">
-              <Segment stacked>
+              <Segment stacked backgroundColor="black">
                 <Form.Input
                   fluid
                   icon="user"
@@ -61,8 +61,8 @@ export default class LoginFormComponent extends Component {
                   onChange={event => this.setState({ password: event.target.value })}
                 />
 
-                <Button color="teal" fluid size="large" onClick={() => this.logIn()}>Přihlásit se<i style={{ marginLeft: '5px' }} className="sign in icon" /></Button>
-                <Link to='/register'>Nemáš ještě účet? Registruj se…</Link>
+                <Button color="yellow" fluid size="large" onClick={() => this.logIn()}>Přihlásit se<i style={{ marginLeft: '5px' }} className="sign in icon" /></Button>
+                {/* <Link to='/register'>Nemáš ještě účet? Registruj se…</Link> */}
               </Segment>
             </Form>
           </Grid.Column>
