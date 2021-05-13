@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import LoginFormComponent from './components/loginForm.component'
 import SecuredComponent from './components/secured.component'
 import './App.css'
@@ -9,42 +9,27 @@ import { Route } from 'react-router-dom'
 
 moment.locale('cs')
 
-class App extends Component {
-  constructor(props) {
-    super(props)
+export default function App() {
+  const [action, setAction] = useState();
+  const [user, setUser] = useState()
 
-    this.state = {
-      action: undefined,
-    }
+  const login = () => {
+    setAction('login');
   }
 
-  login() {
-    this.setState({ action: 'login' })
-  }
-
-  logout() {
+  const logout = () => {
     console.log('loging out')
     localStorage.setItem('token', '')
-    this.setState({ action: 'logout' })
+    setAction('logout');
   }
 
-  setUser(user) {
-    this.setState({
-      user,
-    })
-  }
+  const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('token').length > 0
 
-  render() {
-    const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('token').length > 0
-
-    return (
-      <div className="main">
-        <Route exact path='/register' component={RegisterFormComponent} />
-        {!isLoggedIn && <LoginFormComponent login={() => this.login()} />}
-        {isLoggedIn && <SecuredComponent logout={() => this.logout()} />}
-      </div>
-    )
-  }
+  return (
+    <div className="main">
+      <Route exact path="/register" component={RegisterFormComponent} />
+      {!isLoggedIn && <LoginFormComponent login={() => login()} />}
+      {isLoggedIn && <SecuredComponent logout={() => logout()} />}
+    </div>
+  )
 }
-
-export default App

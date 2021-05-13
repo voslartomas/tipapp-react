@@ -1,57 +1,58 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Menu, Segment, Sidebar, Icon, Header, Card, Button, Form } from 'semantic-ui-react'
 import { Route, Link } from 'react-router-dom'
 import moment from 'moment'
+import { canBetOnSpecial, getArrowIcon, loadingComponent } from '../../../helpers/utils'
 import UserBetsSingleService from '../../../services/userBetsSingle.service'
 import PlayerService from '../../../services/player.service'
 import LeagueService from '../../../services/league.service'
+import CurrentTimestampContext from '../../../context/CurrentTimestampContext'
 
-export default class SingleBetsComponent extends Component {
-  constructor(props) {
-    super(props)
+export default function SingleBetsComponent(props) {
+  const [userBets, setUserBets] = useState({});
+  const [singleBets, setSingleBets] = useState([]);
+  const [playersOptions, setPlayersOptions] = useState([]);
+  const [teamsOptions, setTeamOptions] = useState([]);
+  const [leagueId, setLeagueId] = useState(props.id);
+  const [isLoading, setIsLoading] = useState(false);
+  const [toggledBets, setToggleBets] = useState([]);
+  const [otherPeopleBets, setOtherPeopleBets] = useState([]);
 
-    this.userBets = {}
-    this.state = {
-      singleBets: [],
-      playersOptions: [],
-      teamsOptions: [],
-      leagueId: undefined,
-      toggledBets: [],
-      otherPeopleBets: [],
-    }
-  }
+  const currentTimeStamp = useContext(CurrentTimestampContext);
 
-  async componentDidMount() {
-    const players = await PlayerService.getPlayers(this.props.match.params.leagueId, [])
-    const teams = await LeagueService.getTeams(this.props.match.params.leagueId)
+  useEffect(async () => {
+    setIsLoading(true);
+    const players = await PlayerService.getPlayers(props.match.params.leagueId, [])
+    const teams = await LeagueService.getTeams(props.match.params.leagueId)
 
-    const playersOptions = players.map(player => ({
+    const _playersOptions = players.map(player => ({
       key: player.id,
       text: `${player.player.firstName} ${player.player.lastName}`,
       value: player.id,
     }))
 
-    const teamsOptions = teams.map(team => ({
+    const _teamsOptions = teams.map(team => ({
       key: team.id,
       text: team.team.name,
       value: team.id,
     }))
 
-    this.setState({
-      playersOptions,
-      teamsOptions,
-      leagueId: this.props.id
-    })
-    this.loadBets()
+    setPlayersOptions(_playersOptions);
+    setTeamOptions(_teamsOptions);
+    setLeagueId(props.id);
+
+    await loadBets()
+    setIsLoading(false);
+  }, [leagueId])
+
+  const loadBets = async () => {
+    setIsLoading(true);
+    const bets = await UserBetsSingleService.getAll(props.match.params.leagueId)
+    setSingleBets(bets);
+    setIsLoading(false);
   }
 
-  async loadBets() {
-    const bets = await UserBetsSingleService.getAll(this.props.match.params.leagueId)
-
-    this.setState({ singleBets: bets })
-  }
-
-  getResult(bet) {
+  const getResult = (bet) => {
     if (bet.valueBet) {
       return bet.valueBet
     } else if (bet.playerBet) {
@@ -61,12 +62,8 @@ export default class SingleBetsComponent extends Component {
     }
   }
 
-  betPlaced(bet) {
-    return bet.id
-  }
-
-  async submitBet(bet) {
-    const value = this.userBets[bet.singleId]
+  const submitBet = async (bet) => {
+    const value = userBets[bet.singleId]
 
     if (value) {
       let data = {
@@ -81,52 +78,41 @@ export default class SingleBetsComponent extends Component {
         data['value'] = value
       }
 
-      await UserBetsSingleService.put(this.props.match.params.leagueId, data, bet.id | 0)
-      this.loadBets()
+      await UserBetsSingleService.put(props.match.params.leagueId, data, bet.id | 0)
+      await loadBets();
     }
   }
 
-  canBet(bet) {
-    return new Date(bet.endDate).getTime() > new Date().getTime()
+  const handleChange = (bet, value) => {
+    const _userBets = userBets
+    _userBets[bet.singleId] = value
+    setUserBets(_userBets)
   }
 
-  handleChange(bet, value) {
-    const userBets = this.state.userBets
-    this.userBets[bet.singleId] = value
-  }
+  const isToggledBet = (betId) => toggledBets.includes(betId);
 
-  isToggledBet(betId) {
-    return this.state.toggledBets.includes(betId);
-  }
-
-  async loadOtherBets(bet) {
-    await LeagueService.getUserBetsSingle(this.props.match.params.leagueId, bet.leagueSpecialBetSingleId).then(x => {
-
-      this.setState({
-        otherPeopleBets: this.state.otherPeopleBets.concat({
+  const loadOtherBets = async (bet) => {
+    setIsLoading(true)
+    await LeagueService.getUserBetsSingle(props.match.params.leagueId, bet.leagueSpecialBetSingleId).then(x => {
+      setOtherPeopleBets(otherPeopleBets.concat({
           betId: bet.betId,
           bets: x,
         }),
-      })
-
+      )
+      setIsLoading(false)
     });
   }
 
-  async onClickHandler(bet) {
-    if (!this.isToggledBet(bet.id) &&
-      !this.state.otherPeopleBets.find(x => x.betId === bet.betId)) {
-      await this.loadOtherBets(bet)
+  const onClickHandler = async (bet) => {
+    if (!isToggledBet(bet.id) &&
+      !otherPeopleBets.find(x => x.betId === bet.betId)) {
+      await loadOtherBets(bet)
     }
-    this.setState({
-        toggledBets: this.isToggledBet(bet.id) ? this.state.toggledBets.filter(x => x !== bet.id) : this.state.toggledBets.concat(bet.id),
-    });
+    setToggleBets(isToggledBet(bet.id) ? toggledBets.filter(x => x !== bet.id) : toggledBets.concat(bet.id))
   }
 
-  otherBets(bet) {
-    const other = this.state.otherPeopleBets.find(x => x.betId === bet.betId)
-
-
-
+  const otherBets = (bet) => {
+    const other = otherPeopleBets.find(x => x.betId === bet.betId)
 
     return (
       <React.Fragment>
@@ -146,23 +132,23 @@ export default class SingleBetsComponent extends Component {
     )
   }
 
-  betRow(bet) {
-    return (<tr onClick={() => this.onClickHandler(bet)}>
-      <td align="left"><Icon name={this.isToggledBet(bet.id) ? "angle up" : "angle down"} />{bet.name}</td>
+  const betRow = (bet) => {
+    return (<tr onClick={() => !canBetOnSpecial(bet, currentTimeStamp) && onClickHandler(bet)}>
+      <td>{!canBetOnSpecial(bet, currentTimeStamp) && getArrowIcon(isToggledBet(bet.id))} {bet.name}</td>
       <td>
         {bet.team && bet.team}
         {bet.player && bet.player}
         {bet.value && bet.value}
       </td>
-      <td>{this.canBet(bet) && <span>Konec {moment(bet.endDate).fromNow()}</span>}</td>
+      <td>{canBetOnSpecial(bet, currentTimeStamp) && <span>Konec {moment(bet.endDate).fromNow()}</span>}</td>
       <td>
-      {this.getResult(bet)}
-      {this.canBet(bet) && <div>
+      {getResult(bet)}
+      {canBetOnSpecial(bet, currentTimeStamp) && <div>
         {bet.type === 1 && <Form.Field>
           <Form.Select
             fluid
             required
-            onChange={(e, { name, value }) => this.handleChange(bet, value)}
+            onChange={(e, { name, value }) => handleChange(bet, value)}
             label="Hráč"
             search
             options={this.state.playersOptions}
@@ -175,47 +161,43 @@ export default class SingleBetsComponent extends Component {
               fluid
               required
               label="Tým"
-              onChange={(e, { name, value }) => this.handleChange(bet, value)}
+              onChange={(e, { name, value }) => handleChange(bet, value)}
               search
-              options={this.state.teamsOptions}
+              options={teamsOptions}
               placeholder="Vyberte tým"
             />
           </Form.Field>}
         {bet.type === 3 && <span>
-          <input onChange={(e) => this.handleChange(bet, e.target.value)} type="text" />
+          <input onChange={(e) => handleChange(bet, e.target.value)} type="text" />
         </span>}
-        <Button onClick={(e) => this.submitBet(bet)}>Uložit sázku</Button>
+        <Button onClick={(e) => submitBet(bet)}>Uložit sázku</Button>
         </div>}
       </td>
-      <td><b>{this.betPlaced(bet) && bet.totalPoints}</b></td>
+      <td><b>{bet.id && bet.totalPoints}</b></td>
   </tr>)
   }
-
-  render() {
-    if (this.props.id !== this.state.leagueId) {
-        this.componentDidMount()
-    }
 
     return (
       <div className="page">
         <table>
           <tbody>
           <tr>
-              <th width="40%" align="left">Název</th>
+              <th width="40%">Název</th>
               <th width="10%">Výsledek</th>
               <th width="10%">Datum</th>
               <th width="10%">Tip</th>
               <th width="10%">Body</th>
           </tr>
-          {this.state.singleBets.map((bet) => (
+          {loadingComponent(isLoading)}
+          {singleBets.map((bet) => (
               <React.Fragment key={bet.id}>
-                {this.betRow(bet)}
-                {this.isToggledBet(bet.id) && this.otherBets(bet)}
+                {betRow(bet)}
+                {isToggledBet(bet.id) && otherBets(bet)}
               </React.Fragment>
           ))}
           </tbody>
         </table>
       </div>
     )
-  }
+  
 }

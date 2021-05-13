@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useContext, useState } from 'react'
 import { Menu, Segment, Icon, Header } from 'semantic-ui-react'
 import SportsComponent from './sports/sports.component'
 import { Route, Link } from 'react-router-dom'
@@ -13,43 +13,59 @@ import SelectLeagueComponent from './selectLeague.component';
 import ProfileComponent from './profile.component';
 import UserFormComponent from './userForm.component';
 import PasswordComponent from './password.component';
+import CurrentTimestampContext from '../context/CurrentTimestampContext';
+import { getCurrentTimestamp, loadingComponent } from '../helpers/utils';
 
-export default class SecuredComponent extends Component {
-  componentDidMount() {
-    document.title = 'Neymar';
-  }
+export default function SecuredComponent(props) {
 
-  render() {
-    return (
-      <div>
-        <nav>
-          <h1 className="brand"><a href="#"><SelectLeagueComponent /></a></h1>
-          <ul>
-              <li><Link to="/">Admin</Link></li>
-              <li><Link to="/profile">Profil</Link></li>
-              <li><a onClick={() => this.props.logout()} href="#">Odhlášení</a></li>
-          </ul>
-        </nav>
-        <div className="box">
-          <div>
-            <Route exact path="/" component={LeaguesComponent} />
-            <Route path="/dashboard/:leagueId/matches" render={routeProps => <LeagueDashboardComponent {...routeProps} section="matches" />} />
-            <Route path="/dashboard/:leagueId/singles" render={routeProps => <LeagueDashboardComponent {...routeProps} section="singles" />} />
-            <Route path="/dashboard/:leagueId/series" render={routeProps => <LeagueDashboardComponent {...routeProps} section="series" />} />
-            <Route path="/dashboard/:leagueId/leaderboard" render={routeProps => <LeagueDashboardComponent {...routeProps} section="leaderboard" />} />
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentTimestamp, setCurrentTimestamp] = useState(0);
+  // const {currentTimestamp,setCurrentTimestamp} = useContext(CurrentTimestampContext);
 
-            <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
-            <Route exact path="/sports/:sportId" component={LeaguesComponent} />
-            <Route exact path="/league/form/:leagueId" component={LeagueFormComponent} />
-            <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
-            <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
-            <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
-            <Route exact path="/profile/edit/:userId" component={UserFormComponent} />
-            <Route exact path="/profile/password" component={PasswordComponent} />
-            <Route exact path="/profile" render={routeProps => <ProfileComponent {...routeProps} logout={this.props.logout}/>} />
+  useEffect(() => {document.title = 'TipApp'}, [document.title])
+  useEffect(async () => {
+    setIsLoading(true)
+    if (!currentTimestamp) { 
+      const ts = await getCurrentTimestamp();
+      setCurrentTimestamp(ts)
+    }
+    setIsLoading(false)
+  }, [currentTimestamp])
+
+  return (
+    <React.Fragment>
+      <CurrentTimestampContext.Provider value={currentTimestamp}>
+        {loadingComponent(isLoading)}
+        <div>
+          <nav>
+            <h1 className="brand"><a href="#"><SelectLeagueComponent /></a></h1>
+            <ul>
+                <li><Link to="/">Admin</Link></li>
+                <li><Link to="/profile">Profil</Link></li>
+                <li><a onClick={() => props.logout()} href="#">Odhlášení</a></li>
+            </ul>
+          </nav>
+          <div className="box">
+            <div>
+              <Route exact path="/" component={LeaguesComponent} />
+              <Route path="/dashboard/:leagueId/matches" render={routeProps => <LeagueDashboardComponent {...routeProps} section="matches" />} />
+              <Route path="/dashboard/:leagueId/singles" render={routeProps => <LeagueDashboardComponent {...routeProps} section="singles" />} />
+              <Route path="/dashboard/:leagueId/series" render={routeProps => <LeagueDashboardComponent {...routeProps} section="series" />} />
+              <Route path="/dashboard/:leagueId/leaderboard" render={routeProps => <LeagueDashboardComponent {...routeProps} section="leaderboard" />} />
+
+              <Route path="/leagues/:leagueId/(matches|teams|players)*" component={LeaguesMenuComponent} />
+              <Route exact path="/sports/:sportId" component={LeaguesComponent} />
+              <Route exact path="/league/form/:leagueId" component={LeagueFormComponent} />
+              <Route exact path="/sports/form/:sportId" component={SportFormComponent} />
+              <Route exact path="/teams/form/:teamId" component={TeamFormComponent} />
+              <Route exact path="/players/form/:playerId" component={PlayerFormComponent} />
+              <Route exact path="/profile/edit/:userId" component={UserFormComponent} />
+              <Route exact path="/profile/password" component={PasswordComponent} />
+              <Route exact path="/profile" render={routeProps => <ProfileComponent {...routeProps} logout={props.logout} />} />
+            </div>
           </div>
         </div>
-      </div>
-    )
-  }
+      </CurrentTimestampContext.Provider>
+    </React.Fragment>
+  )
 }
