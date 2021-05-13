@@ -45,7 +45,7 @@ export default class MatchesComponent extends Component {
         <Divider />
         <Card.Group>
           {this.state.matches && this.state.matches.map(match => (
-            <Card>
+            <Card key={match.id}>
               <Card.Content>
                 <Card.Description>
                   {match.homeTeam && match.homeTeam.team && match.homeTeam.team.name || ''} {match.homeScore || 0}

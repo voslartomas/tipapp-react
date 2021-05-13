@@ -1,9 +1,13 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Form } from 'semantic-ui-react'
 import LeagueService from '../services/league.service'
+import SelectedLeagueContext from '../context/SelectedLeagueContext'
 
 export default class SelectLeagueComponent extends Component {
+
+  static contextType = SelectedLeagueContext;
+
   constructor(props) {
     super(props)
 
@@ -41,6 +45,7 @@ export default class SelectLeagueComponent extends Component {
     } catch (error) {}
 
     this.setState({ leagues: leaguesOptions, league: selectedLeague, redirect })
+    this.context.setSelectedLeague(selectedLeague)
   }
 
   render() {
@@ -53,14 +58,17 @@ export default class SelectLeagueComponent extends Component {
     }
 
     return (
+      <React.Fragment>
         <Form.Select style={{backgroundColor: '#202020', color: 'white', float: 'right'}}
           fluid
           options={this.state.leagues}
           value={this.state.league}
           onChange={(event, { name, value }) => {
+            this.context.setSelectedLeague(value)
             this.setState({ league: value, redirect: `/dashboard/${value}/matches` })
           }}
         />
+      </React.Fragment>
     )
   }
 }

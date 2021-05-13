@@ -20,6 +20,7 @@ export default function App() {
   const logout = () => {
     console.log('loging out')
     localStorage.setItem('token', '')
+    window.location.pathname = ''
     setAction('logout');
   }
 

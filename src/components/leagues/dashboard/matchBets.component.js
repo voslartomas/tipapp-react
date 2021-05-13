@@ -7,7 +7,7 @@ import PlayerService from '../../../services/player.service'
 import { canBetOnMatch, getArrowIcon, loadingComponent } from '../../../helpers/utils';
 import CurrentTimestampContext from '../../../context/CurrentTimestampContext'
 
-export default function MatchBetsComponent(props) {
+export default function MatchBetsComponent({ leagueId }) {
   const [isLoading, setIsLoading] = useState([]);
   const [matchBets, setMatchBets] = useState([]);
   const [players, setPlayers] = useState([]);
@@ -16,14 +16,12 @@ export default function MatchBetsComponent(props) {
   const [otherPeopleBets, setOtherPeopleBets] = useState([]);
 
   useEffect(async () => {
-
     await loadBets();
-  }, [history, props.match.params.leagueId]);
+  }, [history, leagueId]);
 
   const currentTimeStamp = useContext(CurrentTimestampContext);
 
   const getPlayers = (match) => {
-    console.log(players)
     return players
       .filter(player => player.leagueTeamId === match.homeTeamId ||
         player.leagueTeamId === match.awayTeamId)
@@ -37,8 +35,8 @@ export default function MatchBetsComponent(props) {
   const loadBets = async () => {
     setIsLoading(true);
     const matches = history ?
-      await LeagueService.getBetsMatchesHistory(props.match.params.leagueId) :
-      await LeagueService.getBetsMatches(props.match.params.leagueId);
+      await LeagueService.getBetsMatchesHistory(leagueId) :
+      await LeagueService.getBetsMatches(leagueId);
 
     const teams = []
     for (const match of matches) {
@@ -47,7 +45,7 @@ export default function MatchBetsComponent(props) {
       }
     }
 
-    const _players = await PlayerService.getPlayersByTeams(props.match.params.leagueId, teams)
+    const _players = await PlayerService.getPlayersByTeams(leagueId, teams)
     setMatchBets(matches);
     setPlayers(_players);
     setIsLoading(false);
@@ -58,7 +56,7 @@ export default function MatchBetsComponent(props) {
       scorerId = bet.scorerId;
     }
 
-    await UserBetsMatchService.put(props.match.params.leagueId, {matchId: bet.matchId1,
+    await UserBetsMatchService.put(leagueId, {matchId: bet.matchId1,
       homeScore: type === 'homeScore' ? parseInt(value) : bet.homeScore || 0,
       awayScore: type === 'awayScore' ? parseInt(value) : bet.awayScore || 0,
       overtime: type === 'overtime' ? value : bet.overtime || false,
@@ -73,7 +71,7 @@ export default function MatchBetsComponent(props) {
 
   const loadOtherBets = async (bet) => {
     setIsLoading(true)
-    await LeagueService.getUserBetsMatch(props.match.params.leagueId, bet.matchId).then((x) => {
+    await LeagueService.getUserBetsMatch(leagueId, bet.matchId).then((x) => {
       setOtherPeopleBets(otherPeopleBets.concat({
         matchId: bet.matchId,
         bets: x,

@@ -35,9 +35,9 @@ export default class LeaderBoardComponent extends Component {
   }
 
   async loadPlayers() {
-    const players = await LeagueService.getLeaderBoard(this.props.match.params.leagueId)
+    const players = await LeagueService.getLeaderBoard(this.props.leagueId)
 
-    this.setState({ players, leagueId: this.props.id })
+    this.setState({ players, leagueId: this.props.leagueId })
   }
 
 
@@ -65,7 +65,7 @@ export default class LeaderBoardComponent extends Component {
   }
 
   render() {
-    if (this.props.id !== this.state.leagueId) {
+    if (this.props.leagueId !== this.state.leagueId) {
       this.loadPlayers()
     }
 
@@ -79,7 +79,7 @@ export default class LeaderBoardComponent extends Component {
                 {/* <th width="20%">PRICE</th> */}
             </tr>
             {this.state.players && this.state.players.map((player, i) => (
-                <tr key={player.id}>
+                <tr key={`${player.firstName}_${player.lastName}_${player.totalPoints}`}>
                   <td align="left" style={{ /* background: this.background(player, i), */ color: this.color(player, i), textAlign: 'center' }}>
                   {this.getPosition(player, i)}.
                 </td>

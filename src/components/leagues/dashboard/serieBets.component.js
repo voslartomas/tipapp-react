@@ -5,9 +5,8 @@ import LeagueService from '../../../services/league.service'
 import UserBetsSerieService from '../../../services/userBetsSerie.service'
 import CurrentTimestampContext from '../../../context/CurrentTimestampContext'
 
-export default function SerieBetsComponent(props) {
+export default function SerieBetsComponent({ leagueId }) {
   const [serieBets, setSerieBets] = useState([]);
-  const [leagueId, setLeagueId] = useState(props.id);
   const [isLoading, setIsLoading] = useState(false);
   const [toggledBets, setToggleBets] = useState([]);
   const [otherPeopleBets, setOtherPeopleBets] = useState([]);
@@ -20,14 +19,13 @@ export default function SerieBetsComponent(props) {
 
   const loadBets = async () => {
     setIsLoading(true)
-    const userBets = await LeagueService.getBetsSeries(props.match.params.leagueId)
+    const userBets = await LeagueService.getBetsSeries(leagueId)
     setSerieBets(userBets);
-    setLeagueId(props.match.params.leagueId)
     setIsLoading(false)
   }
 
   const submitSerieBet = async (bet) => {
-    await UserBetsSerieService.put(props.match.params.leagueId, {
+    await UserBetsSerieService.put(leagueId, {
       homeTeamScore: bet.homeTeamScore,
       awayTeamScore: bet.awayTeamScore,
       leagueSpecialBetSerieId: bet.leagueSpecialBetSerieId
@@ -45,7 +43,7 @@ export default function SerieBetsComponent(props) {
 
   const loadOtherBets = async (bet) => {
     setIsLoading(true);
-    await LeagueService.getUserBetsSerie(props.match.params.leagueId, bet.leagueSpecialBetSerieId).then(x => {
+    await LeagueService.getUserBetsSerie(leagueId, bet.leagueSpecialBetSerieId).then(x => {
       setOtherPeopleBets(otherPeopleBets.concat({
           betId: bet.id,
           bets: x,

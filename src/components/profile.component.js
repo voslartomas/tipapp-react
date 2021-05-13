@@ -33,9 +33,8 @@ export default class ProfileComponent extends Component {
 
   render() {
     return(
-      <div>
-        <h1>PROFIL</h1>
-        <h3>{this.state.user.firstName} {this.state.user.lastName}</h3>
+      <div style={{padding: '35px'}}>
+        <h1>Profil - {this.state.user.firstName} {this.state.user.lastName}</h1>
         <h3>{this.state.user.email}</h3>
         <h3>{this.state.user.mobileNumber}</h3>
         <Button color="green"><Link to={`/profile/edit/${this.state.user.id}`}>Editovat</Link></Button>

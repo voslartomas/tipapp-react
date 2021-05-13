@@ -8,12 +8,11 @@ import PlayerService from '../../../services/player.service'
 import LeagueService from '../../../services/league.service'
 import CurrentTimestampContext from '../../../context/CurrentTimestampContext'
 
-export default function SingleBetsComponent(props) {
+export default function SingleBetsComponent({leagueId}) {
   const [userBets, setUserBets] = useState({});
   const [singleBets, setSingleBets] = useState([]);
   const [playersOptions, setPlayersOptions] = useState([]);
   const [teamsOptions, setTeamOptions] = useState([]);
-  const [leagueId, setLeagueId] = useState(props.id);
   const [isLoading, setIsLoading] = useState(false);
   const [toggledBets, setToggleBets] = useState([]);
   const [otherPeopleBets, setOtherPeopleBets] = useState([]);
@@ -22,8 +21,8 @@ export default function SingleBetsComponent(props) {
 
   useEffect(async () => {
     setIsLoading(true);
-    const players = await PlayerService.getPlayers(props.match.params.leagueId, [])
-    const teams = await LeagueService.getTeams(props.match.params.leagueId)
+    const players = await PlayerService.getPlayers(leagueId, [])
+    const teams = await LeagueService.getTeams(leagueId)
 
     const _playersOptions = players.map(player => ({
       key: player.id,
@@ -39,7 +38,6 @@ export default function SingleBetsComponent(props) {
 
     setPlayersOptions(_playersOptions);
     setTeamOptions(_teamsOptions);
-    setLeagueId(props.id);
 
     await loadBets()
     setIsLoading(false);
@@ -47,7 +45,7 @@ export default function SingleBetsComponent(props) {
 
   const loadBets = async () => {
     setIsLoading(true);
-    const bets = await UserBetsSingleService.getAll(props.match.params.leagueId)
+    const bets = await UserBetsSingleService.getAll(leagueId)
     setSingleBets(bets);
     setIsLoading(false);
   }
@@ -78,7 +76,7 @@ export default function SingleBetsComponent(props) {
         data['value'] = value
       }
 
-      await UserBetsSingleService.put(props.match.params.leagueId, data, bet.id | 0)
+      await UserBetsSingleService.put(leagueId, data, bet.id | 0)
       await loadBets();
     }
   }
@@ -93,7 +91,7 @@ export default function SingleBetsComponent(props) {
 
   const loadOtherBets = async (bet) => {
     setIsLoading(true)
-    await LeagueService.getUserBetsSingle(props.match.params.leagueId, bet.leagueSpecialBetSingleId).then(x => {
+    await LeagueService.getUserBetsSingle(leagueId, bet.leagueSpecialBetSingleId).then(x => {
       setOtherPeopleBets(otherPeopleBets.concat({
           betId: bet.betId,
           bets: x,
