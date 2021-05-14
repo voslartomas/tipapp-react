@@ -173,9 +173,9 @@ export default function MatchBetsComponent({ leagueId }) {
             <th width="12%">Tip</th>
             <th width="20%">Střelec</th>
             <th width="8%">Body</th>
-          </tr>
+          </tr>          
           {matchBets
-            .filter(m => m.homeTeamId !== 284 && m.awayTeamId !== 284) // filtering out Vancoouver games
+            .filter(m => m.homeTeamId !== 220 && m.awayTeamId !== 220) // filtering out Vancoouver games
             .map((bet, index) => (
             <React.Fragment key={`${bet.id}_${index}`}>
               {betRow(bet)}
