@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Menu, Segment, Sidebar, Icon, Header, Card, Button, Form } from 'semantic-ui-react'
-import { Route, Link } from 'react-router-dom'
+import { Button, Form } from 'semantic-ui-react'
 import moment from 'moment'
 import { canBetOnSpecial, getArrowIcon, loadingComponent } from '../../../helpers/utils'
 import UserBetsSingleService from '../../../services/userBetsSingle.service'
@@ -177,6 +176,7 @@ export default function SingleBetsComponent({leagueId}) {
 
     return (
       <div className="page">
+        {loadingComponent(isLoading)}
         <table>
           <tbody>
           <tr>
@@ -186,9 +186,8 @@ export default function SingleBetsComponent({leagueId}) {
               <th width="10%">Tip</th>
               <th width="10%">Body</th>
           </tr>
-          {loadingComponent(isLoading)}
-          {singleBets.map((bet) => (
-              <React.Fragment key={bet.id}>
+          {singleBets.map((bet, index) => (
+              <React.Fragment key={`${bet.id}_${index}`}>
                 {betRow(bet)}
                 {isToggledBet(bet.id) && otherBets(bet)}
               </React.Fragment>

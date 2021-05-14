@@ -160,6 +160,7 @@ export default function MatchBetsComponent({ leagueId }) {
 
   return (
     <div className="page">
+      {loadingComponent(isLoading)}
       <div style={{ padding: '10px 0 20px' }}>
         <Button onClick={() => { toggleHistory() }}>{!history ? 'Zobrazit historii' : 'Zobrazit nadcházející'}</Button>
       </div>
@@ -173,9 +174,8 @@ export default function MatchBetsComponent({ leagueId }) {
             <th width="20%">Střelec</th>
             <th width="8%">Body</th>
           </tr>
-          {loadingComponent(isLoading)}
-          {matchBets.map(bet => (
-            <React.Fragment key={bet.id}>
+          {matchBets.map((bet, index) => (
+            <React.Fragment key={`${bet.id}_${index}`}>
               {betRow(bet)}
               {isToggledGame(bet.id) && otherBets(bet)}
             </React.Fragment>

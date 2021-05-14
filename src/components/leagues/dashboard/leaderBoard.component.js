@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import LeagueService from '../../../services/league.service'
+import { loadingComponent } from '../../../helpers/utils'
 
 
 export default class LeaderBoardComponent extends Component {
@@ -9,6 +10,7 @@ export default class LeaderBoardComponent extends Component {
     this.state = {
       players: [],
       leagueId: undefined,
+      isLoading: false,
     }
   }
 
@@ -35,9 +37,10 @@ export default class LeaderBoardComponent extends Component {
   }
 
   async loadPlayers() {
+    !this.state.isLoading && this.setState({ isLoading: true })
     const players = await LeagueService.getLeaderBoard(this.props.leagueId)
 
-    this.setState({ players, leagueId: this.props.leagueId })
+    this.setState({ players, leagueId: this.props.leagueId,  isLoading: false })
   }
 
 
@@ -65,12 +68,13 @@ export default class LeaderBoardComponent extends Component {
   }
 
   render() {
-    if (this.props.leagueId !== this.state.leagueId) {
+/*     if (this.props.leagueId !== this.state.leagueId) {
       this.loadPlayers()
-    }
+    } */
 
     return (
       <div className="page">
+        {loadingComponent(this.state.isLoading)}
         <table>
             <tbody><tr>
                 <th width="5%"></th>

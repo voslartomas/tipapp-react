@@ -111,6 +111,7 @@ export default function SerieBetsComponent({ leagueId }) {
 
   return (
     <div className="page">
+      {loadingComponent(isLoading)}
       <table>
         <tbody>
           <tr>
@@ -119,9 +120,8 @@ export default function SerieBetsComponent({ leagueId }) {
             <th width="10%">Tip</th>
             <th width="10%">Body</th>
           </tr>
-          {loadingComponent(isLoading)}
-          {serieBets.map(bet => (
-            <React.Fragment key={bet.betId}>
+          {serieBets.map((bet, index) => (
+            <React.Fragment key={`${bet.id}_${index}`}>
               {betRow(bet)}
               {isToggledBet(bet.id) && otherBets(bet)}
             </React.Fragment>
