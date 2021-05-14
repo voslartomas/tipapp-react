@@ -78,6 +78,7 @@ export default function SerieBetsComponent({ leagueId }) {
             <td />
             <td>{b.homeTeamScore}:{b.awayTeamScore}</td>
             <td>{b.totalPoints}</td>
+            <td />
           </tr>
       ))}
       </React.Fragment>
@@ -86,7 +87,7 @@ export default function SerieBetsComponent({ leagueId }) {
 
   const betRow = (bet) => {
     return (<tr onClick={() => !canBetOnSpecial(bet, currentTimeStamp) && onClickHandler(bet)}>
-      <td align="left">{!canBetOnSpecial(bet, currentTimeStamp) && getArrowIcon(isToggledBet(bet.id))} {bet.homeTeam} - {bet.awayTeam}</td>
+      <td>{bet.homeTeam} - {bet.awayTeam}</td>
       <td>{canBetOnSpecial(bet, currentTimeStamp) && <span>Konec {moment(bet.endDate).fromNow()}</span>}</td>
       <td>{bet.serieHomeScore}:{bet.serieAwayScore}</td>
       <td>
@@ -108,10 +109,11 @@ export default function SerieBetsComponent({ leagueId }) {
           max="4"
           style={{ width: '35px' }} />
         </span>}
-        {canBetOnSpecial(bet, currentTimeStamp) && <Button onClick={() => submitSerieBet(bet)}>Uložit sázku</Button>}
+        {canBetOnSpecial(bet, currentTimeStamp) && <Button onClick={() => submitSerieBet(bet)}>Uložit tip</Button>}
 
         </td>
       <td><b>{bet.id && bet.totalPoints}</b></td>
+      <td>{!canBetOnSpecial(bet, currentTimeStamp) && getArrowIcon(isToggledBet(bet.id))}</td>
     </tr>)
   }
 
@@ -121,11 +123,12 @@ export default function SerieBetsComponent({ leagueId }) {
       <table>
         <tbody>
           <tr>
-            <th width="35%">Zápas</th>
+            <th width="26%">Zápas</th>
             <th width="10%">Datum</th>
             <th width="10%">Výsledek</th>
-            <th width="10%">Tip</th>
+            <th width="16%">Tip</th>
             <th width="5%">Body</th>
+            <th width="3%" />
           </tr>
           {serieBets.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()).map((bet, index) => (
             <React.Fragment key={`${bet.id}_${index}`}>

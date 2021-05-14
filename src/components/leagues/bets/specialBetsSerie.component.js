@@ -35,7 +35,7 @@ export default class SpecialBetsSerieComponent extends Component {
         <Header as="h1">Série</Header>
         <Link to={`/leagues/${this.props.match.params.leagueId}/bets/serie/form/new`}>
           <Button primary>
-            Přidat sázku na sérii
+            Přidat tip na sérii
           </Button>
         </Link>
         <Divider />
@@ -67,7 +67,7 @@ export default class SpecialBetsSerieComponent extends Component {
                       Smazat {bet.id} ?
                     </Modal.Header>
                     <Modal.Content>
-                      <p>Chcete opravdu smazat sázku "{bet.id}" ?</p>
+                      <p>Chcete opravdu smazat tip "{bet.id}" ?</p>
                     </Modal.Content>
                     <Modal.Actions>
                       <Button negative onClick={this.handleDeleteCancel}>

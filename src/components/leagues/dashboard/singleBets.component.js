@@ -123,6 +123,7 @@ export default function SingleBetsComponent({leagueId}) {
         {b.value && b.value}</td>
             
             <td>{b.totalPoints}</td>
+            <td />
           </tr>
       ))}
       </React.Fragment>
@@ -131,7 +132,7 @@ export default function SingleBetsComponent({leagueId}) {
 
   const betRow = (bet) => {
     return (<tr onClick={() => !canBetOnSpecial(bet, currentTimeStamp) && onClickHandler(bet)}>
-      <td>{!canBetOnSpecial(bet, currentTimeStamp) && getArrowIcon(isToggledBet(bet.id))} {bet.name}</td>
+      <td>{bet.name}</td>
       <td>
         {bet.team && bet.team}
         {bet.player && bet.player}
@@ -167,10 +168,11 @@ export default function SingleBetsComponent({leagueId}) {
         {bet.type === 3 && <span>
           <input onChange={(e) => handleChange(bet, e.target.value)} type="text" />
         </span>}
-        <Button onClick={(e) => submitBet(bet)}>Uložit sázku</Button>
+        <Button onClick={(e) => submitBet(bet)}>Uložit tip</Button>
         </div>}
       </td>
       <td><b>{bet.id && bet.totalPoints}</b></td>
+      <td>{!canBetOnSpecial(bet, currentTimeStamp) && getArrowIcon(isToggledBet(bet.id))}</td>
   </tr>)
   }
 
@@ -180,11 +182,12 @@ export default function SingleBetsComponent({leagueId}) {
         <table>
           <tbody>
           <tr>
-              <th width="40%">Název</th>
+              <th width="37%">Název</th>
               <th width="10%">Výsledek</th>
               <th width="10%">Datum</th>
               <th width="10%">Tip</th>
               <th width="10%">Body</th>
+              <th width="3%" />
           </tr>
           {singleBets.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()).map((bet, index) => (
               <React.Fragment key={`${bet.id}_${index}`}>

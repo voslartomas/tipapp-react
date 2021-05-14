@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Form, Button } from 'semantic-ui-react'
-import moment from 'moment'
+import { Button } from 'semantic-ui-react'
 import LeagueService from '../../../services/league.service'
-import UserBetsMatchService from '../../../services/userBetsMatch.service'
 import PlayerService from '../../../services/player.service'
-import { canBetOnMatch, getArrowIcon, loadingComponent } from '../../../helpers/utils';
+import { canBetOnMatch, loadingComponent } from '../../../helpers/utils';
 import CurrentTimestampContext from '../../../context/CurrentTimestampContext'
+import BetRow from './betRow'
 
 export default function MatchBetsComponent({ leagueId }) {
-  const [isLoading, setIsLoading] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [matchBets, setMatchBets] = useState([]);
   const [players, setPlayers] = useState([]);
   const [history, setHistory] = useState(false);
@@ -49,20 +48,6 @@ export default function MatchBetsComponent({ leagueId }) {
     setMatchBets(matches);
     setPlayers(_players);
     setIsLoading(false);
-  }
-
-  const handleBetChange = async (bet, value, type, scorerId = undefined) => {
-    if (!scorerId) {
-      scorerId = bet.scorerId;
-    }
-
-    await UserBetsMatchService.put(leagueId, {matchId: bet.matchId1,
-      homeScore: type === 'homeScore' ? parseInt(value) : bet.homeScore || 0,
-      awayScore: type === 'awayScore' ? parseInt(value) : bet.awayScore || 0,
-      overtime: type === 'overtime' ? value : bet.overtime || false,
-      scorerId }, bet.id)
-
-    await loadBets();
   }
 
   const toggleHistory = () => setHistory(!history);
@@ -117,44 +102,10 @@ export default function MatchBetsComponent({ leagueId }) {
             <td>{b.homeScore}:{b.awayScore}</td>
             <td>{`${b.scorer.player.firstName} ${b.scorer.player.lastName}`}</td>
             <td>{b.totalPoints}</td>
+            <td />
           </tr>
       ))}
       </React.Fragment>
-    )
-  }
-
-  const betRow = (bet) => {
-    return (
-      <tr key={bet.id} onClick={() => !canBetOnMatch(bet, currentTimeStamp) && onClickHandler(bet)}>
-        <td align="left">
-          {!canBetOnMatch(bet, currentTimeStamp) && getArrowIcon(isToggledGame(bet.id))} {bet.homeTeam} - {bet.awayTeam}
-        </td>
-        <td>{moment(bet.matchDateTime).fromNow()}</td>
-        <td>{bet.matchHomeScore}:{bet.matchAwayScore}{bet.matchOvertime ? 'P' : ''}</td>
-        <td>{!canBetOnMatch(bet, currentTimeStamp) && <div>{bet.homeScore}:{bet.awayScore}</div>}
-          {canBetOnMatch(bet, currentTimeStamp) && <div>
-            <input value={bet.homeScore || 0} type="number" name="homeScore" min="0" style={{ width: '35px' }} onChange={e => handleBetChange(bet, e.target.value, 'homeScore')} />:
-            <input value={bet.awayScore || 0} type="number" name="awayScore" min="0" style={{ width: '35px' }} onChange={e => handleBetChange(bet, e.target.value, 'awayScore')} />
-            <input type="checkbox" title="Prodloužení" checked={bet.overtime} onChange={e => handleBetChange(bet, e.target.checked, 'overtime')} />
-          </div>}
-        </td>
-        <td>{!canBetOnMatch(bet, currentTimeStamp) && <span>{bet.scorer}</span>}
-          {canBetOnMatch(bet, currentTimeStamp) && <Form.Field>
-            {<Form.Select
-              fluid
-              required
-              search
-              value={bet.scorerId}
-              options={getPlayers(bet)}
-              placeholder="Vyberte hráče"
-              onChange={(e, { name, value }) => {
-                handleBetChange(bet, e, 'scorer', value)
-              }}
-            />}
-          </Form.Field>}
-        </td>
-        <td><b>{bet.totalPoints}</b></td>
-      </tr>
     )
   }
 
@@ -167,20 +118,21 @@ export default function MatchBetsComponent({ leagueId }) {
       <table>
         <tbody>
           <tr>
-            <th width="35%">Zápas</th>
+            <th width="25%">Zápas</th>
             <th width="13%">Datum</th>
             <th width="12%">Výsledek</th>
             <th width="12%">Tip</th>
             <th width="20%">Střelec</th>
-            <th width="8%">Body</th>
+            <th width="15%">Body</th>
+            <th width="3%" />
           </tr>          
           {matchBets
             .filter(m => m.homeTeamId !== 220 && m.awayTeamId !== 220) // filtering out Vancoouver games
             .map((bet, index) => (
-            <React.Fragment key={`${bet.id}_${index}`}>
-              {betRow(bet)}
-              {isToggledGame(bet.id) && otherBets(bet)}
-            </React.Fragment>
+              <React.Fragment key={`${bet.id}_${index}`}>
+                <BetRow betProp={bet} players={getPlayers(bet)} canBetOnMatch={canBetOnMatch(bet, currentTimeStamp)} isToggledGame={isToggledGame(bet.id)} onClickHandler={onClickHandler} leagueId={leagueId} reload={loadBets} />
+                {isToggledGame(bet.id) && otherBets(bet)}
+              </React.Fragment>
           ))}
         </tbody>
       </table>

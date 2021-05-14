@@ -35,7 +35,7 @@ export default function SpecialBetsSerieComponent(props) {
       <Header as="h1">Single</Header>
       <Link to={`/leagues/${props.match.params.leagueId}/bets/single/form/new`}>
         <Button primary>
-          Přidat sázku na sérii
+          Přidat tip na sérii
         </Button>
       </Link>
       <Divider />
@@ -68,7 +68,7 @@ export default function SpecialBetsSerieComponent(props) {
                     Smazat {bet.id} ?
                   </Modal.Header>
                   <Modal.Content>
-                    <p>Chcete opravdu smazat sázku "{bet.id}" ?</p>
+                    <p>Chcete opravdu smazat tip '{bet.id}' ?</p>
                   </Modal.Content>
                   <Modal.Actions>
                     <Button negative onClick={() => handleDeleteCancel()}>
