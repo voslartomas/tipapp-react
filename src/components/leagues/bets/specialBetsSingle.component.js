@@ -15,7 +15,7 @@ export default function SpecialBetsSerieComponent(props) {
 
   const loadBets = async () => {
     setIsLoading(true);
-    const _bets = await BetsSingleService.getAll(this.props.match.params.leagueId)
+    const _bets = await BetsSingleService.getAll(props.match.params.leagueId)
     setBets(_bets);
     setOpen(false);
     setIsLoading(false);

@@ -36,10 +36,13 @@ export default function SerieBetsComponent({ leagueId }) {
   }
 
   const handleBetChange = async (bet, event) => {
-    setIsLoading(true);
-    bet.homeTeamScore = event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeTeamScore || 0
-    bet.awayTeamScore = event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayTeamScore || 0
-    setIsLoading(false);
+    setSerieBets(serieBets.map((s) => {
+      if (s.id === bet.id) {
+        s.homeTeamScore = event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeTeamScore || 0
+        s.awayTeamScore = event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayTeamScore || 0
+      }
+      return s;
+    }))
   }
 
   const loadOtherBets = async (bet) => {
