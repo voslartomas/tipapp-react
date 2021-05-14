@@ -148,7 +148,7 @@ export default function SingleBetsComponent({leagueId}) {
             onChange={(e, { name, value }) => handleChange(bet, value)}
             label="Hráč"
             search
-            options={this.state.playersOptions}
+            options={playersOptions}
             placeholder="Vyberte hráče"
           />
         </Form.Field>}
@@ -186,7 +186,7 @@ export default function SingleBetsComponent({leagueId}) {
               <th width="10%">Tip</th>
               <th width="10%">Body</th>
           </tr>
-          {singleBets.map((bet, index) => (
+          {singleBets.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()).map((bet, index) => (
               <React.Fragment key={`${bet.id}_${index}`}>
                 {betRow(bet)}
                 {isToggledBet(bet.id) && otherBets(bet)}

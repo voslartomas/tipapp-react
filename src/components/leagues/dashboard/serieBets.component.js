@@ -1,4 +1,5 @@
 import { Button } from 'semantic-ui-react'
+import moment from 'moment'
 import React, { useState, useEffect, useContext } from 'react'
 import { canBetOnSpecial, loadingComponent, getArrowIcon } from '../../../helpers/utils'
 import LeagueService from '../../../services/league.service'
@@ -71,6 +72,7 @@ export default function SerieBetsComponent({ leagueId }) {
           <tr key={bet.id+index}>
             <td>{`${b.leagueUser.user.firstName} ${b.leagueUser.user.lastName}`}</td>
             <td />
+            <td />
             <td>{b.homeTeamScore}:{b.awayTeamScore}</td>
             <td>{b.totalPoints}</td>
           </tr>
@@ -82,6 +84,7 @@ export default function SerieBetsComponent({ leagueId }) {
   const betRow = (bet) => {
     return (<tr onClick={() => !canBetOnSpecial(bet, currentTimeStamp) && onClickHandler(bet)}>
       <td align="left">{!canBetOnSpecial(bet, currentTimeStamp) && getArrowIcon(isToggledBet(bet.id))} {bet.homeTeam} - {bet.awayTeam}</td>
+      <td>{canBetOnSpecial(bet, currentTimeStamp) && <span>Konec {moment(bet.endDate).fromNow()}</span>}</td>
       <td>{bet.serieHomeScore}:{bet.serieAwayScore}</td>
       <td>
         {canBetOnSpecial(bet, currentTimeStamp) && <span>
@@ -115,12 +118,13 @@ export default function SerieBetsComponent({ leagueId }) {
       <table>
         <tbody>
           <tr>
-            <th width="40%">Zápas</th>
+            <th width="35%">Zápas</th>
+            <th width="10%">Datum</th>
             <th width="10%">Výsledek</th>
             <th width="10%">Tip</th>
-            <th width="10%">Body</th>
+            <th width="5%">Body</th>
           </tr>
-          {serieBets.map((bet, index) => (
+          {serieBets.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()).map((bet, index) => (
             <React.Fragment key={`${bet.id}_${index}`}>
               {betRow(bet)}
               {isToggledBet(bet.id) && otherBets(bet)}
