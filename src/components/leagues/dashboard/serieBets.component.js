@@ -1,10 +1,8 @@
-import { Button } from 'semantic-ui-react'
-import moment from 'moment'
 import React, { useState, useEffect, useContext } from 'react'
-import { canBetOnSpecial, loadingComponent, getArrowIcon } from '../../../helpers/utils'
+import { canBetOnSpecial, loadingComponent } from '../../../helpers/utils'
 import LeagueService from '../../../services/league.service'
-import UserBetsSerieService from '../../../services/userBetsSerie.service'
 import CurrentTimestampContext from '../../../context/CurrentTimestampContext'
+import SerieBetRow from './serieBetRow'
 
 export default function SerieBetsComponent({ leagueId }) {
   const [serieBets, setSerieBets] = useState([]);
@@ -23,26 +21,6 @@ export default function SerieBetsComponent({ leagueId }) {
     const userBets = await LeagueService.getBetsSeries(leagueId)
     setSerieBets(userBets);
     setIsLoading(false)
-  }
-
-  const submitSerieBet = async (bet) => {
-    await UserBetsSerieService.put(leagueId, {
-      homeTeamScore: bet.homeTeamScore,
-      awayTeamScore: bet.awayTeamScore,
-      leagueSpecialBetSerieId: bet.leagueSpecialBetSerieId
-    }, bet.id || 0)
-
-    await loadBets()
-  }
-
-  const handleBetChange = async (bet, event) => {
-    setSerieBets(serieBets.map((s) => {
-      if (s.leagueSpecialBetSerieId === bet.leagueSpecialBetSerieId) {
-        s.homeTeamScore = event.target.name === 'homeScore' ? parseInt(event.target.value) : bet.homeTeamScore || 0
-        s.awayTeamScore = event.target.name === 'awayScore' ? parseInt(event.target.value) : bet.awayTeamScore || 0
-      }
-      return s;
-    }))
   }
 
   const loadOtherBets = async (bet) => {
@@ -85,54 +63,22 @@ export default function SerieBetsComponent({ leagueId }) {
     )
   }
 
-  const betRow = (bet) => {
-    return (<tr onClick={() => !canBetOnSpecial(bet, currentTimeStamp) && onClickHandler(bet)}>
-      <td>{bet.homeTeam} - {bet.awayTeam}</td>
-      <td>{canBetOnSpecial(bet, currentTimeStamp) && <span>Konec {moment(bet.endDate).fromNow()}</span>}</td>
-      <td>{bet.serieHomeScore}:{bet.serieAwayScore}</td>
-      <td>
-        {canBetOnSpecial(bet, currentTimeStamp) && <span>
-        <input
-          value={(bet.homeTeamScore) || 0}
-          type="number"
-          onChange={e => handleBetChange(bet, e)}
-          name="homeScore"
-          min="0"
-          max="4"
-          style={{ width: '35px' }} />:
-        <input
-          value={(bet.awayTeamScore) || 0}
-          type="number"
-          onChange={e => handleBetChange(bet, e)}
-          name="awayScore"
-          min="0"
-          max="4"
-          style={{ width: '35px' }} />
-        </span>}
-        {canBetOnSpecial(bet, currentTimeStamp) && <Button onClick={() => submitSerieBet(bet)}>Uložit tip</Button>}
-
-        </td>
-      <td><b>{bet.id && bet.totalPoints}</b></td>
-      <td>{!canBetOnSpecial(bet, currentTimeStamp) && getArrowIcon(isToggledBet(bet.id))}</td>
-    </tr>)
-  }
-
   return (
     <div className="page">
       {loadingComponent(isLoading)}
       <table>
         <tbody>
           <tr>
-            <th width="26%">Zápas</th>
-            <th width="10%">Datum</th>
-            <th width="10%">Výsledek</th>
-            <th width="16%">Tip</th>
-            <th width="5%">Body</th>
+            <th width="35%">Zápas</th>
+            <th width="22%">Datum</th>
+            <th width="15%">Výsledek</th>
+            <th width="15%">Tip</th>
+            <th width="10%">Body</th>
             <th width="3%" />
           </tr>
           {serieBets.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()).map((bet, index) => (
             <React.Fragment key={`${bet.id}_${index}`}>
-              {betRow(bet)}
+              {<SerieBetRow betProp={bet} canBetOnSpecial={canBetOnSpecial(bet, currentTimeStamp)} reload={loadBets} isToggledBet={isToggledBet(bet.id)} onClickHandler={onClickHandler} leagueId={leagueId} />}
               {isToggledBet(bet.id) && otherBets(bet)}
             </React.Fragment>
           ))}

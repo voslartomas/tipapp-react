@@ -4,7 +4,7 @@ import { getArrowIcon, loadingComponent } from "../../../helpers/utils";
 import moment from "moment";
 import UserBetsMatchService from '../../../services/userBetsMatch.service';
 
-export default function BetRow({
+export default function MatchBetRow({
   betProp,
   players,
   canBetOnMatch,

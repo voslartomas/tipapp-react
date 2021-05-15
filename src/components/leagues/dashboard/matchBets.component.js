@@ -4,7 +4,7 @@ import LeagueService from '../../../services/league.service'
 import PlayerService from '../../../services/player.service'
 import { canBetOnMatch, loadingComponent } from '../../../helpers/utils';
 import CurrentTimestampContext from '../../../context/CurrentTimestampContext'
-import BetRow from './betRow'
+import MatchBetRow from './matchBetRow'
 
 export default function MatchBetsComponent({ leagueId }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -130,7 +130,7 @@ export default function MatchBetsComponent({ leagueId }) {
             .filter(m => m.homeTeamId !== 220 && m.awayTeamId !== 220) // filtering out Vancoouver games
             .map((bet, index) => (
               <React.Fragment key={`${bet.id}_${index}`}>
-                <BetRow betProp={bet} players={getPlayers(bet)} canBetOnMatch={canBetOnMatch(bet, currentTimeStamp)} isToggledGame={isToggledGame(bet.id)} onClickHandler={onClickHandler} leagueId={leagueId} reload={loadBets} />
+                <MatchBetRow betProp={bet} players={getPlayers(bet)} canBetOnMatch={canBetOnMatch(bet, currentTimeStamp)} isToggledGame={isToggledGame(bet.id)} onClickHandler={onClickHandler} leagueId={leagueId} reload={loadBets} />
                 {isToggledGame(bet.id) && otherBets(bet)}
               </React.Fragment>
           ))}
