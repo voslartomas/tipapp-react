@@ -61,79 +61,77 @@ export default function SpecialBetRow({
     <React.Fragment>
       {loadingComponent(isLoading)}
       <tr onClick={() => !canBetOnSpecial && onClickHandler(bet)}>
-        <td>{bet.name}</td>
-        {canBetOnSpecial && (
-          <td>
-            <span>Konec {moment(bet.endDate).fromNow()}</span>
-          </td>
-        )}
-        {!canBetOnSpecial && <td>{moment(bet.endDate).fromNow()}</td>}
-        <td>
+        <td className="specialNameColumn">{bet.name}</td>
+        <td className="specialDateColumn">
+          <span>Konec {moment(bet.endDate).fromNow()}</span>
+        </td>
+        <td className="specialResultColumn">
           {bet.team && bet.team}
           {bet.player && bet.player}
-          {bet.value && bet.value}
+          {(bet.value && bet.value) || ''}
         </td>
-        <td>
-          {(!canBetOnSpecial || (canBetOnSpecial && !isEditing)) &&
-            getResult()}
-          {canBetOnSpecial && isEditing && (
-            <div>
-              {bet.type === 1 && (
-                <Dropdown
-                  placeholder="Vyber hráče"
-                  fluid
-                  required
-                  selection
-                  search
-                  options={playersOptions}
-                  value={bet.playerResultId}
-                  onChange={(e, { value }) => {
-                    const newBet = Object.assign({}, bet);
-                    newBet.playerBet = value;
-                    newBet.playerResultId = value;
-                    setBet(newBet);
-                    setIsEditing(true);
-                  }}
-                />
-              )}
+        {(!canBetOnSpecial || (canBetOnSpecial && !isEditing)) &&
+          <td className="specialBetColumn">
+            {getResult()}
+          </td>
+        }
+        {canBetOnSpecial && isEditing && (
+          <td className="specialBetColumn">
+            {bet.type === 1 && (
+              <Dropdown
+                placeholder="Vyber hráče"
+                fluid
+                required
+                selection
+                search
+                options={playersOptions}
+                value={bet.playerResultId}
+                onChange={(e, { value }) => {
+                  const newBet = Object.assign({}, bet);
+                  newBet.playerBet = value;
+                  newBet.playerResultId = value;
+                  setBet(newBet);
+                  setIsEditing(true);
+                }}
+              />
+            )}
 
-              {bet.type === 2 && isEditing && (
-                <Dropdown
-                  placeholder="Vyber tým"
-                  fluid
-                  required
-                  selection
-                  search
-                  options={teamsOptions}
-                  value={bet.teamResultId}
-                  onChange={(e, { value }) => {
-                    const newBet = Object.assign({}, bet);
-                    newBet.teamBet = value;
-                    newBet.teamResultId = value;
-                    setBet(newBet);
-                    setIsEditing(true);
-                  }}
-                />
-              )}
+            {bet.type === 2 && isEditing && (
+              <Dropdown
+                placeholder="Vyber tým"
+                fluid
+                required
+                selection
+                search
+                options={teamsOptions}
+                value={bet.teamResultId}
+                onChange={(e, { value }) => {
+                  const newBet = Object.assign({}, bet);
+                  newBet.teamBet = value;
+                  newBet.teamResultId = value;
+                  setBet(newBet);
+                  setIsEditing(true);
+                }}
+              />
+            )}
 
-              {bet.type === 3 && isEditing && (
-                <span>
-                  <input
-                    placeholder="Napiš hodnotu"
-                    value={bet.valueBet || ""}
-                    onChange={(e) => {
-                      const newBet = Object.assign({}, bet);
-                      newBet.valueBet = e.target.value || 0;
-                      setBet(newBet);
-                    }}
-                    type="text"
-                  />
-                </span>
-              )}
-            </div>
-          )}
-        </td>
-        <td>
+            {bet.type === 3 && isEditing && (
+              <span>
+                <input
+                  placeholder="Napiš hodnotu"
+                  value={bet.valueBet || ""}
+                  onChange={(e) => {
+                    const newBet = Object.assign({}, bet);
+                    newBet.valueBet = e.target.value || 0;
+                    setBet(newBet);
+                  }}
+                  type="text"
+                />
+              </span>
+            )}
+          </td>
+        )}
+        <td className="specialPointsColumn">
           {!isEditing && <b>{bet.totalPoints}</b>}
           {isEditing && (
             <Button.Group>
@@ -153,9 +151,9 @@ export default function SpecialBetRow({
             </Button.Group>
           )}
         </td>
-        {!canBetOnSpecial && <td>{getArrowIcon(isToggledBet)}</td>}
+        {!canBetOnSpecial && <td className="specialIconColumn">{getArrowIcon(isToggledBet)}</td>}
         {canBetOnSpecial && !isEditing && (
-          <td>
+          <td className="specialIconColumn">
             <Button
               inverted
               color="yellow"
@@ -164,7 +162,7 @@ export default function SpecialBetRow({
             />
           </td>
         )}
-        {canBetOnSpecial && isEditing && <td />}
+        {canBetOnSpecial && isEditing && <td className="specialIconColumn" />}
       </tr>
     </React.Fragment>
   );

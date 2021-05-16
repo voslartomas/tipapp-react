@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Dropdown, Button } from "semantic-ui-react";
 import { getArrowIcon, loadingComponent } from "../../../helpers/utils";
 import moment from "moment";
-import UserBetsMatchService from '../../../services/userBetsMatch.service';
+import UserBetsMatchService from "../../../services/userBetsMatch.service"
 
 export default function MatchBetRow({
   betProp,
@@ -18,10 +18,12 @@ export default function MatchBetRow({
   const [isEditing, setIsEditing] = useState(false);
 
   const isOriginalBet = () => {
-    return bet.homeScore == betProp.homeScore &&
-        bet.awayScore == betProp.awayScore &&
-        bet.overtime === betProp.overtime &&
-        bet.scorerId == betProp.scorerId;
+    return (
+      bet.homeScore == betProp.homeScore &&
+      bet.awayScore == betProp.awayScore &&
+      bet.overtime === betProp.overtime &&
+      bet.scorerId == betProp.scorerId
+    );
   };
 
   useEffect(() => setBet(betProp), [betProp])
@@ -39,7 +41,7 @@ export default function MatchBetRow({
       },
       bet.id,
     );
-    setIsLoading(false);
+    setIsLoading(false)
     reload()
     setIsEditing(false)
   };
@@ -48,62 +50,68 @@ export default function MatchBetRow({
     <React.Fragment>
       {loadingComponent(isLoading)}
       <tr key={bet.id} onClick={() => !canBetOnMatch && onClickHandler(bet)}>
-        <td>
+        <td className="matchNameColumn">
           {bet.homeTeam} - {bet.awayTeam}
         </td>
-        <td>{moment(bet.matchDateTime).fromNow()}</td>
-        <td>
-          {bet.matchHomeScore}:{bet.matchAwayScore}
-          {bet.matchOvertime ? 'P' : ''}
+        <td className="matchDateColumn">
+          {moment(bet.matchDateTime).fromNow()}
         </td>
-        <td>
+        <td className="matchResultColumn">
+          {bet.matchHomeScore}:{bet.matchAwayScore}
+          {bet.matchOvertime ? "P" : ""}
+        </td>
+        <td className="matchBetColumn">
           {(!canBetOnMatch || (canBetOnMatch && !isEditing)) && (
             <div>
-              {bet.homeScore}:{bet.awayScore}{bet.overtime ? 'P' : ''}
-            </div>
-          )}
-          {canBetOnMatch && isEditing && (
-            <div>
-              <input
-                value={bet.homeScore || 0}
-                type="number"
-                name="homeScore"
-                min="0"
-                style={{ width: '35px' }}
-                onChange={(e) => {
-                  const newBet = Object.assign({}, bet);
-                  newBet.homeScore = e.target.value || 0;
-                  setBet(newBet);
-                }}
-              />
-              :
-              <input
-                value={bet.awayScore || 0}
-                type="number"
-                name="awayScore"
-                min="0"
-                style={{ width: '35px' }}
-                onChange={(e) => {
-                  const newBet = Object.assign({}, bet);
-                  newBet.awayScore = e.target.value || 0;
-                  setBet(newBet);
-                }}
-              />
-              <input
-                type="checkbox"
-                title="Prodloužení"
-                checked={bet.overtime}
-                onChange={(e) => {
-                  const newBet = Object.assign({}, bet);
-                  newBet.overtime = e.target.checked;
-                  setBet(newBet);
-                }}
-              />
+              {bet.homeScore}:{bet.awayScore}
+              {bet.overtime ? "P" : ""}
             </div>
           )}
         </td>
-        <td>
-          {(!canBetOnMatch || (canBetOnMatch && !isEditing)) && <span>{bet.scorer}</span>}
+        {canBetOnMatch && isEditing && (
+          <td className="matchBetColumn">
+            <input
+              value={bet.homeScore || 0}
+              type="number"
+              name="homeScore"
+              min="0"
+              style={{ width: "35px" }}
+              onChange={(e) => {
+                const newBet = Object.assign({}, bet);
+                newBet.homeScore = e.target.value || 0;
+                setBet(newBet);
+              }}
+            />
+            :
+            <input
+              value={bet.awayScore || 0}
+              type="number"
+              name="awayScore"
+              min="0"
+              style={{ width: "35px" }}
+              onChange={(e) => {
+                const newBet = Object.assign({}, bet);
+                newBet.awayScore = e.target.value || 0;
+                setBet(newBet);
+              }}
+            />
+            <input
+              type="checkbox"
+              title="Prodloužení"
+              checked={bet.overtime}
+              onChange={(e) => {
+                const newBet = Object.assign({}, bet);
+                newBet.overtime = e.target.checked;
+                setBet(newBet);
+              }}
+            />
+          </td>
+        )}
+
+        <td className="matchScorerColumn">
+          {(!canBetOnMatch || (canBetOnMatch && !isEditing)) && (
+            <span>{bet.scorer}</span>
+          )}
           {canBetOnMatch && isEditing && (
             <Dropdown
               placeholder="Vyber střelce"
@@ -117,29 +125,45 @@ export default function MatchBetRow({
                 const newBet = Object.assign({}, bet);
                 newBet.scorerId = value;
                 setBet(newBet);
-                setIsEditing(true)
+                setIsEditing(true);
               }}
             />
           )}
         </td>
-        <td>
+        <td className="matchPointsColumn">
           {!isEditing && <b>{bet.totalPoints}</b>}
           {isEditing && (
             <Button.Group>
-              <Button disabled={isOriginalBet()} color="yellow" icon="check" onClick={() => handleBetChange()} />
+              <Button
+                disabled={isOriginalBet()}
+                color="yellow"
+                icon="check"
+                onClick={() => handleBetChange()}
+              />
               <Button
                 icon="cancel"
                 onClick={() => {
-                    setBet(betProp)
-                    setIsEditing(false)
+                  setBet(betProp);
+                  setIsEditing(false);
                 }}
               />
             </Button.Group>
           )}
         </td>
-        {!canBetOnMatch && <td>{getArrowIcon(isToggledGame)}</td>}
-        {canBetOnMatch && !isEditing && <td><Button inverted color="yellow" icon="pencil alternate" onClick={() => setIsEditing(true)} /></td>}
-        {canBetOnMatch && isEditing && <td />}
+        {!canBetOnMatch && (
+          <td className="matchIconColumn">{getArrowIcon(isToggledGame)}</td>
+        )}
+        {canBetOnMatch && !isEditing && (
+          <td className="matchIconColumn">
+            <Button
+              inverted
+              color="yellow"
+              icon="pencil alternate"
+              onClick={() => setIsEditing(true)}
+            />
+          </td>
+        )}
+        {canBetOnMatch && isEditing && <td className="matchIconColumn" />}
       </tr>
     </React.Fragment>
   );

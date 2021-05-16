@@ -46,17 +46,18 @@ export default function SerieBetsComponent({ leagueId }) {
 
   const otherBets = (bet) => {
     const other = otherPeopleBets.find(x => x.betId === bet.id);
+    const _other = other.bets.filter(y => y.leagueUserId !== bet.leagueUserId)
 
     return (
       <React.Fragment>
-        {other.bets.filter(y => y.leagueUserId !== bet.leagueUserId).map((b,index) => (
-          <tr key={bet.id+index}>
-            <td>{`${b.leagueUser.user.firstName} ${b.leagueUser.user.lastName}`}</td>
-            <td />
-            <td />
-            <td>{b.homeTeamScore}:{b.awayTeamScore}</td>
-            <td>{b.totalPoints}</td>
-            <td />
+        {_other.map((b,i) => (
+          <tr key={`${b.id}_1`} style={{ padding: 0, marginTop: i === 0 ? '-15px' : 0, marginBottom: (i + 1) === _other.length ? '20px' : 0 }}>
+            <td style={{ flex: 20, background: 'none' }} />
+            <td style={{ flex: 15, background: 'none' }} />
+            <td style={{ flex: 35 }}>{`${b.leagueUser.user.firstName} ${b.leagueUser.user.lastName}`}</td>
+            <td style={{ flex: 15 }}>{b.homeTeamScore}:{b.awayTeamScore}</td>
+            <td style={{ flex: 10 }}>{b.totalPoints}</td>
+            <td style={{ flex: 5, background: 'none' }} />
           </tr>
       ))}
       </React.Fragment>
@@ -66,16 +67,18 @@ export default function SerieBetsComponent({ leagueId }) {
   return (
     <div className="page">
       {loadingComponent(isLoading)}
-      <table>
-        <tbody>
+      <table className="flex-table">
+        <thead>
           <tr>
-            <th width="35%">Zápas</th>
-            <th width="22%">Datum</th>
-            <th width="15%">Výsledek</th>
-            <th width="15%">Tip</th>
-            <th width="10%">Body</th>
-            <th width="3%" />
+            <th className="serieNameColumn">Zápas</th>
+            <th className="serieDateColumn">Datum</th>
+            <th className="serieResultColumn">Výsledek</th>
+            <th className="serieBetColumn">Tip</th>
+            <th className="seriePointsColumn">Body</th>
+            <th className="serieIconColumn" />
           </tr>
+        </thead>
+        <tbody>
           {serieBets.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()).map((bet, index) => (
             <React.Fragment key={`${bet.id}_${index}`}>
               {<SerieBetRow betProp={bet} canBetOnSpecial={canBetOnSpecial(bet, currentTimeStamp)} reload={loadBets} isToggledBet={isToggledBet(bet.id)} onClickHandler={onClickHandler} leagueId={leagueId} />}

@@ -92,17 +92,18 @@ export default function MatchBetsComponent({ leagueId }) {
 
   const otherBets = (bet) => {
     const other = otherPeopleBets.find(x => x.matchId === bet.matchId)
+    const _other = other.bets.filter(y => y.leagueUserId !== bet.leagueUserId)
     return (
       <React.Fragment>
-        {other.bets.filter(y => y.leagueUserId !== bet.leagueUserId).map(b => (
-          <tr key={`${b.id}_1`}>
-            <td>{`${b.user.user.firstName} ${b.user.user.lastName}`}</td>
-            <td />
-            <td />
-            <td>{b.homeScore}:{b.awayScore}</td>
-            <td>{`${b.scorer.player.firstName} ${b.scorer.player.lastName}`}</td>
-            <td>{b.totalPoints}</td>
-            <td />
+        {_other.map((b, i) => (
+          <tr key={`${b.id}_1`} style={{ padding: 0, marginTop: i === 0 ? '-15px' : 0, marginBottom: (i + 1) === _other.length ? '20px' : 0 }}>
+            <td style={{ flex: 14, background: 'none' }} />
+            <td style={{ flex: 14, background: 'none' }} />
+            <td style={{ flex: 24 }}>{`${b.user.user.firstName} ${b.user.user.lastName}`}</td>
+            <td style={{ flex: 10 }} >{b.homeScore}:{b.awayScore}{b.overtime ? 'P' : ''}</td>
+            <td style={{ flex: 20 }} >{`${b.scorer.player.firstName} ${b.scorer.player.lastName}`}</td>
+            <td style={{ flex: 14 }}>{b.totalPoints}</td>
+            <td style={{ flex: 3, background: 'none' }} />
           </tr>
       ))}
       </React.Fragment>
@@ -115,17 +116,19 @@ export default function MatchBetsComponent({ leagueId }) {
       <div style={{ padding: '10px 0 20px' }}>
         <Button onClick={() => { toggleHistory() }}>{!history ? 'Zobrazit historii' : 'Zobrazit nadcházející'}</Button>
       </div>
-      <table>
-        <tbody>
+      <table className="flex-table">
+        <thead>
           <tr>
-            <th width="25%">Zápas</th>
-            <th width="13%">Datum</th>
-            <th width="12%">Výsledek</th>
-            <th width="12%">Tip</th>
-            <th width="20%">Střelec</th>
-            <th width="15%">Body</th>
-            <th width="3%" />
-          </tr>          
+            <th className="matchNameColumn">Zápas</th>
+            <th className="matchDateColumn">Datum</th>
+            <th className="matchResultColumn">Výsledek</th>
+            <th className="matchBetColumn">Tip</th>
+            <th className="matchScorerColumn">Střelec</th>
+            <th className="matchPointsColumn">Body</th>
+            <th className="matchIconColumn" />
+          </tr>
+        </thead>
+        <tbody>
           {matchBets
             .filter(m => m.homeTeamId !== 220 && m.awayTeamId !== 220) // filtering out Vancoouver games
             .map((bet, index) => (

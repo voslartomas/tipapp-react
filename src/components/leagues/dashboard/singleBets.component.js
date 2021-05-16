@@ -81,17 +81,15 @@ export default function SingleBetsComponent({ leagueId }) {
 
   const otherBets = (bet) => {
     const other = otherPeopleBets.find((x) => x.betId === bet.betId);
-
+    const _other = other.bets.filter(y => y.leagueUserId !== bet.leagueUserId)
     return (
       <React.Fragment>
-        {other.bets
-          .filter((y) => y.leagueUserId !== bet.leagueUserId)
-          .map((b, index) => (
-            <tr key={bet.id + index}>
-              <td>{`${b.leagueUser.user.firstName} ${b.leagueUser.user.lastName}`}</td>
-              <td></td>
-              <td></td>
-              <td>
+        {_other.map((b, i) => (
+            <tr key={`${b.id}_1`} style={{ padding: 0, marginTop: i === 0 ? '-15px' : 0, marginBottom: (i + 1) === _other.length ? '20px' : 0 }}>
+              <td style={{ flex: 20, background: 'none' }} />
+              <td style={{ flex: 15, background: 'none' }} />
+              <td style={{ flex: 35 }}>{`${b.leagueUser.user.firstName} ${b.leagueUser.user.lastName}`}</td>
+              <td style={{ flex: 15 }}>
                 {" "}
                 {b.teamResult && b.teamResult.team.name}
                 {b.playerResult &&
@@ -99,8 +97,8 @@ export default function SingleBetsComponent({ leagueId }) {
                 {b.value && b.value}
               </td>
 
-              <td>{b.totalPoints}</td>
-              <td />
+              <td style={{ flex: 10 }}>{b.totalPoints}</td>
+              <td style={{ flex: 5, background: 'none' }} />
             </tr>
           ))}
       </React.Fragment>
@@ -110,16 +108,18 @@ export default function SingleBetsComponent({ leagueId }) {
   return (
     <div className="page">
       {loadingComponent(isLoading)}
-      <table>
-        <tbody>
+      <table className="flex-table">
+        <thead>
           <tr>
-            <th width="37%">Název</th>
-            <th width="25%">Datum</th>
-            <th width="15%">Výsledek</th>
-            <th width="15%">Tip</th>
-            <th width="5%">Body</th>
-            <th width="3%" />
+            <th className="specialNameColumn">Zápas</th>
+            <th className="specialDateColumn">Datum</th>
+            <th className="specialResultColumn">Výsledek</th>
+            <th className="specialBetColumn">Tip</th>
+            <th className="specialPointsColumn">Body</th>
+            <th className="specialIconColumn" />
           </tr>
+        </thead>
+        <tbody>
           {singleBets
             .sort(
               (a, b) =>

@@ -45,24 +45,24 @@ export default function SerieBetRow({
     <React.Fragment>
       {loadingComponent(isLoading)}
       <tr onClick={() => !canBetOnSpecial && onClickHandler(bet)}>
-        <td>
+        <td className="serieNameColumn">
           {bet.homeTeam} - {bet.awayTeam}
         </td>
-        <td>
+        <td className="serieDateColumn">
           {canBetOnSpecial && (
             <span>Konec {moment(bet.endDate).fromNow()}</span>
           )}
         </td>
-        <td>
+        <td className="serieResultColumn">
           {bet.serieHomeScore}:{bet.serieAwayScore}
         </td>
-        <td>
-          {(!canBetOnSpecial || (canBetOnSpecial && !isEditing)) && (
-            <span>
-              {bet.homeTeamScore}:{bet.awayTeamScore}
-            </span>
-          )}
-          {canBetOnSpecial && isEditing && (
+        {(!canBetOnSpecial || (canBetOnSpecial && !isEditing)) && (
+          <td className="serieBetColumn">
+            {bet.homeTeamScore}:{bet.awayTeamScore}
+          </td>
+        )}
+        {canBetOnSpecial && isEditing && (
+          <td className="serieBetColumn">
             <span>
               <input
                 value={bet.homeTeamScore || 0}
@@ -92,9 +92,9 @@ export default function SerieBetRow({
                 style={{ width: "35px" }}
               />
             </span>
-          )}
-        </td>
-        <td>
+          </td>
+        )}
+        <td className="seriePointsColumn">
           {!isEditing && <b>{bet.totalPoints}</b>}
           {isEditing && (
             <Button.Group>
@@ -114,9 +114,11 @@ export default function SerieBetRow({
             </Button.Group>
           )}
         </td>
-        {!canBetOnSpecial && <td>{getArrowIcon(isToggledBet)}</td>}
+        {!canBetOnSpecial && (
+          <td className="serieIconColumn">{getArrowIcon(isToggledBet)}</td>
+        )}
         {canBetOnSpecial && !isEditing && (
-          <td>
+          <td className="serieIconColumn">
             <Button
               inverted
               color="yellow"
@@ -125,7 +127,7 @@ export default function SerieBetRow({
             />
           </td>
         )}
-        {canBetOnSpecial && isEditing && <td />}
+        {canBetOnSpecial && isEditing && <td className="serieIconColumn" />}
       </tr>
     </React.Fragment>
   );

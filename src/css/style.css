@@ -67,33 +67,6 @@ nav {
       padding: 5px 30px;
       text-align: left; }
 
-.responsive-bar {
-  width: 100%;
-  background: #202020;
-  padding: 10px 30px;
-  box-sizing: border-box;
-  display: block;
-  margin-top: 0; }
-  .responsive-bar h1 {
-    margin: 0;
-    padding: 10px 0;
-    float: left;
-    font-size: 15px; }
-    .responsive-bar h1 a {
-      color: #AAAAAA;
-      text-decoration: none; }
-      .responsive-bar h1 a b {
-        color: #F3D827; }
-  .responsive-bar h4 {
-    margin: 0;
-    padding: 0;
-    color: #F3D827;
-    font-size: 25px;
-    float: right;
-    padding: 5px 10px;
-    text-transform: uppercase;
-    cursor: pointer; }
-
 .league-bar {
   width: 100%;
   margin: 0;
@@ -126,33 +99,6 @@ nav {
       .league-bar ul li a {
         color: #202020;
         text-decoration: none; }
-
-.responsive-league-bar {
-  width: 100%;
-  background: #F3D827;
-  padding: 10px 30px;
-  box-sizing: border-box;
-  display: block;
-  margin-top: 0; }
-  .responsive-league-bar h1 {
-    margin: 0;
-    padding: 10px 0;
-    float: left;
-    font-size: 15px; }
-    .responsive-league-bar h1 a {
-      color: #AAAAAA;
-      text-decoration: none; }
-      .responsive-league-bar h1 a b {
-        color: #202020; }
-  .responsive-league-bar h4 {
-    margin: 0;
-    padding: 0;
-    color: #202020;
-    font-size: 25px;
-    float: right;
-    padding: 5px 10px;
-    text-transform: uppercase;
-    cursor: pointer; }
 
 .box {
   margin: 0;
@@ -268,7 +214,7 @@ footer {
 
 @media (min-width: 320px) {
   body {
-    margin: 50px 13%; }
+    padding: 50px 13%; }
 
   nav {
     display: block;
@@ -288,9 +234,6 @@ footer {
     nav h1.brand {
       display: block; }
 
-  .responsive-bar {
-    display: none; }
-
   .league-bar {
     display: flex;
     justify-content: center; }
@@ -309,9 +252,6 @@ footer {
     .league-bar h1.actual-page {
       display: none; }
 
-  .responsive-league-bar {
-    display: none; }
-
   footer {
     color: #fafafa;
     background: none;
@@ -325,3 +265,122 @@ footer {
     padding: 10px; } }
 
 /*# sourceMappingURL=style.css.map */
+
+.flex-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-table thead tr,
+.flex-table tbody tr {
+  display: flex;
+}
+
+.flex-table tbody tr {
+  padding-bottom: 15px; 
+}
+
+.flex-table thead tr th,
+.flex-table tbody tr td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px;
+}
+@media screen and (max-width: 640px) {
+  .flex-table thead {
+      display: none;
+  }
+  .flex-table tbody tr {
+      flex-direction: column;
+  }
+  .flex-table tbody tr td {
+      flex-direction: column;
+  }
+  .flex-table tbody tr td:before {
+      display: flex;
+      align-items: center;
+      margin: -.5em -.5em .75em -.5em;
+      content: attr(data-label);
+      color: #fff;
+  }
+}
+
+.matchNameColumn {
+  flex: 30;
+  color: #F3D827;
+}
+
+.matchDateColumn {
+  flex: 13;
+}
+
+.matchResultColumn {
+  flex: 10;
+}
+
+.matchBetColumn {
+  flex: 10;
+}
+
+.matchScorerColumn {
+  flex: 20;
+}
+
+.matchPointsColumn {
+  flex: 14;
+}
+
+.matchIconColumn {
+  flex: 3;
+}
+
+.specialNameColumn {
+  flex: 35;
+  color: #F3D827;
+}
+
+.specialDateColumn {
+  flex: 20;
+}
+
+.specialResultColumn {
+  flex: 15;
+}
+
+.specialBetColumn {
+  flex: 15;
+}
+
+.specialPointsColumn {
+  flex: 10;
+}
+
+.specialIconColumn {
+  flex: 5;
+}
+
+.serieNameColumn {
+  flex: 35;
+  color: #F3D827;
+}
+
+.serieDateColumn {
+  flex: 20;
+}
+
+.serieResultColumn {
+  flex: 15;
+}
+
+.serieBetColumn {
+  flex: 15;
+}
+
+.seriePointsColumn {
+  flex: 10;
+}
+
+.serieIconColumn {
+  flex: 5;
+}

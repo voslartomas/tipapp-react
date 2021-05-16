@@ -22,7 +22,6 @@ export const canBetOnSpecial = (bet, currentTimeStamp) => {
 }
 
 export const getArrowIcon = (isUp) => {
-  // todo check na serveru
   return (<Icon name={isUp ? 'angle up' : 'angle down'} />)
 }
 
