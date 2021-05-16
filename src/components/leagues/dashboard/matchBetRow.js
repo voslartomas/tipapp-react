@@ -60,51 +60,51 @@ export default function MatchBetRow({
           {bet.matchHomeScore}:{bet.matchAwayScore}
           {bet.matchOvertime ? "P" : ""}
         </td>
-        <td className="matchBetColumn">
-          {(!canBetOnMatch || (canBetOnMatch && !isEditing)) && (
-            <div>
-              {bet.homeScore}:{bet.awayScore}
-              {bet.overtime ? "P" : ""}
-            </div>
-          )}
-        </td>
+        {(!canBetOnMatch || (canBetOnMatch && !isEditing)) && (
+          <td className="matchBetColumn">
+            {bet.homeScore}:{bet.awayScore}
+            {bet.overtime ? "P" : ""}
+          </td>
+        )}
         {canBetOnMatch && isEditing && (
           <td className="matchBetColumn">
-            <input
-              value={bet.homeScore || 0}
-              type="number"
-              name="homeScore"
-              min="0"
-              style={{ width: "35px" }}
-              onChange={(e) => {
-                const newBet = Object.assign({}, bet);
-                newBet.homeScore = e.target.value || 0;
-                setBet(newBet);
-              }}
-            />
-            :
-            <input
-              value={bet.awayScore || 0}
-              type="number"
-              name="awayScore"
-              min="0"
-              style={{ width: "35px" }}
-              onChange={(e) => {
-                const newBet = Object.assign({}, bet);
-                newBet.awayScore = e.target.value || 0;
-                setBet(newBet);
-              }}
-            />
-            <input
-              type="checkbox"
-              title="Prodloužení"
-              checked={bet.overtime}
-              onChange={(e) => {
-                const newBet = Object.assign({}, bet);
-                newBet.overtime = e.target.checked;
-                setBet(newBet);
-              }}
-            />
+            <div>
+              <input
+                value={bet.homeScore}
+                type="number"
+                name="homeScore"
+                min="0"
+                style={{ width: "35px" }}
+                onChange={(e) => {
+                  const newBet = Object.assign({}, bet);
+                  newBet.homeScore = e.target.value || 0;
+                  setBet(newBet);
+                }}
+              />
+              :
+              <input
+                value={bet.awayScore || 0}
+                type="number"
+                name="awayScore"
+                min="0"
+                style={{ width: "35px" }}
+                onChange={(e) => {
+                  const newBet = Object.assign({}, bet);
+                  newBet.awayScore = e.target.value || 0;
+                  setBet(newBet);
+                }}
+              />
+              <input
+                type="checkbox"
+                title="Prodloužení"
+                checked={bet.overtime}
+                onChange={(e) => {
+                  const newBet = Object.assign({}, bet);
+                  newBet.overtime = e.target.checked;
+                  setBet(newBet);
+                }}
+              />
+            </div>
           </td>
         )}
 
