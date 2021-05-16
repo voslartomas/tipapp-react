@@ -160,6 +160,7 @@ export default function MatchBetRow({
               color="yellow"
               icon="pencil alternate"
               onClick={() => setIsEditing(true)}
+              style={{ margin: 0 }}
             />
           </td>
         )}

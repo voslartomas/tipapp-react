@@ -122,6 +122,7 @@ export default function SerieBetRow({
               color="yellow"
               icon="pencil alternate"
               onClick={() => setIsEditing(true)}
+              style={{ margin: 0 }}
             />
           </td>
         )}
