@@ -49,9 +49,7 @@ export default function SerieBetRow({
           {bet.homeTeam} - {bet.awayTeam}
         </td>
         <td className="serieDateColumn">
-          {canBetOnSpecial && (
-            <span>Konec {moment(bet.endDate).fromNow()}</span>
-          )}
+          <span>Konec {moment(bet.endDate).fromNow()}</span>
         </td>
         <td className="serieResultColumn">
           {bet.serieHomeScore}:{bet.serieAwayScore}
