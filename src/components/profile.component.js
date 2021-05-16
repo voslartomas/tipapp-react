@@ -39,7 +39,7 @@ export default class ProfileComponent extends Component {
         <h3>{this.state.user.mobileNumber}</h3>
         <Button color="green"><Link to={`/profile/edit/${this.state.user.id}`}>Editovat</Link></Button>
         <Button color="green"><Link to={`/profile/password`}>Změnit heslo</Link></Button>
-        <Button color="red" onClick={this.show}>Smazat</Button>
+        {/* <Button color="red" onClick={this.show}>Smazat</Button> */}
 
         <Modal size='small' open={this.state.open} onClose={this.handleDeleteCancel}>
           <Modal.Header>
