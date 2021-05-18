@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react'
 import api from '../helpers/api'
-import { Link } from 'react-router-dom'
+import { loadingComponent } from '../helpers/utils';
 
 export default class LoginFormComponent extends Component {
   constructor(props) {
@@ -10,19 +10,30 @@ export default class LoginFormComponent extends Component {
     this.state = {
       username: '',
       password: '',
+      isLoading: false,
+      isError: false,
     }
   }
 
   async logIn() {
-    const response = await api.post('login', this.state)
-    const token = response ? response.text : ''
+    this.setState({ isLoading: true, isError: false })
+    try {
+      const response = await api.post('login', this.state)
+      const token = response ? response.text : ''
+      localStorage.setItem('token', token)
+      
+    } catch (error) {
+      this.setState({ isError: true })
+    }
 
-    localStorage.setItem('token', token)
     this.props.login()
+    this.setState({ isLoading: false })
   }
 
   render() {
     return (
+      <React.Fragment>
+      {loadingComponent(this.state.isLoading)}
       <div className="login-form">
         <style>{`
           body > div,
@@ -43,6 +54,7 @@ export default class LoginFormComponent extends Component {
             </Header>
             <Form size="large">
               <Segment stacked backgroundColor="black">
+                {this.state.isError && <Message color="red">Nastala chyba při přihlášení</Message>}
                 <Form.Input
                   fluid
                   icon="user"
@@ -68,6 +80,7 @@ export default class LoginFormComponent extends Component {
           </Grid.Column>
         </Grid>
       </div>
+      </React.Fragment>
     )
   }
 }

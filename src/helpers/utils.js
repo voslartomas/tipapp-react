@@ -22,7 +22,7 @@ export const canBetOnSpecial = (bet, currentTimeStamp) => {
 }
 
 export const getArrowIcon = (isUp) => {
-  return (<Icon name={isUp ? 'angle up' : 'angle down'} />)
+  return (<Icon size="big" name={isUp ? 'angle up' : 'angle down'} />)
 }
 
 export const loadingComponent = (isLoading) => {

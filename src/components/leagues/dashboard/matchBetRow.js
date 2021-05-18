@@ -34,8 +34,8 @@ export default function MatchBetRow({
       leagueId,
       {
         matchId: bet.matchId1,
-        homeScore: bet.homeScore || 0,
-        awayScore: bet.awayScore || 0,
+        homeScore: parseInt(bet.homeScore) || 0,
+        awayScore: parseInt(bet.awayScore) || 0,
         overtime: bet.overtime || false,
         scorerId: bet.scorerId,
       },
@@ -70,27 +70,23 @@ export default function MatchBetRow({
           <td className="matchBetColumn">
             <div>
               <input
-                value={bet.homeScore}
-                type="number"
+                value={bet.homeScore || 0}
                 name="homeScore"
-                min="0"
                 style={{ width: "35px" }}
                 onChange={(e) => {
                   const newBet = Object.assign({}, bet);
-                  newBet.homeScore = e.target.value || 0;
+                  newBet.homeScore = parseInt(e.target.value) || 0;
                   setBet(newBet);
                 }}
               />
               :
               <input
                 value={bet.awayScore || 0}
-                type="number"
                 name="awayScore"
-                min="0"
                 style={{ width: "35px" }}
                 onChange={(e) => {
                   const newBet = Object.assign({}, bet);
-                  newBet.awayScore = e.target.value || 0;
+                  newBet.awayScore = parseInt(e.target.value) || 0;
                   setBet(newBet);
                 }}
               />

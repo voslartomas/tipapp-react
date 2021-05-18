@@ -212,10 +212,12 @@ footer {
         border: none;
         background: rgba(32, 32, 32, 0.05); }
 
-@media (min-width: 320px) {
+@media (min-width: 640px) {
   body {
     padding: 50px 13%; }
+  }
 
+@media (min-width: 320px) {
   nav {
     display: block;
     padding: 0 10px; }
@@ -286,6 +288,8 @@ footer {
   justify-content: center;
   align-items: center;
   margin: 2px;
+  min-height: 44px;
+  min-width: 46px;
 }
 @media screen and (max-width: 640px) {
   .flex-table thead {
