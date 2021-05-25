@@ -18,18 +18,26 @@ import { getCurrentTimestamp, loadingComponent } from '../helpers/utils';
 export default function SecuredComponent(props) {
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(false);
   const [currentTimestamp, setCurrentTimestamp] = useState(0);
   const [selectedLeague, setSelectedLeague] = useState(0);
 
   useEffect(() => {document.title = 'TipApp'}, [document.title])
+
   useEffect(async () => {
-    setIsLoading(true)
-    if (!currentTimestamp) { 
-      const ts = await getCurrentTimestamp();
+    if (!isFirstLoad) {
+      setIsLoading(true)
+      const ts = await getCurrentTimestamp()
       setCurrentTimestamp(ts)
+      setIsLoading(false)
+      setIsFirstLoad(true)
     }
-    setIsLoading(false)
-  }, [currentTimestamp])
+    const interval = setInterval(async () => {
+      const ts = await getCurrentTimestamp()
+      setCurrentTimestamp(ts)
+    }, 45000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <React.Fragment>
