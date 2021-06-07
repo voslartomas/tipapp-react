@@ -11,18 +11,20 @@ export default function LeagueDashboardComponent(props) {
 
   if (!selectedLeague) return (<React.Fragment />);
 
+  const excludedLeagues = [3, 14, 15];
+
   return (
     <div>
       <div className="league-bar">
         <ul>
           <li><Link to={`/dashboard/${selectedLeague}/matches`}>Zápasy</Link></li>
           <li><Link to={`/dashboard/${selectedLeague}/singles`}>Speciální</Link></li>
-          <li><Link to={`/dashboard/${selectedLeague}/series`}>Série</Link></li>
+          {!excludedLeagues.includes(selectedLeague) && <li><Link to={`/dashboard/${selectedLeague}/series`}>Série</Link></li>}
           <li><Link to={`/dashboard/${selectedLeague}/leaderBoard`}>Tabulka</Link></li>
         </ul>
         <div style={{ clear: 'both' }} />
       </div>
-      {props.section === 'series' && <SerieBetsComponent leagueId={selectedLeague} />}
+      {!excludedLeagues.includes(selectedLeague) && props.section === 'series' && <SerieBetsComponent leagueId={selectedLeague} />}
       {props.section === 'singles' && <SingleBetsComponent leagueId={selectedLeague} />}
       {props.section === 'matches' && <MatchBetsComponent leagueId={selectedLeague} />}
       {props.section === 'leaderboard' && <LeaderBoardComponent leagueId={selectedLeague} />}

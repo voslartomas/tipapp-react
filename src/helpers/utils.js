@@ -4,8 +4,6 @@ import api from './api'
 
 export const getCurrentTimestamp = async () => {
   try {
-    // const response = await request.get('http://worldtimeapi.org/api/timezone/Europe/Prague.json')
-    // return new Date(response.body.unixtime * 1000).getTime();
     const response = await api.get('ping/timestamp')
     return response.text
   } catch (error) {

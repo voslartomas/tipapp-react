@@ -23,7 +23,8 @@ export default class MatchesComponent extends Component {
 
   async loadMatches() {
     const matches = await MatchService.getMatches(this.props.match.params.leagueId)
-    this.setState({ matches, open: false })
+    const sortedMatches = matches.sort((a,b) => a.createdAt - b.createdAt)
+    this.setState({ matches: sortedMatches, open: false })
   }
 
   show = () => this.setState({ open: true })
