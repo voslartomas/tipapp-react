@@ -26,7 +26,7 @@ export default function MatchBetsComponent({ leagueId }) {
         player.leagueTeamId === match.awayTeamId)
       .map(player => ({
         key: player.id,
-        text: `${player.player.firstName} ${player.player.lastName}${addStarsForBestScorers(player)} (${player.leagueTeam.team.shortcut}, Z: ${player.seasonGames || 0}, G: ${player.seasonGoals || 0})`,
+        text: `${player.player.firstName} ${player.player.lastName}${addStarsForBestScorers(player)} ${player.player.position ? `(${player.player.position})` : ''} (${player.leagueTeam.team.shortcut}, Z: ${player.seasonGames || 0}, G: ${player.seasonGoals || 0})`,
         value: player.id,
       }))
   };
