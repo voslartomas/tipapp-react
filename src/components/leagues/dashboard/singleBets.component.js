@@ -123,7 +123,8 @@ export default function SingleBetsComponent({ leagueId }) {
           {singleBets
             .sort(
               (a, b) =>
-                new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+                // new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+                a.singleId - b.singleId,
             )
             .map((bet, index) => (
               <React.Fragment key={`${bet.id}_${index}`}>

@@ -11,7 +11,7 @@ export default function SpecialBetsSerieComponent(props) {
 
   useEffect(async () => {
     await loadBets();
-  });
+  }, [props.match.params.leagueId]);
 
   const loadBets = async () => {
     setIsLoading(true);
