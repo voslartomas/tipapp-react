@@ -26,9 +26,11 @@ export const getArrowIcon = (isUp) => {
 export const loadingComponent = (isLoading) => {
   if (isLoading) {
     return (
-      <Dimmer active>
-        <Loader size="big">Loading</Loader>
-      </Dimmer>
+      <div style={{ height: '100%', width: '100%'}}>
+        <Dimmer active>
+          <Loader size="big">Loading</Loader>
+        </Dimmer>
+      </div>
     );
   }
   return null;

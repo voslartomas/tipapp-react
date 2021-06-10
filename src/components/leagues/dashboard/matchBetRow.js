@@ -90,16 +90,21 @@ export default function MatchBetRow({
                   setBet(newBet);
                 }}
               />
-              <input
-                type="checkbox"
-                title="Prodloužení"
-                checked={bet.overtime}
-                onChange={(e) => {
-                  const newBet = Object.assign({}, bet);
-                  newBet.overtime = e.target.checked;
-                  setBet(newBet);
-                }}
-              />
+              {
+                (
+                  (leagueId !== 3 && leagueId !== 14 && leagueId !== 15) ||
+                  ((leagueId === 3 || leagueId === 14 || leagueId || 15) && bet.matchIsPlayoffGame)) &&
+                  <input
+                    type="checkbox"
+                    title="Prodloužení"
+                    checked={bet.overtime}
+                    onChange={(e) => {
+                      const newBet = Object.assign({}, bet);
+                      newBet.overtime = e.target.checked;
+                      setBet(newBet);
+                    }}
+                  />
+              }
             </div>
           </td>
         )}

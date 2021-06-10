@@ -101,7 +101,7 @@ export default function MatchBetsComponent({ leagueId }) {
             <td style={{ flex: 14, background: 'none' }} />
             <td style={{ flex: 24 }}>{`${b.user.user.firstName} ${b.user.user.lastName}`}</td>
             <td style={{ flex: 10 }} >{b.homeScore}:{b.awayScore}{b.overtime ? 'P' : ''}</td>
-            <td style={{ flex: 20 }} >{`${b.scorer.player.firstName} ${b.scorer.player.lastName}`}</td>
+            <td style={{ flex: 20 }} >{b.scorer ? `${b.scorer.player.firstName} ${b.scorer.player.lastName}` : ''}</td>
             <td style={{ flex: 14 }}>{b.totalPoints}</td>
             <td style={{ flex: 3, background: 'none' }} />
           </tr>
