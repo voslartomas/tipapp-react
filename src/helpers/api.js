@@ -1,11 +1,15 @@
 import request from 'superagent'
 
 class Api {
-  baseUrl = 'http://localhost:7300/'
+   baseUrl = 'http://localhost:8080/'
+   // baseUrl = 'http://localhost:7300/'
+   // baseUrl = 'roman-talas-macbook-lan.60.31.10.in-addr.arpa'
+  // baseUrl = 'https://tipapp-be.eu-gb.mybluemix.net/'
 
   constructor() {
     if (process.env.REACT_APP_ENV === 'production') {
-        this.baseUrl = process.env.PRODUCTION_URL
+        // this.baseUrl = 'https://tipapp-be.eu-gb.mybluemix.net/'
+        // this.baseUrl = process.env.PRODUCTION_URL
     }
   }
 
